@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="ta" class="h-full w-full overflow-hidden bg-slate-950">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>LOVE TNPSC - YouTube Studio Quiz</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mukta+Malar:wght@600;700;800;900&family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    html, body {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 15%, #17183e 0%, #0a0d24 55%, #020412 100%);
+      font-family: 'Mukta Malar', system-ui, -apple-system, sans-serif;
+      user-select: none;
+    }
+
+    .num-font {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* Fixed 100vh app container - zero vertical scroll */
+    #screenFrame {
+      height: 100vh;
+      max-height: 100vh;
+      width: 100vw;
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      gap: 6px;
+      padding: 6px 12px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* Question Panel */
+    .question-panel {
+      background: linear-gradient(135deg, rgba(20, 26, 68, 0.95) 0%, rgba(10, 14, 38, 0.98) 100%);
+      border: 2px solid #f59e0b;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7), 0 0 20px rgba(245, 158, 11, 0.2);
+    }
+
+    /* 4 Option cards: fits exactly in the remaining 1fr */
+    .option-card {
+      background: linear-gradient(135deg, #131b3e 0%, #1b2654 100%);
+      border: 2px solid #384b80;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.5);
+      transition: background 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+      padding: 0 12px;
+    }
+
+    /* Glowing Rich Green Correct Answer Reveal */
+    .correct-highlight {
+      background: linear-gradient(135deg, #15803d 0%, #16a34a 60%, #22c55e 100%) !important;
+      border: 2.5px solid #86efac !important;
+      box-shadow: 0 0 28px rgba(34, 197, 94, 0.95), inset 0 0 12px rgba(255, 255, 255, 0.45) !important;
+      transform: scale(1.015);
+      z-index: 10;
+    }
+
+    /* Pop Animation for Green Check */
+    @keyframes checkPop {
+      0% { transform: scale(0) rotate(-45deg); opacity: 0; }
+      70% { transform: scale(1.25) rotate(10deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    .check-animate {
+      animation: checkPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    /* Circular SVG Timer Animation */
+    .timer-circle {
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
+      transition: stroke-dashoffset 0.1s linear;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Strict 100vh Layout Container (No Scrolling) -->
+  <div id="screenFrame">
+
+    <!-- 1. COMPACT TOP BAR -->
+    <header class="flex items-center justify-between px-1 py-0.5">
+      <!-- Question Counter -->
+      <div class="px-2.5 py-0.5 rounded-lg bg-amber-500/20 border border-amber-500/50 text-amber-300 font-extrabold text-xs">
+        கேள்வி <span class="num-font text-amber-400 font-black ml-1 text-sm" id="qCurrentBadge">01</span> / <span id="qTotalBadge" class="num-font text-slate-300">10</span>
+      </div>
+
+      <!-- 5-Second Ring Timer -->
+      <div class="flex items-center gap-2 bg-slate-900/90 border border-slate-700/80 rounded-full px-3 py-0.5 shadow-md">
+        <div class="relative w-6 h-6 flex items-center justify-center">
+          <svg class="w-full h-full" viewBox="0 0 60 60">
+            <circle cx="30" cy="30" r="24" stroke="#1e293b" stroke-width="6" fill="none" />
+            <circle id="timerProgress" cx="30" cy="30" r="24" stroke="#f59e0b" stroke-width="6" stroke-linecap="round" fill="none" class="timer-circle" stroke-dasharray="150.8" stroke-dashoffset="0" />
+          </svg>
+          <span id="timerText" class="absolute inset-0 flex items-center justify-center num-font text-xs font-black text-amber-300">
+            5
+          </span>
+        </div>
+        <span id="timerStatus" class="text-xs text-amber-300 font-bold">5 விநாடி</span>
+      </div>
+
+      <!-- Right Side: Channel Brand & Upload Modal Button -->
+      <div class="flex items-center gap-2">
+        <button onclick="openModal()" title="புதிய கேள்விகள் பதிவேற்றம்" class="px-2 py-0.5 rounded-md bg-indigo-600/60 hover:bg-indigo-600 border border-indigo-400/50 text-indigo-100 text-[11px] font-bold flex items-center gap-1 active:scale-95 transition cursor-pointer">
+          <span>➕</span>
+          <span>கேள்விகள் சேர்</span>
+        </button>
+
+        <div class="flex items-center gap-1.5 opacity-90">
+          <div class="w-5 h-5 rounded bg-gradient-to-tr from-rose-500 to-indigo-600 flex items-center justify-center text-white font-black text-[10px] num-font">
+            GK
+          </div>
+          <span class="text-xs font-bold text-slate-200">LOVE TNPSC</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- 2. QUESTION PANEL (Height controlled to preserve options space) -->
+    <div class="question-panel rounded-xl px-4 py-2 sm:py-2.5 text-center flex items-center justify-center">
+      <h1 id="questionText" class="text-base sm:text-xl font-black text-white leading-snug drop-shadow-md">
+        தமிழ்நாட்டின் மாநில மரம் எது?
+      </h1>
+    </div>
+
+    <!-- 3. ALL 4 OPTIONS (2x2 Grid, C and D are 100% visible on all mobile landscape views) -->
+    <div class="grid grid-cols-2 grid-rows-2 gap-2 w-full h-full">
+      
+      <!-- Option A -->
+      <div id="optionCard0" class="option-card rounded-xl">
+        <div class="flex items-center gap-2.5 flex-1 min-w-0">
+          <span id="badge0" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-amber-500 text-slate-950 font-black text-base sm:text-lg num-font flex items-center justify-center flex-shrink-0 shadow">
+            A
+          </span>
+          <span id="text0" class="text-xs sm:text-base font-bold text-white truncate">ஆலமரம்</span>
+        </div>
+        <div id="checkSlot0" class="w-6 h-6 flex items-center justify-center flex-shrink-0"></div>
+      </div>
+
+      <!-- Option B -->
+      <div id="optionCard1" class="option-card rounded-xl">
+        <div class="flex items-center gap-2.5 flex-1 min-w-0">
+          <span id="badge1" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-amber-500 text-slate-950 font-black text-base sm:text-lg num-font flex items-center justify-center flex-shrink-0 shadow">
+            B
+          </span>
+          <span id="text1" class="text-xs sm:text-base font-bold text-white truncate">பனை மரம்</span>
+        </div>
+        <div id="checkSlot1" class="w-6 h-6 flex items-center justify-center flex-shrink-0"></div>
+      </div>
+
+      <!-- Option C -->
+      <div id="optionCard2" class="option-card rounded-xl">
+        <div class="flex items-center gap-2.5 flex-1 min-w-0">
+          <span id="badge2" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-amber-500 text-slate-950 font-black text-base sm:text-lg num-font flex items-center justify-center flex-shrink-0 shadow">
+            C
+          </span>
+          <span id="text2" class="text-xs sm:text-base font-bold text-white truncate">வேப்பமரம்</span>
+        </div>
+        <div id="checkSlot2" class="w-6 h-6 flex items-center justify-center flex-shrink-0"></div>
+      </div>
+
+      <!-- Option D -->
+      <div id="optionCard3" class="option-card rounded-xl">
+        <div class="flex items-center gap-2.5 flex-1 min-w-0">
+          <span id="badge3" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-amber-500 text-slate-950 font-black text-base sm:text-lg num-font flex items-center justify-center flex-shrink-0 shadow">
+            D
+          </span>
+          <span id="text3" class="text-xs sm:text-base font-bold text-white truncate">தென்னை மரம்</span>
+        </div>
+        <div id="checkSlot3" class="w-6 h-6 flex items-center justify-center flex-shrink-0"></div>
+      </div>
+
+    </div>
+
+    <!-- 4. BOTTOM BAR: NO NEXT BUTTON (Auto-advance after 3s) -->
+    <footer class="flex items-center justify-center py-1">
+      <button id="startTimerBtn" onclick="triggerTimer()" class="w-full max-w-xs py-2 rounded-xl bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 transition cursor-pointer">
+        <span class="text-base">⏱️</span>
+        <span id="timerBtnLabel">டைமர் தொடங்கு (5 விநாடி)</span>
+      </button>
+    </footer>
+
+  </div>
+
+  <!-- 5. QUESTION UPLOADER & MANAGER MODAL -->
+  <div id="uploadModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3">
+    <div class="bg-slate-900 border border-slate-700 w-full max-w-xl rounded-2xl p-4 sm:p-5 shadow-2xl flex flex-col gap-3 max-h-[92vh] overflow-hidden">
+      
+      <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">📋</span>
+          <h2 class="text-base sm:text-lg font-black text-white">கேள்விகள் பதிவேற்றம் (Question Manager)</h2>
+        </div>
+        <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center text-lg font-bold">✕</button>
+      </div>
+
+      <div class="text-xs text-slate-300 leading-relaxed">
+        கீழே உள்ள பெட்டியில் புதிய கேள்விகளை JSON வடிவிலோ அல்லது நேரடியாகவோ பேஸ்ட் (Paste) செய்யவும். பதிவேற்றிய உடன் வினாடி வினா தானாகவே <b>முதல் கேள்வியில் இருந்து (Question 1)</b> தொடங்கும்!
+      </div>
+
+      <!-- Quick Template Button -->
+      <div class="flex items-center gap-2">
+        <button onclick="loadSampleQuestions()" class="text-xs px-2.5 py-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 font-bold">
+          ✨ புதிய 5 TNPSC கேள்விகளை ஏற்று (Load Sample)
+        </button>
+        <button onclick="copySampleTemplate()" class="text-xs px-2.5 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700 font-bold">
+          📄 டெம்ப்ளேட்டை நகலெடு (Copy Template)
+        </button>
+      </div>
+
+      <!-- Input Textarea -->
+      <div class="flex-1 flex flex-col min-h-0">
+        <textarea id="questionInputArea" rows="8" class="w-full h-44 bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs font-mono text-emerald-400 focus:outline-none focus:border-amber-400 resize-none" placeholder="கேள்விகளை இங்கு பேஸ்ட் செய்யவும்..."></textarea>
+      </div>
+
+      <!-- Modal Action Buttons -->
+      <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+        <span id="modalStatus" class="text-xs text-amber-400 font-bold"></span>
+        <div class="flex items-center gap-2">
+          <button onclick="closeModal()" class="px-4 py-1.5 rounded-xl bg-slate-800 text-slate-300 hover:bg-slate-700 text-xs font-bold">ரத்து செய்</button>
+          <button onclick="applyNewQuestions()" class="px-4 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs shadow-lg active:scale-95 transition">கேள்விகளைப் புதுப்பி (Apply & Start)</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Initial Question Dataset
+    let quizData = [
+      {
+        question: "தமிழ்நாட்டின் மாநில மரம் எது?",
+        options: ["ஆலமரம்", "பனை மரம்", "வேப்பமரம்", "தென்னை மரம்"],
+        correct: 1 // B (0=A, 1=B, 2=C, 3=D)
+      },
+      {
+        question: "இந்திய அரசியலமைப்பின் தந்தை என்று போற்றப்படுபவர் யார்?",
+        options: ["மகாத்மா காந்தி", "ஜவஹர்லால் நேரு", "டாக்டர் அம்பேத்கர்", "சர்தார் படேல்"],
+        correct: 2 // C
+      },
+      {
+        question: "கீழடி அகழ்வாராய்ச்சி தமிழ்நாட்டின் எந்த மாவட்டத்தில் அமைந்துள்ளது?",
+        options: ["மதுரை", "சிவகங்கை", "தஞ்சாவூர்", "புதுக்கோட்டை"],
+        correct: 1 // B
+      },
+      {
+        question: "சூரிய குடும்பத்திலேயே மிகப்பெரிய கோள் (Largest Planet) எது?",
+        options: ["வியாழன் (Jupiter)", "சனி (Saturn)", "பூமி (Earth)", "செவ்வாய் (Mars)"],
+        correct: 0 // A
+      },
+      {
+        question: "திருக்குறளில் உள்ள மொத்த அதிகாரங்களின் எண்ணிக்கை எத்தனை?",
+        options: ["108 அதிகாரங்கள்", "133 அதிகாரங்கள்", "1330 குறள்கள்", "150 அதிகாரங்கள்"],
+        correct: 1 // B
+      },
+      {
+        question: "மனித உடலில் இரத்தத்தை உந்தித் தள்ளும் முதன்மை உறுப்பு எது?",
+        options: ["மூளை", "நுரையீரல்", "இதயம்", "சிறுநீரகம்"],
+        correct: 2 // C
+      },
+      {
+        question: "நோபல் பரிசு வென்ற முதல் இந்தியர் யார்?",
+        options: ["சி.வி. ராமன்", "ரவீந்திரநாத் தாகூர்", "அன்னை தெரசா", "அமர்த்தியா சென்"],
+        correct: 1 // B
+      },
+      {
+        question: "தஞ்சை பெரிய கோயிலைக் கட்டிய புகழ்பெற்ற சோழ மன்னன் யார்?",
+        options: ["முதலாம் இராஜேந்திரன்", "முதலாம் இராஜராஜ சோழன்", "கரிகால சோழன்", "குலோத்துங்கன்"],
+        correct: 1 // B
+      },
+      {
+        question: "தாவரங்கள் ஒளிச்சேர்க்கை (Photosynthesis) செய்ய அவசியமான வாயு எது?",
+        options: ["ஆக்ஸிஜன்", "கார்பன் டை ஆக்சைடு", "நைட்ரஜன்", "ஹைட்ரஜன்"],
+        correct: 1 // B
+      },
+      {
+        question: "தமிழ்நாட்டின் மாநில விலங்கு எது?",
+        options: ["வரையாடு", "வங்கப் புலி", "காட்டு யானை", "புள்ளி மான்"],
+        correct: 0 // A
+      }
+    ];
+
+    let currentIndex = 0;
+    let timerRunning = false;
+    let answerRevealed = false;
+    let timerInterval = null;
+    let autoNextTimeout = null;
+
+    // Mobile & Desktop Robust Web Audio Synthesizer
+    let audioCtx = null;
+    function initAudio() {
+      try {
+        if (!audioCtx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (AudioContextClass) {
+            audioCtx = new AudioContextClass();
+          }
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+      } catch (e) {
+        console.error('Audio initialization error:', e);
+      }
+      return audioCtx;
+    }
+
+    // Pre-unlock audio on any initial touch/click anywhere on screen
+    document.addEventListener('touchstart', () => initAudio(), { once: true, passive: true });
+    document.addEventListener('click', () => initAudio(), { once: true });
+
+    // Realistic Mechanical Wood Clock Tick
+    function playTickSound() {
+      try {
+        const ctx = initAudio();
+        if (!ctx) return;
+
+        const now = ctx.currentTime;
+        
+        // Realistic dual-click: fast attack (1200Hz to 240Hz)
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(1200, now);
+        osc.frequency.exponentialRampToValueAtTime(140, now + 0.045);
+
+        gain.gain.setValueAtTime(0.55, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.045);
+      } catch (e) {
+        console.error('Tick sound error:', e);
+      }
+    }
+
+    // Rich crystal bell chime for answer reveal
+    function playVictoryChime() {
+      try {
+        const ctx = initAudio();
+        if (!ctx) return;
+
+        const now = ctx.currentTime;
+        // Harmonic bell chime chords
+        const chordFrequencies = [987.77, 1318.51, 1567.98, 1975.53];
+
+        chordFrequencies.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + (idx * 0.035));
+
+          const noteStart = now + (idx * 0.035);
+          gain.gain.setValueAtTime(0.25, noteStart);
+          gain.gain.exponentialRampToValueAtTime(0.0001, noteStart + 1.6);
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc.start(noteStart);
+          osc.stop(noteStart + 1.6);
+        });
+      } catch (e) {
+        console.error('Victory chime error:', e);
+      }
+    }
+
+    const qCurrentBadge = document.getElementById('qCurrentBadge');
+    const qTotalBadge = document.getElementById('qTotalBadge');
+    const questionText = document.getElementById('questionText');
+    const timerProgress = document.getElementById('timerProgress');
+    const timerText = document.getElementById('timerText');
+    const timerStatus = document.getElementById('timerStatus');
+    const startTimerBtn = document.getElementById('startTimerBtn');
+    const timerBtnLabel = document.getElementById('timerBtnLabel');
+    const uploadModal = document.getElementById('uploadModal');
+    const questionInputArea = document.getElementById('questionInputArea');
+    const modalStatus = document.getElementById('modalStatus');
+
+    const totalCircumference = 2 * Math.PI * 24; // 150.796
+    timerProgress.style.strokeDasharray = `${totalCircumference} ${totalCircumference}`;
+
+    function renderQuestion(index) {
+      clearInterval(timerInterval);
+      clearTimeout(autoNextTimeout);
+      timerRunning = false;
+      answerRevealed = false;
+
+      const total = quizData.length;
+      qTotalBadge.textContent = String(total);
+      
+      const q = quizData[index];
+      qCurrentBadge.textContent = String(index + 1).padStart(2, '0');
+      questionText.textContent = q.question;
+
+      // Reset Timer visual to 5 SECONDS
+      timerProgress.style.strokeDashoffset = '0';
+      timerProgress.setAttribute('stroke', '#f59e0b');
+      timerText.textContent = '5';
+      timerText.className = 'absolute inset-0 flex items-center justify-center num-font text-xs font-black text-amber-300';
+      timerStatus.textContent = '5 விநாடி';
+      timerStatus.className = 'text-xs text-amber-300 font-bold';
+
+      // Reset Timer Button
+      startTimerBtn.disabled = false;
+      startTimerBtn.className = "w-full max-w-xs py-2 rounded-xl bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 transition cursor-pointer";
+      timerBtnLabel.textContent = "டைமர் தொடங்கு (5 விநாடி)";
+
+      // Reset all 4 Option cards
+      for (let i = 0; i < 4; i++) {
+        const card = document.getElementById(`optionCard${i}`);
+        const badge = document.getElementById(`badge${i}`);
+        const text = document.getElementById(`text${i}`);
+        const checkSlot = document.getElementById(`checkSlot${i}`);
+
+        text.textContent = q.options[i] || "-";
+        checkSlot.innerHTML = '';
+
+        card.className = "option-card rounded-xl";
+        badge.className = "w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-amber-500 text-slate-950 font-black text-base sm:text-lg num-font flex items-center justify-center flex-shrink-0 shadow";
+      }
+    }
+
+    // 5-SECOND COUNTDOWN TRIGGER
+    function triggerTimer() {
+      if (timerRunning || answerRevealed) return;
+      initAudio();
+      timerRunning = true;
+
+      startTimerBtn.disabled = true;
+      startTimerBtn.className = "w-full max-w-xs py-2 rounded-xl bg-slate-800 text-slate-400 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 cursor-not-allowed opacity-80";
+      timerBtnLabel.textContent = "நேரம் ஓடுகிறது...";
+      timerStatus.textContent = 'ஓடுகிறது...';
+      timerStatus.className = 'text-xs text-amber-300 font-bold animate-pulse';
+
+      const totalTimeMs = 5000; // 5 SECONDS
+      let timeLeftMs = totalTimeMs;
+      const stepInterval = 100;
+      let prevWholeSec = 5;
+
+      // Initial tick on start
+      playTickSound();
+
+      timerInterval = setInterval(() => {
+        timeLeftMs -= stepInterval;
+        const currentSec = Math.ceil(timeLeftMs / 1000);
+
+        if (currentSec !== prevWholeSec && currentSec > 0) {
+          playTickSound();
+          prevWholeSec = currentSec;
+        }
+
+        timerText.textContent = Math.max(0, currentSec);
+
+        const fraction = Math.max(0, timeLeftMs) / totalTimeMs;
+        const offset = totalCircumference - (fraction * totalCircumference);
+        timerProgress.style.strokeDashoffset = offset;
+
+        if (timeLeftMs <= 0) {
+          clearInterval(timerInterval);
+          revealAnswerAndAutoNext();
+        }
+      }, stepInterval);
+    }
+
+    function revealAnswerAndAutoNext() {
+      timerRunning = false;
+      answerRevealed = true;
+
+      playVictoryChime();
+
+      const q = quizData[currentIndex];
+      const correctIdx = q.correct;
+
+      timerProgress.setAttribute('stroke', '#22c55e');
+      timerText.textContent = '✓';
+      timerText.className = 'absolute inset-0 flex items-center justify-center font-black text-xs text-emerald-400 check-animate leading-none';
+      timerStatus.textContent = 'சரியான விடை!';
+      timerStatus.className = 'text-xs text-emerald-400 font-black';
+
+      // Transform the correct answer card into bright green with tick
+      for (let i = 0; i < 4; i++) {
+        const card = document.getElementById(`optionCard${i}`);
+        const badge = document.getElementById(`badge${i}`);
+        const checkSlot = document.getElementById(`checkSlot${i}`);
+
+        if (i === correctIdx) {
+          card.className = "option-card correct-highlight rounded-xl";
+          badge.className = "w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white text-emerald-900 font-black text-base sm:text-lg num-font flex items-center justify-center flex-shrink-0 shadow-lg";
+
+          checkSlot.innerHTML = `
+            <div class="w-6 h-6 rounded-full bg-white text-emerald-600 flex items-center justify-center font-black text-base shadow-md check-animate">
+              ✓
+            </div>
+          `;
+        } else {
+          card.className = "option-card rounded-xl opacity-30";
+        }
+      }
+
+      // Show countdown to next question in button
+      let countdownSec = 3;
+      timerBtnLabel.textContent = `அடுத்த கேள்வி தானாக மாறும் (${countdownSec}s)...`;
+
+      const countdownInterval = setInterval(() => {
+        countdownSec--;
+        if (countdownSec > 0) {
+          timerBtnLabel.textContent = `அடுத்த கேள்வி தானாக மாறும் (${countdownSec}s)...`;
+        } else {
+          clearInterval(countdownInterval);
+        }
+      }, 1000);
+
+      // AUTOMATICALLY SWITCH TO NEXT QUESTION AFTER 3 SECONDS
+      autoNextTimeout = setTimeout(() => {
+        clearInterval(countdownInterval);
+        if (currentIndex < quizData.length - 1) {
+          currentIndex++;
+          renderQuestion(currentIndex);
+        } else {
+          showFinishedScreen();
+        }
+      }, 3000);
+    }
+
+    function showFinishedScreen() {
+      questionText.innerHTML = `<span class="text-amber-400">🎉 வாழ்த்துகள்! அனைத்து ${quizData.length} கேள்விகளும் நிறைவடைந்தன.</span>`;
+      timerText.textContent = '★';
+      timerStatus.textContent = 'முடிந்தது';
+      startTimerBtn.disabled = false;
+      startTimerBtn.className = "w-full max-w-xs py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg cursor-pointer";
+      timerBtnLabel.textContent = "மீண்டும் முதலிலிருந்து தொடங்க";
+      startTimerBtn.onclick = () => {
+        currentIndex = 0;
+        startTimerBtn.onclick = triggerTimer;
+        renderQuestion(currentIndex);
+      };
+    }
+
+    // Modal Operations
+    function openModal() {
+      questionInputArea.value = JSON.stringify(quizData, null, 2);
+      modalStatus.textContent = `தற்போது ${quizData.length} கேள்விகள் உள்ளன.`;
+      uploadModal.classList.remove('hidden');
+    }
+
+    function closeModal() {
+      uploadModal.classList.add('hidden');
+    }
+
+    function loadSampleQuestions() {
+      const freshQuestions = [
+        {
+          question: "தமிழ்நாட்டின் நெற்களஞ்சியம் என்று அழைக்கப்படும் மாவட்டம் எது?",
+          options: ["மதுரை", "திருச்சிராப்பள்ளி", "தஞ்சாவூர்", "திருநெல்வேலி"],
+          correct: 2
+        },
+        {
+          question: "இந்தியாவின் மிக நீளமான நதி எது?",
+          options: ["கங்கை", "யமுனை", "கோதாவரி", "பிரம்மபுத்திரா"],
+          correct: 0
+        },
+        {
+          question: "மின்சாரத்தைக் கடத்தும் ஒரே அலோகம் (Non-metal) எது?",
+          options: ["வைரம்", "கிராஃபைட்", "சல்பர்", "பாஸ்பரஸ்"],
+          correct: 1
+        },
+        {
+          question: "மௌரியப் பேரரசை நிறுவிய புகழ்பெற்ற மன்னர் யார்?",
+          options: ["அசோகர்", "பிந்துசாரர்", "சந்திரகுப்த மௌரியர்", "ஹர்ஷர்"],
+          correct: 2
+        },
+        {
+          question: "உலக சுற்றச்சூழல் தினம் கடைப்பிடிக்கப்படும் நாள் எது?",
+          options: ["ஜூன் 5", "ஏப்ரல் 22", "மே 1", "ஜூலை 11"],
+          correct: 0
+        }
+      ];
+      questionInputArea.value = JSON.stringify(freshQuestions, null, 2);
+      modalStatus.textContent = "5 புதிய TNPSC கேள்விகள் ஏற்றப்பட்டன!";
+    }
+
+    function copySampleTemplate() {
+      const template = [
+        {
+          "question": "உங்கள் கேள்வி இங்கே தட்டச்சு செய்யவும்?",
+          "options": ["விடை A", "விடை B", "விடை C", "விடை D"],
+          "correct": 1
+        }
+      ];
+      const text = JSON.stringify(template, null, 2);
+      const tempArea = document.createElement('textarea');
+      tempArea.value = text;
+      document.body.appendChild(tempArea);
+      tempArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempArea);
+      modalStatus.textContent = "டெம்ப்ளேட் காப்பி செய்யப்பட்டது!";
+    }
+
+    function applyNewQuestions() {
+      try {
+        const raw = questionInputArea.value.trim();
+        if (!raw) {
+          modalStatus.textContent = "தயவுசெய்து கேள்விகளை உள்ளிடவும்!";
+          return;
+        }
+
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed) || parsed.length === 0) {
+          modalStatus.textContent = "குறைந்தது 1 கேள்வியாவது இருக்க வேண்டும்!";
+          return;
+        }
+
+        // Validate structure
+        for (let i = 0; i < parsed.length; i++) {
+          const item = parsed[i];
+          if (!item.question || !Array.isArray(item.options) || item.options.length < 4 || typeof item.correct !== 'number') {
+            modalStatus.textContent = `பிழை: கேள்வி #${i + 1}-ல் சரியான விவரங்கள் இல்லை! (Question, 4 Options, Correct Index தேவை)`;
+            return;
+          }
+        }
+
+        // Update dataset & restart from Question 1
+        quizData = parsed;
+        currentIndex = 0;
+        closeModal();
+        renderQuestion(0);
+      } catch (err) {
+        modalStatus.textContent = "பிழை: சரியான JSON வடிவில் உள்ளிடவும்!";
+      }
+    }
+
+    // Spacebar shortcut for desktop recording
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' && uploadModal.classList.contains('hidden')) {
+        e.preventDefault();
+        if (!timerRunning && !answerRevealed) {
+          triggerTimer();
+        }
+      }
+    });
+
+    // Initialize first question
+    renderQuestion(0);
+  </script>
+</body>
+</html>
