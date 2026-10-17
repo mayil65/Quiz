@@ -56,6 +56,10 @@
 </head>
 <body class="flex items-center justify-center p-1 sm:p-2">
 
+  <!-- Audio Elements for 100% Guaranteed Screen Recording Sound -->
+  <audio id="tickAudio" preload="auto" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+  <audio id="bellAudio" preload="auto" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"></audio>
+
   <div class="w-full h-full max-w-[1400px] flex flex-col justify-between p-2 sm:p-3 relative overflow-hidden">
 
     <!-- Header Bar -->
@@ -100,7 +104,7 @@
       </div>
     </main>
 
-    <!-- 4 Options Grid (A, B, C, D) - Auto Wrap & Proper Scaling -->
+    <!-- 4 Options Grid (A, B, C, D) -->
     <section class="grid grid-cols-2 gap-1.5 sm:gap-2 flex-1 my-1 overflow-hidden">
       <!-- Option A -->
       <div id="optContainer0" class="opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow transition">
@@ -180,49 +184,32 @@
     let timerInterval = null;
     let autoNextTimeout = null;
 
-    let audioCtx = null;
-    function initAudio() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
+    const tickAudio = document.getElementById('tickAudio');
+    const bellAudio = document.getElementById('bellAudio');
+
+    // Preload audio unlock on first touch
+    function unlockAudio() {
+      tickAudio.play().then(() => {
+        tickAudio.pause();
+        tickAudio.currentTime = 0;
+      }).catch(() => {});
+      bellAudio.play().then(() => {
+        bellAudio.pause();
+        bellAudio.currentTime = 0;
+      }).catch(() => {});
     }
 
     function playTickSound() {
       try {
-        initAudio();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + 0.04);
-        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.04);
+        tickAudio.currentTime = 0;
+        tickAudio.play();
       } catch (e) {}
     }
 
     function playDingSound() {
       try {
-        initAudio();
-        const now = audioCtx.currentTime;
-        [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
-          const osc = audioCtx.createOscillator();
-          const gain = audioCtx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(freq, now + i * 0.05);
-          gain.gain.setValueAtTime(0.2, now + i * 0.05);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.05 + 0.9);
-          osc.connect(gain);
-          gain.connect(audioCtx.destination);
-          osc.start(now + i * 0.05);
-          osc.stop(now + i * 0.05 + 0.9);
-        });
+        bellAudio.currentTime = 0;
+        bellAudio.play();
       } catch (e) {}
     }
 
@@ -259,7 +246,7 @@
     }
 
     function triggerQuizAction() {
-      initAudio();
+      unlockAudio();
       if (timerRunning) return;
       startCountdown();
     }
@@ -345,7 +332,8 @@
 
     window.onload = () => {
       renderQuestion();
-      document.body.addEventListener('click', initAudio, { once: true });
+      document.body.addEventListener('touchstart', unlockAudio, { once: true });
+      document.body.addEventListener('click', unlockAudio, { once: true });
     };
   </script>
 </body>
