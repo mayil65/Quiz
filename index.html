@@ -93,47 +93,47 @@
 
     <!-- Question Container -->
     <main class="w-full shrink-0 my-1">
-      <div class="bg-gradient-to-b from-[#162044] to-[#0d142e] border-2 border-amber-500/80 rounded-xl px-4 py-2 sm:py-3 shadow-lg flex items-center justify-center text-center">
-        <h1 id="questionText" class="text-white font-extrabold text-base sm:text-lg md:text-xl leading-snug drop-shadow-sm">
-          இந்திய அரசியலமைப்பின் தந்தை என்று அழைக்கப்படுபவர் யார்?
+      <div class="bg-gradient-to-b from-[#162044] to-[#0d142e] border-2 border-amber-500/80 rounded-xl px-3 py-2 sm:py-2.5 shadow-lg flex items-center justify-center text-center">
+        <h1 id="questionText" class="text-white font-extrabold text-xs sm:text-base md:text-lg leading-snug drop-shadow-sm">
+          இந்திய அரசியலமைப்பின் பெரும்பகுதி எந்தச் சட்டத்திலிருந்து பெறப்பட்டது?
         </h1>
       </div>
     </main>
 
-    <!-- 4 Options Grid (A, B, C, D) -->
-    <section class="grid grid-cols-2 gap-2 sm:gap-2.5 flex-1 max-h-[50vh] my-1">
+    <!-- 4 Options Grid (A, B, C, D) - Auto Wrap & Proper Scaling -->
+    <section class="grid grid-cols-2 gap-1.5 sm:gap-2 flex-1 my-1 overflow-hidden">
       <!-- Option A -->
-      <div id="optContainer0" class="opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-2 flex items-center justify-between shadow transition">
-        <div class="flex items-center gap-2 overflow-hidden">
-          <span class="bg-amber-500 text-slate-950 font-black text-xs sm:text-sm px-2 py-1 rounded shrink-0">A</span>
-          <span id="optText0" class="text-white font-bold text-xs sm:text-sm md:text-base truncate">மகாத்மா காந்தி</span>
+      <div id="optContainer0" class="opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow transition">
+        <div class="flex items-center gap-1.5 sm:gap-2 flex-1 min-w-0">
+          <span class="bg-amber-500 text-slate-950 font-black text-[11px] sm:text-xs px-1.5 py-0.5 rounded shrink-0">A</span>
+          <span id="optText0" class="text-white font-bold text-[11px] sm:text-xs md:text-sm leading-tight break-words whitespace-normal flex-1">Option A</span>
         </div>
         <div id="badge0" class="hidden shrink-0"></div>
       </div>
 
       <!-- Option B -->
-      <div id="optContainer1" class="opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-2 flex items-center justify-between shadow transition">
-        <div class="flex items-center gap-2 overflow-hidden">
-          <span class="bg-amber-500 text-slate-950 font-black text-xs sm:text-sm px-2 py-1 rounded shrink-0">B</span>
-          <span id="optText1" class="text-white font-bold text-xs sm:text-sm md:text-base truncate">டாக்டர் பி.ஆர். அம்பேத்கர்</span>
+      <div id="optContainer1" class="opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow transition">
+        <div class="flex items-center gap-1.5 sm:gap-2 flex-1 min-w-0">
+          <span class="bg-amber-500 text-slate-950 font-black text-[11px] sm:text-xs px-1.5 py-0.5 rounded shrink-0">B</span>
+          <span id="optText1" class="text-white font-bold text-[11px] sm:text-xs md:text-sm leading-tight break-words whitespace-normal flex-1">Option B</span>
         </div>
         <div id="badge1" class="hidden shrink-0"></div>
       </div>
 
       <!-- Option C -->
-      <div id="optContainer2" class="opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-2 flex items-center justify-between shadow transition">
-        <div class="flex items-center gap-2 overflow-hidden">
-          <span class="bg-amber-500 text-slate-950 font-black text-xs sm:text-sm px-2 py-1 rounded shrink-0">C</span>
-          <span id="optText2" class="text-white font-bold text-xs sm:text-sm md:text-base truncate">ஜவஹர்லால் நேரு</span>
+      <div id="optContainer2" class="opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow transition">
+        <div class="flex items-center gap-1.5 sm:gap-2 flex-1 min-w-0">
+          <span class="bg-amber-500 text-slate-950 font-black text-[11px] sm:text-xs px-1.5 py-0.5 rounded shrink-0">C</span>
+          <span id="optText2" class="text-white font-bold text-[11px] sm:text-xs md:text-sm leading-tight break-words whitespace-normal flex-1">Option C</span>
         </div>
         <div id="badge2" class="hidden shrink-0"></div>
       </div>
 
       <!-- Option D -->
-      <div id="optContainer3" class="opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-2 flex items-center justify-between shadow transition">
-        <div class="flex items-center gap-2 overflow-hidden">
-          <span class="bg-amber-500 text-slate-950 font-black text-xs sm:text-sm px-2 py-1 rounded shrink-0">D</span>
-          <span id="optText3" class="text-white font-bold text-xs sm:text-sm md:text-base truncate">சர்தார் வல்லபாய் படேல்</span>
+      <div id="optContainer3" class="opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow transition">
+        <div class="flex items-center gap-1.5 sm:gap-2 flex-1 min-w-0">
+          <span class="bg-amber-500 text-slate-950 font-black text-[11px] sm:text-xs px-1.5 py-0.5 rounded shrink-0">D</span>
+          <span id="optText3" class="text-white font-bold text-[11px] sm:text-xs md:text-sm leading-tight break-words whitespace-normal flex-1">Option D</span>
         </div>
         <div id="badge3" class="hidden shrink-0"></div>
       </div>
@@ -141,8 +141,8 @@
 
     <!-- Bottom Trigger Bar -->
     <footer class="shrink-0 flex items-center justify-center pt-1 pb-1">
-      <button id="startTimerBtn" onclick="triggerQuizAction()" class="w-full sm:w-2/3 max-w-md bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-black text-sm sm:text-base py-2 px-4 rounded-xl shadow-lg transform active:scale-95 transition flex items-center justify-center gap-2 border-2 border-amber-200/60">
-        <span class="text-base">⏱️</span>
+      <button id="startTimerBtn" onclick="triggerQuizAction()" class="w-full sm:w-2/3 max-w-md bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-black text-xs sm:text-sm py-1.5 sm:py-2 px-4 rounded-xl shadow-lg transform active:scale-95 transition flex items-center justify-center gap-2 border border-amber-200/60">
+        <span class="text-sm">⏱️</span>
         <span id="btnLabel">டைமர் தொடங்கு (5 விநாடி)</span>
       </button>
     </footer>
@@ -153,10 +153,10 @@
   <div id="editorModal" class="hidden fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-3">
     <div class="bg-[#0f152d] border border-amber-500/40 rounded-xl p-4 w-full max-w-lg shadow-2xl flex flex-col gap-3 max-h-[90vh]">
       <div class="flex justify-between items-center pb-2 border-b border-slate-700">
-        <h2 class="text-amber-400 font-bold text-base">புதிய வினாக்களைப் பதிவேற்று (Bulk Upload)</h2>
+        <h2 class="text-amber-400 font-bold text-sm sm:text-base">புதிய வினாக்களைப் பதிவேற்று (Bulk Upload)</h2>
         <button onclick="closeEditor()" class="text-slate-400 hover:text-white text-lg">✕</button>
       </div>
-      <p class="text-xs text-slate-300">நான் கொடுத்த 50 வினாக்களின் JSON குறியீட்டை கீழே உள்ள பெட்டியில் ஒட்டவும் (Paste):</p>
+      <p class="text-xs text-slate-300">50 வினாக்களின் JSON குறியீட்டை கீழே உள்ள பெட்டியில் ஒட்டவும் (Paste):</p>
       <textarea id="jsonInput" class="w-full h-44 bg-[#080c1d] border border-slate-700 rounded-lg p-2 text-xs font-mono text-emerald-400 focus:outline-none focus:border-amber-400" placeholder="Paste JSON here..."></textarea>
       <div class="flex gap-2 justify-end pt-1">
         <button onclick="closeEditor()" class="bg-slate-800 text-slate-300 text-xs px-3 py-1.5 rounded-lg">ரத்து</button>
@@ -166,18 +166,12 @@
   </div>
 
   <script>
-    // 50 TNPSC Questions Pre-loaded
     let quizData = [
-      {"question": "இந்திய அரசியலமைப்பின் தந்தை என்று போற்றப்படுபவர் யார்?", "options": ["மகாத்மா காந்தி", "டாக்டர் அம்பேத்கர்", "ஜவஹர்லால் நேரு", "சர்தார் படேல்"], "correct": 1},
-      {"question": "தமிழ்நாட்டின் மாநில மரம் எது?", "options": ["ஆலமரம்", "வேப்பமரம்", "பனைமரம்", "தென்னைமரம்"], "correct": 2},
-      {"question": "சூரிய குடும்பத்திலேயே மிகப்பெரிய கோள் எது?", "options": ["வியாழன் (Jupiter)", "சனி (Saturn)", "பூமி (Earth)", "செவ்வாய் (Mars)"], "correct": 0},
-      {"question": "தமிழ்நாட்டின் நுழைவு வாயில் என்று அழைக்கப்படும் நகரம் எது?", "options": ["சென்னை", "தூத்துக்குடி", "மதுரை", "கோயம்புத்தூர்"], "correct": 1},
-      {"question": "இரத்தத்தின் சிவப்பணுக்கள் (RBC) உற்பத்தியாகும் இடம் எது?", "options": ["இதயம்", "எலும்பு மஜ்ஜை", "மண்ணீரல்", "சிறுநீரகம்"], "correct": 1},
-      {"question": "சிந்து சமவெளி நாகரிகத்தில் கப்பல் கட்டும் தளம் கண்டறியப்பட்ட இடம் எது?", "options": ["ஹரப்பா", "மொகஞ்சதாரோ", "லோத்தல்", "காலிபங்கன்"], "correct": 2},
-      {"question": "இந்தியாவின் மிக நீளமான நதி எது?", "options": ["கங்கை", "பிரம்மபுத்திரா", "கோதாவரி", "யமுனை"], "correct": 0},
-      {"question": "திருக்குறளில் உள்ள மொத்த அதிகாரங்களின் எண்ணிக்கை எத்தனை?", "options": ["108", "133", "1330", "120"], "correct": 1},
-      {"question": "மத்திய உணவுத் திட்டத்தை தமிழ்நாட்டில் முதலில் அறிமுகப்படுத்தியவர் யார்?", "options": ["எம்.ஜி.ஆர்", "காமராசர்", "அண்ணா", "கருணாநிதி"], "correct": 1},
-      {"question": "மனித உடலில் உள்ள மிக நீளமான எலும்பு எது?", "options": ["தொடை எலும்பு (Femur)", "முதுகெலும்பு", "விலா எலும்பு", "கை எலும்பு"], "correct": 0}
+      {"question": "இந்திய அரசியலமைப்பின் பெரும்பகுதி எந்தச் சட்டத்திலிருந்து பெறப்பட்டது?", "options": ["1919 ஆம் ஆண்டு சட்டம்", "1935 ஆம் ஆண்டு இந்திய அரசுச் சட்டம்", "1909 ஆம் ஆண்டு மின்டோ-மார்லி சட்டம்", "1947 இந்திய சுதந்திரச் சட்டம்"], "correct": 1},
+      {"question": "நாடாளுமன்ற ஆட்சி முறை (Parliamentary System) எந்த நாட்டின் அரசியலமைப்பிலிருந்து பெறப்பட்டது?", "options": ["அமெரிக்கா", "பிரிட்டன்", "அயர்லாந்து", "கனடா"], "correct": 1},
+      {"question": "அடிப்படை உரிமைகள் (Fundamental Rights) எந்த நாட்டின் அரசியலமைப்பிலிருந்து பெறப்பட்டன?", "options": ["பிரிட்டன்", "சோவியத் யூனியன் (USSR)", "அமெரிக்கா (USA)", "பிரான்ஸ்"], "correct": 2},
+      {"question": "அரசு நெறிமுறையுறுத்தும் கோட்பாடுகள் (DPSP) எந்த நாட்டிலிருந்து பெறப்பட்டது?", "options": ["அயர்லாந்து", "கனடா", "ஆஸ்திரேலியா", "ஜெர்மனி"], "correct": 0},
+      {"question": "நீதித்துறை மறுஆய்வு (Judicial Review) எந்த நாட்டின் அரசியலமைப்பிலிருந்து எடுக்கப்பட்டது?", "options": ["பிரிட்டன்", "அமெரிக்கா", "ஆஸ்திரேலியா", "ஜெர்மனி"], "correct": 1}
     ];
 
     let currentIndex = 0;
@@ -186,7 +180,6 @@
     let timerInterval = null;
     let autoNextTimeout = null;
 
-    // Web Audio Synthesizer
     let audioCtx = null;
     function initAudio() {
       if (!audioCtx) {
@@ -259,7 +252,7 @@
         const badge = document.getElementById(`badge${i}`);
 
         optTxt.textContent = q.options[i];
-        optBox.className = 'opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-2 flex items-center justify-between shadow transition';
+        optBox.className = 'opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow transition';
         badge.innerHTML = '';
         badge.className = 'hidden shrink-0';
       }
@@ -311,13 +304,12 @@
       const correctCard = document.getElementById(`optContainer${correctIdx}`);
       const correctBadge = document.getElementById(`badge${correctIdx}`);
 
-      correctCard.className = 'opt-card correct-highlight rounded-lg p-2 flex items-center justify-between shadow-lg transition';
-      correctBadge.innerHTML = `<span class="bg-white text-emerald-700 font-black rounded-full w-6 h-6 flex items-center justify-center text-sm shadow check-badge">✔</span>`;
+      correctCard.className = 'opt-card correct-highlight rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow-lg transition';
+      correctBadge.innerHTML = `<span class="bg-white text-emerald-700 font-black rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-xs sm:text-sm shadow check-badge">✔</span>`;
       correctBadge.className = 'shrink-0 block';
 
       document.getElementById('btnLabel').textContent = 'சரியான விடை காட்டப்பட்டது!';
 
-      // 3 Seconds Delay -> Auto next question
       autoNextTimeout = setTimeout(() => {
         if (currentIndex < quizData.length - 1) {
           currentIndex++;
@@ -347,7 +339,7 @@
           renderQuestion();
         }
       } catch (err) {
-        alert('JSON குறியீட்டில் பிழை உள்ளது! சரியான வடிவத்தில் உள்ளதா என சரிபார்க்கவும்.');
+        alert('JSON error! Formatta check pannunga.');
       }
     }
 
