@@ -18,4 +18,160 @@
       margin: 0;
       padding: 0;
       width: 100%;
-      height:
+      height: 100%;
+      height: 100dvh;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 20%, #171b38 0%, #080b18 100%);
+      font-family: 'Mukta Malar', sans-serif;
+      color: #ffffff;
+    }
+
+    .digital-num {
+      font-family: 'Teko', sans-serif;
+      line-height: 1;
+    }
+
+    /* Pop-Up Zoom Transition */
+    .pop-exit {
+      opacity: 0;
+      transform: scale(0.85);
+      transition: all 0.25s cubic-bezier(0.4, 0, 1, 1);
+    }
+
+    .pop-enter {
+      animation: popZoomIn 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    @keyframes popZoomIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.7);
+      }
+      70% {
+        opacity: 1;
+        transform: scale(1.03);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .correct-highlight {
+      background: linear-gradient(135deg, #059669 0%, #10b981 100%) !important;
+      border-color: #34d399 !important;
+      box-shadow: 0 0 25px rgba(16, 185, 129, 0.7), inset 0 0 15px rgba(255, 255, 255, 0.3) !important;
+      animation: correctPulse 0.5s ease-out;
+    }
+
+    @keyframes correctPulse {
+      0% { transform: scale(0.97); }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); }
+    }
+
+    .check-badge {
+      animation: popCheck 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    @keyframes popCheck {
+      0% { transform: scale(0) rotate(-45deg); opacity: 0; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+  </style>
+</head>
+<body class="flex items-center justify-center p-1 sm:p-2">
+
+  <div class="w-full h-full max-w-[1400px] flex flex-col justify-between p-2 sm:p-3 relative overflow-hidden">
+
+    <!-- Header Bar -->
+    <header class="flex items-center justify-between gap-2 shrink-0 h-9 sm:h-10">
+      <div class="bg-gradient-to-r from-amber-500/20 to-amber-700/10 border border-amber-500/40 rounded-lg px-2.5 py-1 flex items-center gap-1.5 shadow-sm">
+        <span class="text-amber-400 font-bold text-xs sm:text-sm tracking-wide">கேள்வி</span>
+        <span id="currentQNum" class="text-white font-black text-sm sm:text-base digital-num">01</span>
+        <span class="text-amber-300/60 text-xs">/</span>
+        <span id="totalQNum" class="text-amber-300/80 text-xs sm:text-sm digital-num">50</span>
+      </div>
+
+      <!-- 5s Circular Timer with Show/Hide -->
+      <div id="timerContainer" class="flex items-center gap-2 bg-[#121833]/90 border border-amber-500/40 rounded-full px-3 py-0.5 shadow-md transition-all duration-300">
+        <div class="relative w-7 h-7 flex items-center justify-center">
+          <svg class="w-full h-full -rotate-90" viewBox="0 0 36 36">
+            <path class="text-slate-800" stroke-width="4" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+            <path id="timerCircle" class="text-amber-400 transition-all duration-300" stroke-width="4.5" stroke-dasharray="100, 100" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+          </svg>
+          <span id="timerText" class="absolute text-amber-300 font-black text-sm digital-num">5</span>
+        </div>
+        <span class="text-amber-300 font-bold text-xs hidden sm:inline">வினாடி</span>
+      </div>
+
+      <div class="flex items-center gap-1.5">
+        <button id="toggleTimerBtn" onclick="toggleTimerVisibility()" title="டைமரை மறை/காட்டு" class="bg-slate-800/80 hover:bg-slate-700 border border-slate-600/40 text-slate-200 text-xs font-semibold px-2 py-1 rounded-md flex items-center gap-1 shadow-sm transition">
+          <span id="timerToggleIcon">👁️</span>
+          <span id="timerToggleText" class="hidden sm:inline">டைமர்</span>
+        </button>
+        <button onclick="openEditor()" class="bg-indigo-900/60 hover:bg-indigo-800 border border-indigo-400/30 text-indigo-200 text-xs font-semibold px-2 py-1 rounded-md flex items-center gap-1 shadow-sm transition">
+          <span>➕</span>
+          <span class="hidden sm:inline">கேள்விகள் சேர்</span>
+        </button>
+        <div class="flex items-center gap-1 bg-gradient-to-r from-pink-600/30 to-purple-600/30 border border-pink-500/40 px-2 py-1 rounded-md">
+          <span class="bg-pink-600 text-[10px] font-black px-1 rounded text-white leading-tight">GK</span>
+          <span class="text-white font-extrabold text-xs tracking-wider">LOVE TNPSC</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Quiz Content Area with Pop-Up Wrapper -->
+    <div id="quizContentArea" class="w-full flex-1 flex flex-col justify-between my-1 overflow-hidden pop-enter">
+      <!-- Question Container -->
+      <main class="w-full shrink-0 my-1">
+        <div class="bg-gradient-to-b from-[#162044] to-[#0d142e] border-2 border-amber-500/80 rounded-xl px-3 py-2 sm:py-2.5 shadow-lg flex items-center justify-center text-center">
+          <h1 id="questionText" class="text-white font-extrabold text-xs sm:text-base md:text-lg leading-snug drop-shadow-sm">
+            இந்திய அரசியலமைப்பின் பெரும்பகுதி எந்தச் சட்டத்திலிருந்து பெறப்பட்டது?
+          </h1>
+        </div>
+      </main>
+
+      <!-- 4 Options Grid (A, B, C, D) -->
+      <section class="grid grid-cols-2 gap-1.5 sm:gap-2 flex-1 my-1 overflow-hidden">
+        <!-- Option A -->
+        <div id="optContainer0" class="opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow transition">
+          <div class="flex items-center gap-1.5 sm:gap-2 flex-1 min-w-0">
+            <span class="bg-amber-500 text-slate-950 font-black text-[11px] sm:text-xs px-1.5 py-0.5 rounded shrink-0">A</span>
+            <span id="optText0" class="text-white font-bold text-[11px] sm:text-xs md:text-sm leading-tight break-words whitespace-normal flex-1">Option A</span>
+          </div>
+          <div id="badge0" class="hidden shrink-0"></div>
+        </div>
+
+        <!-- Option B -->
+        <div id="optContainer1" class="opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow transition">
+          <div class="flex items-center gap-1.5 sm:gap-2 flex-1 min-w-0">
+            <span class="bg-amber-500 text-slate-950 font-black text-[11px] sm:text-xs px-1.5 py-0.5 rounded shrink-0">B</span>
+            <span id="optText1" class="text-white font-bold text-[11px] sm:text-xs md:text-sm leading-tight break-words whitespace-normal flex-1">Option B</span>
+          </div>
+          <div id="badge1" class="hidden shrink-0"></div>
+        </div>
+
+        <!-- Option C -->
+        <div id="optContainer2" class="opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow transition">
+          <div class="flex items-center gap-1.5 sm:gap-2 flex-1 min-w-0">
+            <span class="bg-amber-500 text-slate-950 font-black text-[11px] sm:text-xs px-1.5 py-0.5 rounded shrink-0">C</span>
+            <span id="optText2" class="text-white font-bold text-[11px] sm:text-xs md:text-sm leading-tight break-words whitespace-normal flex-1">Option C</span>
+          </div>
+          <div id="badge2" class="hidden shrink-0"></div>
+        </div>
+
+        <!-- Option D -->
+        <div id="optContainer3" class="opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow transition">
+          <div class="flex items-center gap-1.5 sm:gap-2 flex-1 min-w-0">
+            <span class="bg-amber-500 text-slate-950 font-black text-[11px] sm:text-xs px-1.5 py-0.5 rounded shrink-0">D</span>
+            <span id="optText3" class="text-white font-bold text-[11px] sm:text-xs md:text-sm leading-tight break-words whitespace-normal flex-1">Option D</span>
+          </div>
+          <div id="badge3" class="hidden shrink-0"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Bottom Trigger Bar -->
+    <footer class="shrink-0 flex items-center justify-center pt-1 pb-1">
+      <button id="startTimerBtn" onclick="triggerQuizAction()" class="w-full sm:w-2/3 max-w-md bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:
