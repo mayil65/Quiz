@@ -57,21 +57,23 @@
       }
     }
 
+    /* Soft Green Glow */
     .correct-highlight {
       background: linear-gradient(135deg, #059669 0%, #10b981 100%) !important;
       border-color: #34d399 !important;
-      box-shadow: 0 0 25px rgba(16, 185, 129, 0.7), inset 0 0 15px rgba(255, 255, 255, 0.3) !important;
-      animation: correctPulse 0.5s ease-out;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.2) !important;
+      animation: correctPulse 0.4s ease-out;
     }
 
     @keyframes correctPulse {
-      0% { transform: scale(0.97); }
-      50% { transform: scale(1.02); }
+      0% { transform: scale(0.98); }
+      50% { transform: scale(1.01); }
       100% { transform: scale(1); }
     }
 
+    /* Vibrant Green Tick Badge */
     .check-badge {
-      animation: popCheck 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      animation: popCheck 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
 
     @keyframes popCheck {
@@ -189,7 +191,7 @@
         <h2 class="text-amber-400 font-bold text-sm sm:text-base">புதிய வினாக்களைப் பதிவேற்று (Bulk Upload)</h2>
         <button onclick="closeEditor()" class="text-slate-400 hover:text-white text-lg">✕</button>
       </div>
-      <p class="text-xs text-slate-300">50 வினாக்களின் JSON குறியீட்டை கீழே உள்ள பெட்டியில் ஒட்டவும் (Paste):</p>
+      <p class="text-xs text-slate-300">வினாக்களின் JSON குறியீட்டை கீழே உள்ள பெட்டியில் ஒட்டவும் (Paste):</p>
       <textarea id="jsonInput" class="w-full h-44 bg-[#080c1d] border border-slate-700 rounded-lg p-2 text-xs font-mono text-emerald-400 focus:outline-none focus:border-amber-400" placeholder="Paste JSON here..."></textarea>
       <div class="flex gap-2 justify-end pt-1">
         <button onclick="closeEditor()" class="bg-slate-800 text-slate-300 text-xs px-3 py-1.5 rounded-lg">ரத்து</button>
@@ -238,7 +240,7 @@
         osc.frequency.setValueAtTime(1100, now);
         osc.frequency.exponentialRampToValueAtTime(500, now + 0.07);
 
-        gain.gain.setValueAtTime(0.4, now);
+        gain.gain.setValueAtTime(0.35, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
 
         osc.connect(gain);
@@ -249,23 +251,28 @@
       } catch (e) {}
     }
 
-    // Victory Chime Bell
+    // Ultra Soft & Short 0.4s Answer Chime (Voice-over friendly)
     function playDingSound() {
       try {
         const ctx = getAudioContext();
         const now = ctx.currentTime;
-        [587.33, 739.99, 880.00, 1174.66].forEach((freq, i) => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(freq, now + i * 0.06);
-          gain.gain.setValueAtTime(0.28, now + i * 0.06);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.06 + 0.85);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start(now + i * 0.06);
-          osc.stop(now + i * 0.06 + 0.85);
-        });
+        
+        // Single gentle harmonic chime (lasts only 0.4 seconds, low volume: 0.08)
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, now); // Gentle A5 note
+        osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.08); // Slight rise to C6
+
+        gain.gain.setValueAtTime(0.08, now); // Very soft volume
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.4); // Cuts off smoothly in 0.4s
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.4);
       } catch (e) {}
     }
 
@@ -337,7 +344,6 @@
       }
     }
 
-    // Direct Action Trigger
     function triggerQuizAction() {
       const ctx = getAudioContext();
       if (ctx.state === 'suspended') {
@@ -357,11 +363,9 @@
       btn.classList.add('opacity-50');
       document.getElementById('btnLabel').textContent = 'நேரம் ஓடுகிறது...';
 
-      // 5th second immediate sound & visual update
       playTickSound();
       updateTimerDisplay();
 
-      // Subsequent 4, 3, 2, 1 seconds
       timerInterval = setInterval(() => {
         countdownVal--;
         if (countdownVal > 0) {
@@ -391,13 +395,16 @@
       const correctCard = document.getElementById(`optContainer${correctIdx}`);
       const correctBadge = document.getElementById(`badge${correctIdx}`);
 
+      // Rich Green Box
       correctCard.className = 'opt-card correct-highlight rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow-lg transition';
-      correctBadge.innerHTML = `<span class="bg-white text-emerald-700 font-black rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-xs sm:text-sm shadow check-badge">✔</span>`;
+      
+      // Green Tick Badge with white background & bold emerald tick
+      correctBadge.innerHTML = `<span class="bg-white text-emerald-700 font-black rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-xs sm:text-sm shadow-md check-badge">✔</span>`;
       correctBadge.className = 'shrink-0 block';
 
       document.getElementById('btnLabel').textContent = 'சரியான விடை காட்டப்பட்டது!';
 
-      // 3 Seconds Delay -> Pop-Up Transition to next question
+      // 3 Seconds Delay -> Next Question
       autoNextTimeout = setTimeout(() => {
         if (currentIndex < quizData.length - 1) {
           currentIndex++;
