@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>LOVE TNPSC - Quiz Studio</title>
+  <title>LOVE TNPSC - White Studio Image Quiz</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Mukta+Malar:wght@500;700;800&family=Teko:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Mukta+Malar:wght@600;700;800&family=Teko:wght@700&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
@@ -21,9 +21,9 @@
       height: 100%;
       height: 100dvh;
       overflow: hidden;
-      background: radial-gradient(circle at 50% 20%, #171b38 0%, #080b18 100%);
+      background-color: #ffffff;
       font-family: 'Mukta Malar', sans-serif;
-      color: #ffffff;
+      color: #0b1536;
     }
 
     .digital-num {
@@ -31,23 +31,23 @@
       line-height: 1;
     }
 
-    /* Pop-Up Transition Effect */
+    /* Pop-Up Zoom In Animation */
     .pop-exit {
       opacity: 0;
-      transform: scale(0.85);
-      transition: all 0.22s cubic-bezier(0.4, 0, 1, 1);
+      transform: scale(0.92);
+      transition: all 0.2s cubic-bezier(0.4, 0, 1, 1);
     }
 
     .pop-enter {
-      animation: popZoomIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      animation: popZoomIn 0.38s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
 
     @keyframes popZoomIn {
       0% {
         opacity: 0;
-        transform: scale(0.72);
+        transform: scale(0.85);
       }
-      70% {
+      75% {
         opacity: 1;
         transform: scale(1.02);
       }
@@ -57,21 +57,25 @@
       }
     }
 
-    /* Soft Green Glow */
+    /* Correct Answer Green Highlight on White Screen */
     .correct-highlight {
-      background: linear-gradient(135deg, #059669 0%, #10b981 100%) !important;
-      border-color: #34d399 !important;
-      box-shadow: 0 0 20px rgba(16, 185, 129, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.2) !important;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+      color: #ffffff !important;
+      border-color: #047857 !important;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.45) !important;
       animation: correctPulse 0.4s ease-out;
+    }
+
+    .correct-highlight span {
+      color: #ffffff !important;
     }
 
     @keyframes correctPulse {
       0% { transform: scale(0.98); }
-      50% { transform: scale(1.01); }
+      50% { transform: scale(1.02); }
       100% { transform: scale(1); }
     }
 
-    /* Vibrant Green Tick Badge */
     .check-badge {
       animation: popCheck 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
@@ -82,131 +86,156 @@
     }
   </style>
 </head>
-<body class="flex items-center justify-center p-1 sm:p-2">
+<body class="flex items-center justify-center p-2 sm:p-4 bg-white">
 
-  <div class="w-full h-full max-w-[1400px] flex flex-col justify-between p-2 sm:p-3 relative overflow-hidden">
+  <div class="w-full h-full max-w-[1400px] flex flex-col justify-between relative overflow-hidden bg-white">
 
-    <!-- Header Bar -->
-    <header class="flex items-center justify-between gap-2 shrink-0 h-9 sm:h-10">
-      <div class="bg-gradient-to-r from-amber-500/20 to-amber-700/10 border border-amber-500/40 rounded-lg px-2.5 py-1 flex items-center gap-1.5 shadow-sm">
-        <span class="text-amber-400 font-bold text-xs sm:text-sm tracking-wide">கேள்வி</span>
-        <span id="currentQNum" class="text-white font-black text-sm sm:text-base digital-num">01</span>
-        <span class="text-amber-300/60 text-xs">/</span>
-        <span id="totalQNum" class="text-amber-300/80 text-xs sm:text-sm digital-num">50</span>
-      </div>
-
-      <!-- 5s Circular Timer -->
-      <div id="timerContainer" class="flex items-center gap-2 bg-[#121833]/90 border border-amber-500/40 rounded-full px-3 py-0.5 shadow-md transition-all duration-300">
-        <div class="relative w-7 h-7 flex items-center justify-center">
-          <svg class="w-full h-full -rotate-90" viewBox="0 0 36 36">
-            <path class="text-slate-800" stroke-width="4" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-            <path id="timerCircle" class="text-amber-400 transition-all duration-300" stroke-width="4.5" stroke-dasharray="100, 100" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-          </svg>
-          <span id="timerText" class="absolute text-amber-300 font-black text-sm digital-num">5</span>
+    <!-- Top Navigation Bar -->
+    <header class="flex items-center justify-between gap-2 shrink-0 h-10 border-b border-slate-200 pb-2">
+      <div class="flex items-center gap-2">
+        <span class="bg-indigo-900 text-white font-extrabold text-xs px-2.5 py-1 rounded-md tracking-wider">LOVE TNPSC</span>
+        <div class="bg-slate-100 border border-slate-300 rounded-md px-2 py-0.5 flex items-center gap-1 font-bold text-xs text-slate-700">
+          <span>கேள்வி:</span>
+          <span id="currentQNum" class="text-indigo-900 font-black text-sm digital-num">01</span>
+          <span>/</span>
+          <span id="totalQNum" class="digital-num">10</span>
         </div>
-        <span class="text-amber-300 font-bold text-xs hidden sm:inline">வினாடி</span>
       </div>
 
-      <div class="flex items-center gap-1.5">
-        <button id="toggleTimerBtn" onclick="toggleTimerVisibility()" title="டைமரை மறை/காட்டு" class="bg-slate-800/80 hover:bg-slate-700 border border-slate-600/40 text-slate-200 text-xs font-semibold px-2 py-1 rounded-md flex items-center gap-1 shadow-sm transition">
+      <div class="flex items-center gap-2">
+        <button id="toggleTimerBtn" onclick="toggleTimerVisibility()" class="bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 text-xs font-bold px-2 py-1 rounded-md shadow-sm transition">
           <span id="timerToggleIcon">👁️</span>
           <span id="timerToggleText" class="hidden sm:inline">டைமர்</span>
         </button>
-        <button onclick="openEditor()" class="bg-indigo-900/60 hover:bg-indigo-800 border border-indigo-400/30 text-indigo-200 text-xs font-semibold px-2 py-1 rounded-md flex items-center gap-1 shadow-sm transition">
+        <button onclick="openEditor()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-1 rounded-md shadow transition flex items-center gap-1">
           <span>➕</span>
-          <span class="hidden sm:inline">கேள்விகள் சேர்</span>
+          <span>கேள்விகள் சேர்</span>
         </button>
-        <div class="flex items-center gap-1 bg-gradient-to-r from-pink-600/30 to-purple-600/30 border border-pink-500/40 px-2 py-1 rounded-md">
-          <span class="bg-pink-600 text-[10px] font-black px-1 rounded text-white leading-tight">GK</span>
-          <span class="text-white font-extrabold text-xs tracking-wider">LOVE TNPSC</span>
-        </div>
       </div>
     </header>
 
-    <!-- Quiz Area with Pop-Up Wrapper -->
-    <div id="quizContentArea" class="w-full flex-1 flex flex-col justify-between my-1 overflow-hidden pop-enter">
-      <!-- Question Container -->
+    <!-- Quiz Content Container (Animated Pop-Up) -->
+    <div id="quizContentArea" class="w-full flex-1 flex flex-col justify-between py-2 overflow-hidden pop-enter">
+      
+      <!-- Top Question Title -->
       <main class="w-full shrink-0 my-1">
-        <div class="bg-gradient-to-b from-[#162044] to-[#0d142e] border-2 border-amber-500/80 rounded-xl px-3 py-2 sm:py-2.5 shadow-lg flex items-center justify-center text-center">
-          <h1 id="questionText" class="text-white font-extrabold text-xs sm:text-base md:text-lg leading-snug drop-shadow-sm">
-            இந்திய அரசியலமைப்பின் பெரும்பகுதி எந்தச் சட்டத்திலிருந்து பெறப்பட்டது?
-          </h1>
-        </div>
+        <h1 id="questionText" class="text-[#0e1d52] font-black text-lg sm:text-2xl md:text-3xl leading-snug drop-shadow-xs">
+          Q) சிப்ஸ் பையில் எந்த வாயு நிரப்பப்படுகிறது?
+        </h1>
       </main>
 
-      <!-- 4 Options Grid (A, B, C, D) -->
-      <section class="grid grid-cols-2 gap-1.5 sm:gap-2 flex-1 my-1 overflow-hidden">
-        <!-- Option A -->
-        <div id="optContainer0" class="opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow transition">
-          <div class="flex items-center gap-1.5 sm:gap-2 flex-1 min-w-0">
-            <span class="bg-amber-500 text-slate-950 font-black text-[11px] sm:text-xs px-1.5 py-0.5 rounded shrink-0">A</span>
-            <span id="optText0" class="text-white font-bold text-[11px] sm:text-xs md:text-sm leading-tight break-words whitespace-normal flex-1">Option A</span>
+      <!-- Middle 2-Column Section: Left Options, Right Related Image -->
+      <section class="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1 items-center overflow-hidden my-1">
+        
+        <!-- Left Side: 4 Options (a, b, c, d) -->
+        <div class="flex flex-col gap-2.5 justify-center flex-1">
+          
+          <!-- Option A -->
+          <div id="optContainer0" class="opt-card border-2 border-slate-200 hover:border-slate-300 bg-slate-50/80 rounded-xl px-4 py-2 flex items-center justify-between shadow-xs transition">
+            <div class="flex items-center gap-3">
+              <span class="text-[#0e1d52] font-black text-base sm:text-lg">a)</span>
+              <span id="optText0" class="text-[#0e1d52] font-bold text-base sm:text-xl">நைட்ரஜன்</span>
+            </div>
+            <div id="badge0" class="hidden shrink-0"></div>
           </div>
-          <div id="badge0" class="hidden shrink-0"></div>
+
+          <!-- Option B -->
+          <div id="optContainer1" class="opt-card border-2 border-slate-200 hover:border-slate-300 bg-slate-50/80 rounded-xl px-4 py-2 flex items-center justify-between shadow-xs transition">
+            <div class="flex items-center gap-3">
+              <span class="text-[#0e1d52] font-black text-base sm:text-lg">b)</span>
+              <span id="optText1" class="text-[#0e1d52] font-bold text-base sm:text-xl">ஹைட்ரஜன்</span>
+            </div>
+            <div id="badge1" class="hidden shrink-0"></div>
+          </div>
+
+          <!-- Option C -->
+          <div id="optContainer2" class="opt-card border-2 border-slate-200 hover:border-slate-300 bg-slate-50/80 rounded-xl px-4 py-2 flex items-center justify-between shadow-xs transition">
+            <div class="flex items-center gap-3">
+              <span class="text-[#0e1d52] font-black text-base sm:text-lg">c)</span>
+              <span id="optText2" class="text-[#0e1d52] font-bold text-base sm:text-xl">ஆக்சிஜன்</span>
+            </div>
+            <div id="badge2" class="hidden shrink-0"></div>
+          </div>
+
+          <!-- Option D -->
+          <div id="optContainer3" class="opt-card border-2 border-slate-200 hover:border-slate-300 bg-slate-50/80 rounded-xl px-4 py-2 flex items-center justify-between shadow-xs transition">
+            <div class="flex items-center gap-3">
+              <span class="text-[#0e1d52] font-black text-base sm:text-lg">d)</span>
+              <span id="optText3" class="text-[#0e1d52] font-bold text-base sm:text-xl">ஆர்கான்</span>
+            </div>
+            <div id="badge3" class="hidden shrink-0"></div>
+          </div>
+
         </div>
 
-        <!-- Option B -->
-        <div id="optContainer1" class="opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow transition">
-          <div class="flex items-center gap-1.5 sm:gap-2 flex-1 min-w-0">
-            <span class="bg-amber-500 text-slate-950 font-black text-[11px] sm:text-xs px-1.5 py-0.5 rounded shrink-0">B</span>
-            <span id="optText1" class="text-white font-bold text-[11px] sm:text-xs md:text-sm leading-tight break-words whitespace-normal flex-1">Option B</span>
-          </div>
-          <div id="badge1" class="hidden shrink-0"></div>
+        <!-- Right Side: Clean Related Image Frame -->
+        <div class="flex items-center justify-center h-full max-h-[280px] p-2 bg-white rounded-2xl">
+          <img id="quizImage" src="https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=600&auto=format&fit=crop&q=80" alt="Question Image" class="max-h-full max-w-full object-contain drop-shadow-md rounded-lg transition-all duration-300">
         </div>
 
-        <!-- Option C -->
-        <div id="optContainer2" class="opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow transition">
-          <div class="flex items-center gap-1.5 sm:gap-2 flex-1 min-w-0">
-            <span class="bg-amber-500 text-slate-950 font-black text-[11px] sm:text-xs px-1.5 py-0.5 rounded shrink-0">C</span>
-            <span id="optText2" class="text-white font-bold text-[11px] sm:text-xs md:text-sm leading-tight break-words whitespace-normal flex-1">Option C</span>
-          </div>
-          <div id="badge2" class="hidden shrink-0"></div>
-        </div>
-
-        <!-- Option D -->
-        <div id="optContainer3" class="opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow transition">
-          <div class="flex items-center gap-1.5 sm:gap-2 flex-1 min-w-0">
-            <span class="bg-amber-500 text-slate-950 font-black text-[11px] sm:text-xs px-1.5 py-0.5 rounded shrink-0">D</span>
-            <span id="optText3" class="text-white font-bold text-[11px] sm:text-xs md:text-sm leading-tight break-words whitespace-normal flex-1">Option D</span>
-          </div>
-          <div id="badge3" class="hidden shrink-0"></div>
-        </div>
       </section>
+
     </div>
 
-    <!-- Bottom Trigger Bar -->
-    <footer class="shrink-0 flex items-center justify-center pt-1 pb-1">
-      <button id="startTimerBtn" onclick="triggerQuizAction()" class="w-full sm:w-2/3 max-w-md bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-black text-xs sm:text-sm py-1.5 sm:py-2 px-4 rounded-xl shadow-lg transform active:scale-95 transition flex items-center justify-center gap-2 border border-amber-200/60">
-        <span class="text-sm">⏱️</span>
+    <!-- Bottom Action Bar & Golden Metallic 5s Timer (Bottom Right) -->
+    <footer class="shrink-0 flex items-center justify-between pt-2 border-t border-slate-100">
+      
+      <!-- Main Trigger Button -->
+      <button id="startTimerBtn" onclick="triggerQuizAction()" class="bg-gradient-to-r from-indigo-700 to-indigo-900 hover:from-indigo-800 hover:to-indigo-950 text-white font-extrabold text-sm sm:text-base py-2.5 px-6 rounded-xl shadow-md transform active:scale-95 transition flex items-center gap-2">
+        <span>⏱️</span>
         <span id="btnLabel">டைமர் தொடங்கு (5 விநாடி)</span>
       </button>
+
+      <!-- 5s Circular Dial (Matching your screenshot) -->
+      <div id="timerContainer" class="flex items-center gap-2 transition-all duration-300">
+        <div class="relative w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-b from-amber-300 via-amber-500 to-amber-700 p-1 shadow-lg border-2 border-amber-200">
+          <div class="w-full h-full bg-amber-100 rounded-full flex items-center justify-center shadow-inner">
+            <span id="timerText" class="text-amber-900 font-black text-2xl digital-num">5</span>
+          </div>
+        </div>
+      </div>
+
     </footer>
 
   </div>
 
-  <!-- Question Upload Modal -->
-  <div id="editorModal" class="hidden fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-3">
-    <div class="bg-[#0f152d] border border-amber-500/40 rounded-xl p-4 w-full max-w-lg shadow-2xl flex flex-col gap-3 max-h-[90vh]">
-      <div class="flex justify-between items-center pb-2 border-b border-slate-700">
-        <h2 class="text-amber-400 font-bold text-sm sm:text-base">புதிய வினாக்களைப் பதிவேற்று (Bulk Upload)</h2>
-        <button onclick="closeEditor()" class="text-slate-400 hover:text-white text-lg">✕</button>
+  <!-- Bulk Question Upload Modal -->
+  <div id="editorModal" class="hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-3">
+    <div class="bg-white border border-slate-300 rounded-2xl p-4 w-full max-w-lg shadow-2xl flex flex-col gap-3 max-h-[90vh]">
+      <div class="flex justify-between items-center pb-2 border-b border-slate-200">
+        <h2 class="text-indigo-950 font-bold text-base">புதிய வினாக்களைப் பதிவேற்று (Bulk Upload with Images)</h2>
+        <button onclick="closeEditor()" class="text-slate-400 hover:text-slate-700 text-lg font-bold">✕</button>
       </div>
-      <p class="text-xs text-slate-300">வினாக்களின் JSON குறியீட்டை கீழே உள்ள பெட்டியில் ஒட்டவும் (Paste):</p>
-      <textarea id="jsonInput" class="w-full h-44 bg-[#080c1d] border border-slate-700 rounded-lg p-2 text-xs font-mono text-emerald-400 focus:outline-none focus:border-amber-400" placeholder="Paste JSON here..."></textarea>
+      <p class="text-xs text-slate-600">கேள்விகள், ஆப்ஷன்கள் மற்றும் படங்களின் லிங்க் (URL) அடங்கிய JSON குறியீட்டை கீழே ஒட்டவும்:</p>
+      <textarea id="jsonInput" class="w-full h-48 bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs font-mono text-slate-800 focus:outline-none focus:border-indigo-600" placeholder="Paste JSON here..."></textarea>
       <div class="flex gap-2 justify-end pt-1">
-        <button onclick="closeEditor()" class="bg-slate-800 text-slate-300 text-xs px-3 py-1.5 rounded-lg">ரத்து</button>
-        <button onclick="applyNewQuestions()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs px-4 py-1.5 rounded-lg shadow">புதுப்பி & ஏற்று</button>
+        <button onclick="closeEditor()" class="bg-slate-200 text-slate-700 text-xs px-3 py-1.5 rounded-lg font-bold">ரத்து</button>
+        <button onclick="applyNewQuestions()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-4 py-1.5 rounded-lg shadow">புதுப்பி & ஏற்று</button>
       </div>
     </div>
   </div>
 
   <script>
+    // Sample Pre-loaded Image Quiz Data
     let quizData = [
-      {"question": "இந்திய அரசியலமைப்பின் பெரும்பகுதி எந்தச் சட்டத்திலிருந்து பெறப்பட்டது?", "options": ["1919 ஆம் ஆண்டு சட்டம்", "1935 ஆம் ஆண்டு இந்திய அரசுச் சட்டம்", "1909 ஆம் ஆண்டு மின்டோ-மார்லி சட்டம்", "1947 இந்திய சுதந்திரச் சட்டம்"], "correct": 1},
-      {"question": "நாடாளுமன்ற ஆட்சி முறை (Parliamentary System) எந்த நாட்டின் அரசியலமைப்பிலிருந்து பெறப்பட்டது?", "options": ["அமெரிக்கா", "பிரிட்டன்", "அயர்லாந்து", "கனடா"], "correct": 1},
-      {"question": "அடிப்படை உரிமைகள் (Fundamental Rights) எந்த நாட்டின் அரசியலமைப்பிலிருந்து பெறப்பட்டன?", "options": ["பிரிட்டன்", "சோவியத் யூனியன் (USSR)", "அமெரிக்கா (USA)", "பிரான்ஸ்"], "correct": 2},
-      {"question": "அரசு நெறிமுறையுறுத்தும் கோட்பாடுகள் (DPSP) எந்த நாட்டிலிருந்து பெறப்பட்டது?", "options": ["அயர்லாந்து", "கனடா", "ஆஸ்திரேலியா", "ஜெர்மனி"], "correct": 0},
-      {"question": "நீதித்துறை மறுஆய்வு (Judicial Review) எந்த நாட்டின் அரசியலமைப்பிலிருந்து எடுக்கப்பட்டது?", "options": ["பிரிட்டன்", "அமெரிக்கா", "ஆஸ்திரேலியா", "ஜெர்மனி"], "correct": 1}
+      {
+        "question": "Q) சிப்ஸ் பையில் எந்த வாயு நிரப்பப்படுகிறது?",
+        "image": "https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=600&auto=format&fit=crop&q=80",
+        "options": ["நைட்ரஜன்", "ஹைட்ரஜன்", "ஆக்சிஜன்", "ஆர்கான்"],
+        "correct": 0
+      },
+      {
+        "question": "Q) கூகுள் (Google) எந்த நாட்டின் நிறுவனம்?",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/800px-Google_2015_logo.svg.png",
+        "options": ["இந்தியா", "அமெரிக்கா", "ஜப்பான்", "சீனா"],
+        "correct": 1
+      },
+      {
+        "question": "Q) இந்திய விண்வெளி ஆய்வு மையத்தின் (ISRO) தலைமையகம் எங்குள்ளது?",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/ISRO_Logo.svg/800px-ISRO_Logo.svg.png",
+        "options": ["சென்னை", "டெல்லி", "பெங்களூரு", "மும்பை"],
+        "correct": 2
+      }
     ];
 
     let currentIndex = 0;
@@ -216,7 +245,7 @@
     let autoNextTimeout = null;
     let isTimerHidden = false;
 
-    // Web Audio System
+    // Zero Latency Web Audio Setup
     let audioCtx = null;
     function getAudioContext() {
       if (!audioCtx) {
@@ -228,51 +257,45 @@
       return audioCtx;
     }
 
-    // High Tension Cinematic Wood & Clock Tick (Increases Intensity 5 -> 1)
+    // High Tension Woodblock Tick Sound
     function playTickSound(remainingSeconds) {
       try {
         const ctx = getAudioContext();
         const now = ctx.currentTime;
+        const step = 6 - remainingSeconds;
+        const baseFreq = 700 + (step * 85);
 
-        // Base frequency steps up as time runs out (Thriller tension build)
-        const step = 6 - remainingSeconds; // 1 to 5
-        const baseFreq = 700 + (step * 85); // 785Hz -> 1125Hz
-
-        // Layer 1: Crisp Woodblock Click
         const osc1 = ctx.createOscillator();
         const gain1 = ctx.createGain();
         osc1.type = 'triangle';
         osc1.frequency.setValueAtTime(baseFreq, now);
         osc1.frequency.exponentialRampToValueAtTime(140, now + 0.045);
-        gain1.gain.setValueAtTime(0.45, now);
+        gain1.gain.setValueAtTime(0.4, now);
         gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
         osc1.connect(gain1);
         gain1.connect(ctx.destination);
         osc1.start(now);
         osc1.stop(now + 0.045);
 
-        // Layer 2: Metallic Clock Sub-tick
         const osc2 = ctx.createOscillator();
         const gain2 = ctx.createGain();
         osc2.type = 'sine';
         osc2.frequency.setValueAtTime(baseFreq * 1.8, now);
         osc2.frequency.exponentialRampToValueAtTime(baseFreq * 0.4, now + 0.035);
-        gain2.gain.setValueAtTime(0.25, now);
+        gain2.gain.setValueAtTime(0.2, now);
         gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
         osc2.connect(gain2);
         gain2.connect(ctx.destination);
         osc2.start(now);
         osc2.stop(now + 0.035);
-
       } catch (e) {}
     }
 
-    // Ultra Soft & Short 0.4s Answer Chime
+    // Gentle 0.4s Answer Chime
     function playDingSound() {
       try {
         const ctx = getAudioContext();
         const now = ctx.currentTime;
-        
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
 
@@ -285,7 +308,6 @@
 
         osc.connect(gain);
         gain.connect(ctx.destination);
-
         osc.start(now);
         osc.stop(now + 0.4);
       } catch (e) {}
@@ -308,6 +330,7 @@
       }
     }
 
+    // Question Rendering with Pop-Up Zoom
     function renderQuestion(withTransition = false) {
       clearTimeout(autoNextTimeout);
       clearInterval(timerInterval);
@@ -321,10 +344,12 @@
         document.getElementById('currentQNum').textContent = String(currentIndex + 1).padStart(2, '0');
         document.getElementById('totalQNum').textContent = String(quizData.length).padStart(2, '0');
         document.getElementById('questionText').textContent = q.question;
+        
+        // Update Image
+        const imgElem = document.getElementById('quizImage');
+        imgElem.src = q.image || "https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=600&auto=format&fit=crop&q=80";
 
         document.getElementById('timerText').textContent = '5';
-        document.getElementById('timerCircle').setAttribute('stroke-dasharray', '100, 100');
-        document.getElementById('timerCircle').className.baseVal = 'text-amber-400';
 
         const btn = document.getElementById('startTimerBtn');
         btn.disabled = false;
@@ -337,7 +362,7 @@
           const badge = document.getElementById(`badge${i}`);
 
           optTxt.textContent = q.options[i];
-          optBox.className = 'opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow transition';
+          optBox.className = 'opt-card border-2 border-slate-200 hover:border-slate-300 bg-slate-50/80 rounded-xl px-4 py-2 flex items-center justify-between shadow-xs transition';
           badge.innerHTML = '';
           badge.className = 'hidden shrink-0';
         }
@@ -347,13 +372,13 @@
           contentArea.classList.add('pop-enter');
           setTimeout(() => {
             contentArea.classList.remove('pop-enter');
-          }, 400);
+          }, 380);
         }
       };
 
       if (withTransition) {
         contentArea.classList.add('pop-exit');
-        setTimeout(applyData, 220);
+        setTimeout(applyData, 200);
       } else {
         applyData();
       }
@@ -378,7 +403,6 @@
       btn.classList.add('opacity-50');
       document.getElementById('btnLabel').textContent = 'நேரம் ஓடுகிறது...';
 
-      // 5th Second Trigger with Intensity Level 5
       playTickSound(countdownVal);
       updateTimerDisplay();
 
@@ -397,11 +421,6 @@
 
     function updateTimerDisplay() {
       document.getElementById('timerText').textContent = countdownVal;
-      const dashoffset = 100 - (countdownVal / 5) * 100;
-      document.getElementById('timerCircle').setAttribute('stroke-dasharray', `${100 - dashoffset}, 100`);
-      if (countdownVal <= 2) {
-        document.getElementById('timerCircle').className.baseVal = 'text-rose-500';
-      }
     }
 
     function revealAnswer() {
@@ -411,16 +430,16 @@
       const correctCard = document.getElementById(`optContainer${correctIdx}`);
       const correctBadge = document.getElementById(`badge${correctIdx}`);
 
-      // Rich Green Box
-      correctCard.className = 'opt-card correct-highlight rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow-lg transition';
+      // Green Highlight Box
+      correctCard.className = 'opt-card correct-highlight rounded-xl px-4 py-2 flex items-center justify-between shadow-md transition';
       
-      // Green Tick Badge
-      correctBadge.innerHTML = `<span class="bg-white text-emerald-700 font-black rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-xs sm:text-sm shadow-md check-badge">✔</span>`;
+      // Green Tick Mark ✔
+      correctBadge.innerHTML = `<span class="bg-white text-emerald-600 font-black rounded-full w-6 h-6 flex items-center justify-center text-sm shadow check-badge">✔</span>`;
       correctBadge.className = 'shrink-0 block';
 
       document.getElementById('btnLabel').textContent = 'சரியான விடை காட்டப்பட்டது!';
 
-      // 3 Seconds Delay -> Pop-up Next Question
+      // 3 Seconds Delay -> Next Question
       autoNextTimeout = setTimeout(() => {
         if (currentIndex < quizData.length - 1) {
           currentIndex++;
