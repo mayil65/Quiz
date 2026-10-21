@@ -31,6 +31,28 @@
       line-height: 1;
     }
 
+    /* Transition Animations */
+    .fade-out-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .fade-in-right {
+      animation: slideInFromRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes slideInFromRight {
+      from {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
     .correct-highlight {
       background: linear-gradient(135deg, #059669 0%, #10b981 100%) !important;
       border-color: #34d399 !important;
@@ -56,7 +78,7 @@
 </head>
 <body class="flex items-center justify-center p-1 sm:p-2">
 
-  <!-- Audio Elements for 100% Guaranteed Screen Recording Sound -->
+  <!-- Audio Elements -->
   <audio id="tickAudio" preload="auto" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
   <audio id="bellAudio" preload="auto" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"></audio>
 
@@ -71,8 +93,8 @@
         <span id="totalQNum" class="text-amber-300/80 text-xs sm:text-sm digital-num">50</span>
       </div>
 
-      <!-- 5s Circular Timer -->
-      <div class="flex items-center gap-2 bg-[#121833]/90 border border-amber-500/40 rounded-full px-3 py-0.5 shadow-md">
+      <!-- 5s Circular Timer with Hide / Show toggle capability -->
+      <div id="timerContainer" class="flex items-center gap-2 bg-[#121833]/90 border border-amber-500/40 rounded-full px-3 py-0.5 shadow-md transition-all duration-300">
         <div class="relative w-7 h-7 flex items-center justify-center">
           <svg class="w-full h-full -rotate-90" viewBox="0 0 36 36">
             <path class="text-slate-800" stroke-width="4" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
@@ -84,6 +106,11 @@
       </div>
 
       <div class="flex items-center gap-1.5">
+        <!-- Toggle Timer Visibility Button -->
+        <button id="toggleTimerBtn" onclick="toggleTimerVisibility()" title="டைமரை மறை/காட்டு" class="bg-slate-800/80 hover:bg-slate-700 border border-slate-600/40 text-slate-200 text-xs font-semibold px-2 py-1 rounded-md flex items-center gap-1 shadow-sm transition">
+          <span id="timerToggleIcon">👁️</span>
+          <span id="timerToggleText" class="hidden sm:inline">டைமர்</span>
+        </button>
         <button onclick="openEditor()" class="bg-indigo-900/60 hover:bg-indigo-800 border border-indigo-400/30 text-indigo-200 text-xs font-semibold px-2 py-1 rounded-md flex items-center gap-1 shadow-sm transition">
           <span>➕</span>
           <span class="hidden sm:inline">கேள்விகள் சேர்</span>
@@ -95,53 +122,56 @@
       </div>
     </header>
 
-    <!-- Question Container -->
-    <main class="w-full shrink-0 my-1">
-      <div class="bg-gradient-to-b from-[#162044] to-[#0d142e] border-2 border-amber-500/80 rounded-xl px-3 py-2 sm:py-2.5 shadow-lg flex items-center justify-center text-center">
-        <h1 id="questionText" class="text-white font-extrabold text-xs sm:text-base md:text-lg leading-snug drop-shadow-sm">
-          இந்திய அரசியலமைப்பின் பெரும்பகுதி எந்தச் சட்டத்திலிருந்து பெறப்பட்டது?
-        </h1>
-      </div>
-    </main>
-
-    <!-- 4 Options Grid (A, B, C, D) -->
-    <section class="grid grid-cols-2 gap-1.5 sm:gap-2 flex-1 my-1 overflow-hidden">
-      <!-- Option A -->
-      <div id="optContainer0" class="opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow transition">
-        <div class="flex items-center gap-1.5 sm:gap-2 flex-1 min-w-0">
-          <span class="bg-amber-500 text-slate-950 font-black text-[11px] sm:text-xs px-1.5 py-0.5 rounded shrink-0">A</span>
-          <span id="optText0" class="text-white font-bold text-[11px] sm:text-xs md:text-sm leading-tight break-words whitespace-normal flex-1">Option A</span>
+    <!-- Animated Content Wrapper -->
+    <div id="quizContentArea" class="w-full flex-1 flex flex-col justify-between my-1 overflow-hidden">
+      <!-- Question Container -->
+      <main class="w-full shrink-0 my-1">
+        <div class="bg-gradient-to-b from-[#162044] to-[#0d142e] border-2 border-amber-500/80 rounded-xl px-3 py-2 sm:py-2.5 shadow-lg flex items-center justify-center text-center">
+          <h1 id="questionText" class="text-white font-extrabold text-xs sm:text-base md:text-lg leading-snug drop-shadow-sm">
+            இந்திய அரசியலமைப்பின் பெரும்பகுதி எந்தச் சட்டத்திலிருந்து பெறப்பட்டது?
+          </h1>
         </div>
-        <div id="badge0" class="hidden shrink-0"></div>
-      </div>
+      </main>
 
-      <!-- Option B -->
-      <div id="optContainer1" class="opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow transition">
-        <div class="flex items-center gap-1.5 sm:gap-2 flex-1 min-w-0">
-          <span class="bg-amber-500 text-slate-950 font-black text-[11px] sm:text-xs px-1.5 py-0.5 rounded shrink-0">B</span>
-          <span id="optText1" class="text-white font-bold text-[11px] sm:text-xs md:text-sm leading-tight break-words whitespace-normal flex-1">Option B</span>
+      <!-- 4 Options Grid (A, B, C, D) -->
+      <section class="grid grid-cols-2 gap-1.5 sm:gap-2 flex-1 my-1 overflow-hidden">
+        <!-- Option A -->
+        <div id="optContainer0" class="opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow transition">
+          <div class="flex items-center gap-1.5 sm:gap-2 flex-1 min-w-0">
+            <span class="bg-amber-500 text-slate-950 font-black text-[11px] sm:text-xs px-1.5 py-0.5 rounded shrink-0">A</span>
+            <span id="optText0" class="text-white font-bold text-[11px] sm:text-xs md:text-sm leading-tight break-words whitespace-normal flex-1">Option A</span>
+          </div>
+          <div id="badge0" class="hidden shrink-0"></div>
         </div>
-        <div id="badge1" class="hidden shrink-0"></div>
-      </div>
 
-      <!-- Option C -->
-      <div id="optContainer2" class="opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow transition">
-        <div class="flex items-center gap-1.5 sm:gap-2 flex-1 min-w-0">
-          <span class="bg-amber-500 text-slate-950 font-black text-[11px] sm:text-xs px-1.5 py-0.5 rounded shrink-0">C</span>
-          <span id="optText2" class="text-white font-bold text-[11px] sm:text-xs md:text-sm leading-tight break-words whitespace-normal flex-1">Option C</span>
+        <!-- Option B -->
+        <div id="optContainer1" class="opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow transition">
+          <div class="flex items-center gap-1.5 sm:gap-2 flex-1 min-w-0">
+            <span class="bg-amber-500 text-slate-950 font-black text-[11px] sm:text-xs px-1.5 py-0.5 rounded shrink-0">B</span>
+            <span id="optText1" class="text-white font-bold text-[11px] sm:text-xs md:text-sm leading-tight break-words whitespace-normal flex-1">Option B</span>
+          </div>
+          <div id="badge1" class="hidden shrink-0"></div>
         </div>
-        <div id="badge2" class="hidden shrink-0"></div>
-      </div>
 
-      <!-- Option D -->
-      <div id="optContainer3" class="opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow transition">
-        <div class="flex items-center gap-1.5 sm:gap-2 flex-1 min-w-0">
-          <span class="bg-amber-500 text-slate-950 font-black text-[11px] sm:text-xs px-1.5 py-0.5 rounded shrink-0">D</span>
-          <span id="optText3" class="text-white font-bold text-[11px] sm:text-xs md:text-sm leading-tight break-words whitespace-normal flex-1">Option D</span>
+        <!-- Option C -->
+        <div id="optContainer2" class="opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow transition">
+          <div class="flex items-center gap-1.5 sm:gap-2 flex-1 min-w-0">
+            <span class="bg-amber-500 text-slate-950 font-black text-[11px] sm:text-xs px-1.5 py-0.5 rounded shrink-0">C</span>
+            <span id="optText2" class="text-white font-bold text-[11px] sm:text-xs md:text-sm leading-tight break-words whitespace-normal flex-1">Option C</span>
+          </div>
+          <div id="badge2" class="hidden shrink-0"></div>
         </div>
-        <div id="badge3" class="hidden shrink-0"></div>
-      </div>
-    </section>
+
+        <!-- Option D -->
+        <div id="optContainer3" class="opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow transition">
+          <div class="flex items-center gap-1.5 sm:gap-2 flex-1 min-w-0">
+            <span class="bg-amber-500 text-slate-950 font-black text-[11px] sm:text-xs px-1.5 py-0.5 rounded shrink-0">D</span>
+            <span id="optText3" class="text-white font-bold text-[11px] sm:text-xs md:text-sm leading-tight break-words whitespace-normal flex-1">Option D</span>
+          </div>
+          <div id="badge3" class="hidden shrink-0"></div>
+        </div>
+      </section>
+    </div>
 
     <!-- Bottom Trigger Bar -->
     <footer class="shrink-0 flex items-center justify-center pt-1 pb-1">
@@ -183,11 +213,11 @@
     let countdownVal = 5;
     let timerInterval = null;
     let autoNextTimeout = null;
+    let isTimerHidden = false;
 
     const tickAudio = document.getElementById('tickAudio');
     const bellAudio = document.getElementById('bellAudio');
 
-    // Preload audio unlock on first touch
     function unlockAudio() {
       tickAudio.play().then(() => {
         tickAudio.pause();
@@ -213,35 +243,72 @@
       } catch (e) {}
     }
 
-    function renderQuestion() {
+    // Toggle Hide/Show Timer Display
+    function toggleTimerVisibility() {
+      isTimerHidden = !isTimerHidden;
+      const timerContainer = document.getElementById('timerContainer');
+      const toggleText = document.getElementById('timerToggleText');
+      const toggleIcon = document.getElementById('timerToggleIcon');
+
+      if (isTimerHidden) {
+        timerContainer.classList.add('opacity-0', 'pointer-events-none');
+        toggleIcon.textContent = '👁️‍🗨️';
+        toggleText.textContent = 'டைமர் காட்டு';
+      } else {
+        timerContainer.classList.remove('opacity-0', 'pointer-events-none');
+        toggleIcon.textContent = '👁️';
+        toggleText.textContent = 'டைமர் மறை';
+      }
+    }
+
+    function renderQuestion(withTransition = false) {
       clearTimeout(autoNextTimeout);
       clearInterval(timerInterval);
       timerRunning = false;
       countdownVal = 5;
 
-      const q = quizData[currentIndex];
-      document.getElementById('currentQNum').textContent = String(currentIndex + 1).padStart(2, '0');
-      document.getElementById('totalQNum').textContent = String(quizData.length).padStart(2, '0');
-      document.getElementById('questionText').textContent = q.question;
+      const contentArea = document.getElementById('quizContentArea');
 
-      document.getElementById('timerText').textContent = '5';
-      document.getElementById('timerCircle').setAttribute('stroke-dasharray', '100, 100');
-      document.getElementById('timerCircle').className.baseVal = 'text-amber-400';
+      const updateData = () => {
+        const q = quizData[currentIndex];
+        document.getElementById('currentQNum').textContent = String(currentIndex + 1).padStart(2, '0');
+        document.getElementById('totalQNum').textContent = String(quizData.length).padStart(2, '0');
+        document.getElementById('questionText').textContent = q.question;
 
-      const btn = document.getElementById('startTimerBtn');
-      btn.disabled = false;
-      btn.classList.remove('opacity-50');
-      document.getElementById('btnLabel').textContent = 'டைமர் தொடங்கு (5 விநாடி)';
+        document.getElementById('timerText').textContent = '5';
+        document.getElementById('timerCircle').setAttribute('stroke-dasharray', '100, 100');
+        document.getElementById('timerCircle').className.baseVal = 'text-amber-400';
 
-      for (let i = 0; i < 4; i++) {
-        const optBox = document.getElementById(`optContainer${i}`);
-        const optTxt = document.getElementById(`optText${i}`);
-        const badge = document.getElementById(`badge${i}`);
+        const btn = document.getElementById('startTimerBtn');
+        btn.disabled = false;
+        btn.classList.remove('opacity-50');
+        document.getElementById('btnLabel').textContent = 'டைமர் தொடங்கு (5 விநாடி)';
 
-        optTxt.textContent = q.options[i];
-        optBox.className = 'opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow transition';
-        badge.innerHTML = '';
-        badge.className = 'hidden shrink-0';
+        for (let i = 0; i < 4; i++) {
+          const optBox = document.getElementById(`optContainer${i}`);
+          const optTxt = document.getElementById(`optText${i}`);
+          const badge = document.getElementById(`badge${i}`);
+
+          optTxt.textContent = q.options[i];
+          optBox.className = 'opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow transition';
+          badge.innerHTML = '';
+          badge.className = 'hidden shrink-0';
+        }
+
+        if (withTransition) {
+          contentArea.classList.remove('fade-out-left');
+          contentArea.classList.add('fade-in-right');
+          setTimeout(() => {
+            contentArea.classList.remove('fade-in-right');
+          }, 400);
+        }
+      };
+
+      if (withTransition) {
+        contentArea.classList.add('fade-out-left');
+        setTimeout(updateData, 300);
+      } else {
+        updateData();
       }
     }
 
@@ -297,10 +364,11 @@
 
       document.getElementById('btnLabel').textContent = 'சரியான விடை காட்டப்பட்டது!';
 
+      // 3 Seconds Delay -> Smooth Slide Transition to next question
       autoNextTimeout = setTimeout(() => {
         if (currentIndex < quizData.length - 1) {
           currentIndex++;
-          renderQuestion();
+          renderQuestion(true);
         } else {
           document.getElementById('btnLabel').textContent = 'அனைத்து கேள்விகளும் முடிந்தது! 🎉';
         }
@@ -323,7 +391,7 @@
           quizData = parsed;
           currentIndex = 0;
           closeEditor();
-          renderQuestion();
+          renderQuestion(true);
         }
       } catch (err) {
         alert('JSON error! Formatta check pannunga.');
@@ -331,7 +399,7 @@
     }
 
     window.onload = () => {
-      renderQuestion();
+      renderQuestion(false);
       document.body.addEventListener('touchstart', unlockAudio, { once: true });
       document.body.addEventListener('click', unlockAudio, { once: true });
     };
