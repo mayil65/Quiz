@@ -216,7 +216,7 @@
     let autoNextTimeout = null;
     let isTimerHidden = false;
 
-    // Zero-Latency Audio Context Setup
+    // Web Audio System
     let audioCtx = null;
     function getAudioContext() {
       if (!audioCtx) {
@@ -228,45 +228,60 @@
       return audioCtx;
     }
 
-    // Instant Studio Beep Tick
-    function playTickSound() {
+    // High Tension Cinematic Wood & Clock Tick (Increases Intensity 5 -> 1)
+    function playTickSound(remainingSeconds) {
       try {
         const ctx = getAudioContext();
         const now = ctx.currentTime;
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
 
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(1100, now);
-        osc.frequency.exponentialRampToValueAtTime(500, now + 0.07);
+        // Base frequency steps up as time runs out (Thriller tension build)
+        const step = 6 - remainingSeconds; // 1 to 5
+        const baseFreq = 700 + (step * 85); // 785Hz -> 1125Hz
 
-        gain.gain.setValueAtTime(0.35, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+        // Layer 1: Crisp Woodblock Click
+        const osc1 = ctx.createOscillator();
+        const gain1 = ctx.createGain();
+        osc1.type = 'triangle';
+        osc1.frequency.setValueAtTime(baseFreq, now);
+        osc1.frequency.exponentialRampToValueAtTime(140, now + 0.045);
+        gain1.gain.setValueAtTime(0.45, now);
+        gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
+        osc1.connect(gain1);
+        gain1.connect(ctx.destination);
+        osc1.start(now);
+        osc1.stop(now + 0.045);
 
-        osc.connect(gain);
-        gain.connect(ctx.destination);
+        // Layer 2: Metallic Clock Sub-tick
+        const osc2 = ctx.createOscillator();
+        const gain2 = ctx.createGain();
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(baseFreq * 1.8, now);
+        osc2.frequency.exponentialRampToValueAtTime(baseFreq * 0.4, now + 0.035);
+        gain2.gain.setValueAtTime(0.25, now);
+        gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+        osc2.connect(gain2);
+        gain2.connect(ctx.destination);
+        osc2.start(now);
+        osc2.stop(now + 0.035);
 
-        osc.start(now);
-        osc.stop(now + 0.07);
       } catch (e) {}
     }
 
-    // Ultra Soft & Short 0.4s Answer Chime (Voice-over friendly)
+    // Ultra Soft & Short 0.4s Answer Chime
     function playDingSound() {
       try {
         const ctx = getAudioContext();
         const now = ctx.currentTime;
         
-        // Single gentle harmonic chime (lasts only 0.4 seconds, low volume: 0.08)
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
 
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(880, now); // Gentle A5 note
-        osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.08); // Slight rise to C6
+        osc.frequency.setValueAtTime(880, now);
+        osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.08);
 
-        gain.gain.setValueAtTime(0.08, now); // Very soft volume
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.4); // Cuts off smoothly in 0.4s
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.4);
 
         osc.connect(gain);
         gain.connect(ctx.destination);
@@ -363,13 +378,14 @@
       btn.classList.add('opacity-50');
       document.getElementById('btnLabel').textContent = 'நேரம் ஓடுகிறது...';
 
-      playTickSound();
+      // 5th Second Trigger with Intensity Level 5
+      playTickSound(countdownVal);
       updateTimerDisplay();
 
       timerInterval = setInterval(() => {
         countdownVal--;
         if (countdownVal > 0) {
-          playTickSound();
+          playTickSound(countdownVal);
           updateTimerDisplay();
         } else {
           clearInterval(timerInterval);
@@ -398,13 +414,13 @@
       // Rich Green Box
       correctCard.className = 'opt-card correct-highlight rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow-lg transition';
       
-      // Green Tick Badge with white background & bold emerald tick
+      // Green Tick Badge
       correctBadge.innerHTML = `<span class="bg-white text-emerald-700 font-black rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-xs sm:text-sm shadow-md check-badge">✔</span>`;
       correctBadge.className = 'shrink-0 block';
 
       document.getElementById('btnLabel').textContent = 'சரியான விடை காட்டப்பட்டது!';
 
-      // 3 Seconds Delay -> Next Question
+      // 3 Seconds Delay -> Pop-up Next Question
       autoNextTimeout = setTimeout(() => {
         if (currentIndex < quizData.length - 1) {
           currentIndex++;
