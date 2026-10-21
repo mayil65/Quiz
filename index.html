@@ -2,10 +2,8 @@
 <html lang="ta">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>LOVE TNPSC - Quiz Studio</title>
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>LOVE TNPSC - White Paper Quiz</title>
   <link href="https://fonts.googleapis.com/css2?family=Mukta+Malar:wght@600;700;800&family=Teko:wght@700&display=swap" rel="stylesheet">
   <style>
     * {
@@ -16,343 +14,218 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* தூய வெள்ளை நிற முழுத்திரை பின்னணி */
     body, html {
       width: 100%;
       height: 100%;
       height: 100dvh;
       overflow: hidden;
-      background-color: #ffffff !important;
+      background: #ffffff !important;
       font-family: 'Mukta Malar', sans-serif;
-      color: #0b134a;
     }
 
-    .digital-num {
-      font-family: 'Teko', sans-serif;
-      line-height: 1;
-    }
-
-    /* பிரதான திரை அமைப்பு */
-    .app-container {
+    .main-screen {
       width: 100%;
       height: 100%;
+      background: #ffffff;
+      padding: 24px 36px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 14px 24px;
-      background-color: #ffffff;
       position: relative;
     }
 
-    /* மேல் பகுதி தலைப்பு மற்றும் பட்டன்கள் */
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 6px;
-      border-bottom: 1px solid #e2e8f0;
-    }
-
-    .btn-action {
-      background: #0f172a;
-      color: #ffffff;
-      border: none;
-      padding: 5px 12px;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    /* கேள்வி எழுத்து நடை - ஸ்கிரீன்ஷாட்டில் உள்ள அடர் நீலம் */
-    .question-title {
-      font-size: 26px;
+    /* Question Title - Dark Blue Question Paper Style */
+    .question-line {
+      font-size: 30px;
       font-weight: 800;
-      color: #0a1768;
-      line-height: 1.35;
-      margin-top: 10px;
+      color: #0b1a78;
+      line-height: 1.3;
     }
 
-    /* ஆப்ஷன்கள் மற்றும் படம் அடங்கிய நடுப்பகுதி */
-    .content-body {
+    /* Content Area */
+    .content-box {
       display: flex;
       flex: 1;
       align-items: center;
       justify-content: space-between;
-      gap: 30px;
+      gap: 40px;
       margin: 10px 0;
     }
 
-    /* இடது பக்கம்: 4 ஆப்ஷன்கள் (a, b, c, d) */
-    .options-column {
+    /* Options List on Left */
+    .options-list {
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      flex: 1;
-      max-width: 55%;
+      gap: 18px;
+      flex: 1.2;
     }
 
-    .option-row {
+    .opt-item {
       display: flex;
       align-items: center;
       gap: 16px;
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 800;
       color: #000000;
-      padding: 6px 12px;
-      border-radius: 10px;
-      transition: all 0.25s ease;
+      padding: 6px 14px;
+      border-radius: 8px;
     }
 
-    .option-prefix {
-      color: #000000;
-      font-weight: 800;
-      width: 28px;
-    }
-
-    /* பச்சை நிற சரியான விடை ஹைலைட் & டிக் */
-    .option-row.correct {
+    .opt-item.active-correct {
       background-color: #10b981 !important;
       color: #ffffff !important;
-      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
     }
-    .option-row.correct .option-prefix {
+
+    .opt-item.active-correct span {
       color: #ffffff !important;
     }
 
-    .tick-icon {
+    .tick-box {
       margin-left: auto;
       background: #ffffff;
       color: #059669;
-      width: 26px;
-      height: 26px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 16px;
       font-weight: 900;
-      animation: popIn 0.3s ease-out;
     }
 
-    @keyframes popIn {
-      0% { transform: scale(0); }
-      100% { transform: scale(1); }
-    }
-
-    /* வலது பக்கம்: தொடர்புடைய படம் */
-    .image-column {
-      flex: 1;
+    /* Image on Right */
+    .image-box {
+      flex: 0.9;
       display: flex;
       align-items: center;
       justify-content: center;
       height: 100%;
-      max-height: 250px;
+      max-height: 280px;
     }
 
-    .quiz-img {
+    .image-box img {
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
-      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.12));
     }
 
-    /* கீழ் பகுதி: தொடங்கு பட்டன் மற்றும் கோல்டன் டைமர் */
-    .bottom-bar {
+    /* Bottom Control Bar */
+    .footer-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-top: 8px;
+      padding-top: 10px;
     }
 
-    .start-btn {
-      background: linear-gradient(135deg, #1e3a8a, #0f172a);
+    .action-btn {
+      background: #0f172a;
       color: #ffffff;
       font-size: 15px;
       font-weight: 800;
       border: none;
-      padding: 10px 24px;
-      border-radius: 10px;
+      padding: 10px 22px;
+      border-radius: 8px;
       cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    }
-    .start-btn:disabled {
-      opacity: 0.6;
     }
 
-    /* ஸ்கிரீன்ஷாட்டில் உள்ள கோல்டன் வட்ட டைமர் */
-    .gold-timer-circle {
-      width: 52px;
-      height: 52px;
+    /* Golden Circle Timer Bottom Right */
+    .timer-badge {
+      width: 58px;
+      height: 58px;
       border-radius: 50%;
       background: radial-gradient(circle at 35% 35%, #fef08a, #ca8a04 60%, #713f12 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 10px rgba(161, 98, 7, 0.4);
-      border: 2px solid #fef9c3;
+      box-shadow: 0 4px 12px rgba(161, 98, 7, 0.4);
+      border: 3px solid #fef9c3;
     }
 
-    .timer-inner-num {
-      color: #ffffff;
-      font-size: 34px;
+    .timer-badge span {
+      font-family: 'Teko', sans-serif;
+      font-size: 38px;
       font-weight: 700;
+      color: #ffffff;
+      line-height: 1;
       text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    }
-
-    /* பாப்-அப் அனிமேஷன் */
-    .pop-anim {
-      animation: zoomPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    }
-    @keyframes zoomPop {
-      0% { opacity: 0; transform: scale(0.9); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-
-    /* வினாக்கள் ஏற்றும் மாடல் */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-    }
-    .modal-box {
-      background: #ffffff;
-      border-radius: 12px;
-      padding: 20px;
-      width: 90%;
-      max-width: 520px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .modal-textarea {
-      width: 100%;
-      height: 180px;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      padding: 8px;
-      font-size: 12px;
-      font-family: monospace;
     }
   </style>
 </head>
 <body>
 
-  <div class="app-container">
+  <div class="main-screen">
 
-    <!-- மேல் வரிசை -->
-    <header class="top-bar">
-      <div style="font-weight: 800; font-size: 14px; color: #0a1768;">
-        LOVE TNPSC | <span id="qCounter" style="color: #64748b;">கேள்வி 01/05</span>
-      </div>
-      <div>
-        <button class="btn-action" onclick="openEditor()">➕ கேள்விகள் மாற்று</button>
-      </div>
-    </header>
+    <!-- Top Question -->
+    <h1 id="qTitle" class="question-line">
+      Q) சிப்ஸ் பையில் எந்த வாயு நிரப்பப்படுகிறது?
+    </h1>
 
-    <!-- நடுப்பகுதி (கேள்வி, ஆப்ஷன் மற்றும் படம்) -->
-    <div id="quizArea" class="pop-anim" style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+    <!-- Middle: Options + Image -->
+    <div class="content-box">
       
-      <!-- கேள்வி -->
-      <h1 id="questionText" class="question-title">
-        Q) சிப்ஸ் பையில் எந்த வாயு நிரப்பப்படுகிறது?
-      </h1>
-
-      <!-- ஆப்ஷன்கள் மற்றும் படம் -->
-      <div class="content-body">
-        
-        <!-- இடதுபுறம்: ஆப்ஷன்கள் -->
-        <div class="options-column">
-          <div id="opt0" class="option-row">
-            <span class="option-prefix">a)</span>
-            <span id="optText0">நைட்ரஜன்</span>
-            <div id="tick0"></div>
-          </div>
-          <div id="opt1" class="option-row">
-            <span class="option-prefix">b)</span>
-            <span id="optText1">ஹைட்ரஜன்</span>
-            <div id="tick1"></div>
-          </div>
-          <div id="opt2" class="option-row">
-            <span class="option-prefix">c)</span>
-            <span id="optText2">ஆக்சிஜன்</span>
-            <div id="tick2"></div>
-          </div>
-          <div id="opt3" class="option-row">
-            <span class="option-prefix">d)</span>
-            <span id="optText3">ஆர்கான்</span>
-            <div id="tick3"></div>
-          </div>
+      <!-- Left: a, b, c, d options -->
+      <div class="options-list">
+        <div id="optRow0" class="opt-item">
+          <span>a)</span>
+          <span id="optText0">நைட்ரஜன்</span>
+          <div id="tick0"></div>
         </div>
-
-        <!-- வலதுபுறம்: படம் -->
-        <div class="image-column">
-          <img id="quizImage" class="quiz-img" src="" alt="Quiz Visual">
+        <div id="optRow1" class="opt-item">
+          <span>b)</span>
+          <span id="optText1">ஹைட்ரஜன்</span>
+          <div id="tick1"></div>
         </div>
+        <div id="optRow2" class="opt-item">
+          <span>c)</span>
+          <span id="optText2">ஆக்சிஜன்</span>
+          <div id="tick2"></div>
+        </div>
+        <div id="optRow3" class="opt-item">
+          <span>d)</span>
+          <span id="optText3">ஆர்கான்</span>
+          <div id="tick3"></div>
+        </div>
+      </div>
 
+      <!-- Right: Image -->
+      <div class="image-box">
+        <img id="qImg" src="" alt="Quiz Image">
       </div>
 
     </div>
 
-    <!-- கீழ் வரிசை (டைமர் பட்டன் & கோல்டன் சர்க்கிள்) -->
-    <footer class="bottom-bar">
-      <button id="startBtn" class="start-btn" onclick="startQuizTimer()">
+    <!-- Bottom: Start Button + Timer -->
+    <div class="footer-bar">
+      <button id="startBtn" class="action-btn" onclick="startTimer()">
         ⏱️ டைமர் தொடங்கு (5 விநாடி)
       </button>
 
-      <!-- வலது மூலையில் தங்க நிற வட்ட டைமர் -->
-      <div class="gold-timer-circle">
-        <span id="timerNum" class="timer-inner-num digital-num">5</span>
-      </div>
-    </footer>
-
-  </div>
-
-  <!-- புதிய வினாக்கள் பதிவேற்றும் பாப்-அப் விண்டோ -->
-  <div id="editorModal" class="modal-overlay">
-    <div class="modal-box">
-      <h3 style="font-size: 16px; font-weight: 800; color: #0a1768;">புதிய கேள்விகள் & படங்கள் பதிவேற்று</h3>
-      <p style="font-size: 12px; color: #64748b;">கீழே உள்ள பெட்டியில் JSON குறியீட்டை ஒட்டவும்:</p>
-      <textarea id="jsonBox" class="modal-textarea"></textarea>
-      <div style="display: flex; gap: 8px; justify-content: flex-end;">
-        <button style="padding: 6px 14px; border: none; background: #e2e8f0; border-radius: 6px; font-weight: 700; cursor: pointer;" onclick="closeEditor()">ரத்து</button>
-        <button style="padding: 6px 14px; border: none; background: #10b981; color: #fff; border-radius: 6px; font-weight: 700; cursor: pointer;" onclick="saveQuestions()">ஏற்று</button>
+      <div class="timer-badge">
+        <span id="timerVal">5</span>
       </div>
     </div>
+
   </div>
 
   <script>
-    // சிப்ஸ் பாக்கெட்டுகள் போன்ற உள்ளமைந்த SVG படங்களுடன் கூடிய தரவுகள் (லோடிங் தோல்வியடையாது)
-    const chipsSvg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 280'><defs><linearGradient id='gYellow' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%23fef08a'/><stop offset='100%25' stop-color='%23eab308'/></linearGradient><linearGradient id='gBlue' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%2338bdf8'/><stop offset='100%25' stop-color='%230284c7'/></linearGradient></defs><rect x='30' y='20' width='110' height='170' rx='16' fill='url(%23gYellow)' stroke='%23ca8a04' stroke-width='3'/><circle cx='85' cy='105' r='30' fill='%23ef4444'/><text x='85' y='110' font-size='16' font-family='Arial' font-weight='900' fill='white' text-anchor='middle'>CHIPS</text><rect x='110' y='60' width='140' height='200' rx='20' fill='url(%23gBlue)' stroke='%230369a1' stroke-width='4'/><circle cx='180' cy='160' r='42' fill='%23e11d48'/><text x='180' y='166' font-size='22' font-family='Arial' font-weight='900' fill='white' text-anchor='middle'>CHIPS</text></svg>";
+    // Built-in Crisp Vector Images (Network load aakathirikkilla)
+    const chipsSvg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 280'><defs><linearGradient id='gY' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%23fde047'/><stop offset='100%25' stop-color='%23eab308'/></linearGradient><linearGradient id='gB' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%2338bdf8'/><stop offset='100%25' stop-color='%230284c7'/></linearGradient></defs><rect x='25' y='20' width='110' height='170' rx='16' fill='url(%23gY)' stroke='%23ca8a04' stroke-width='3'/><circle cx='80' cy='105' r='30' fill='%23ef4444'/><text x='80' y='110' font-size='15' font-family='sans-serif' font-weight='900' fill='white' text-anchor='middle'>CHIPS</text><rect x='110' y='60' width='140' height='200' rx='20' fill='url(%23gB)' stroke='%230369a1' stroke-width='4'/><circle cx='180' cy='160' r='42' fill='%23e11d48'/><text x='180' y='166' font-size='22' font-family='sans-serif' font-weight='900' fill='white' text-anchor='middle'>CHIPS</text></svg>";
 
-    const googleSvg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 120'><text x='50%25' y='65%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='56'><tspan fill='%234285F4'>G</tspan><tspan fill='%23EA4335'>o</tspan><tspan fill='%23FBBC05'>o</tspan><tspan fill='%234285F4'>g</tspan><tspan fill='%2334A853'>l</tspan><tspan fill='%23EA4335'>e</tspan></text></svg>";
-
-    let quizData = [
+    const questions = [
       {
-        "question": "Q) சிப்ஸ் பையில் எந்த வாயு நிரப்பப்படுகிறது?",
-        "image": chipsSvg,
-        "options": ["நைட்ரஜன்", "ஹைட்ரஜன்", "ஆக்சிஜன்", "ஆர்கான்"],
-        "correct": 0
-      },
-      {
-        "question": "Q) கூகுள் (Google) எந்த நாட்டின் நிறுவனம்?",
-        "image": googleSvg,
-        "options": ["இந்தியா", "அமெரிக்கா", "ஜப்பான்", "சீனா"],
-        "correct": 1
+        question: "Q) சிப்ஸ் பையில் எந்த வாயு நிரப்பப்படுகிறது?",
+        image: chipsSvg,
+        options: ["நைட்ரஜன்", "ஹைட்ரஜன்", "ஆக்சிஜன்", "ஆர்கான்"],
+        correct: 0
       }
     ];
 
-    let currentIndex = 0;
+    let current = 0;
     let timerRunning = false;
-    let countdown = 5;
-    let timerHandle = null;
-    let autoNextHandle = null;
+    let count = 5;
+    let timerId = null;
 
-    // துல்லியமான ஆடியோ கட்டமைப்பு
     let audioCtx = null;
     function getCtx() {
       if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -360,22 +233,17 @@
       return audioCtx;
     }
 
-    // 5 விநாடிகளுக்கும் தொடக்கத்திலிருந்தே ஒலிக்கும் டிக் ஒலி
-    function playTick(sec) {
+    function playTick() {
       try {
         const ctx = getCtx();
         const now = ctx.currentTime;
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
-
-        const freq = 750 + (6 - sec) * 75;
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(freq, now);
-        osc.frequency.exponentialRampToValueAtTime(160, now + 0.04);
-
-        gain.gain.setValueAtTime(0.35, now);
+        osc.frequency.setValueAtTime(850, now);
+        osc.frequency.exponentialRampToValueAtTime(150, now + 0.04);
+        gain.gain.setValueAtTime(0.3, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
-
         osc.connect(gain);
         gain.connect(ctx.destination);
         osc.start(now);
@@ -383,21 +251,17 @@
       } catch (e) {}
     }
 
-    // 0.4 விநாடி மென்மையான பெல் ஒலி
     function playDing() {
       try {
         const ctx = getCtx();
         const now = ctx.currentTime;
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
-
         osc.type = 'sine';
         osc.frequency.setValueAtTime(880, now);
         osc.frequency.exponentialRampToValueAtTime(1046, now + 0.08);
-
         gain.gain.setValueAtTime(0.08, now);
         gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.4);
-
         osc.connect(gain);
         gain.connect(ctx.destination);
         osc.start(now);
@@ -405,112 +269,59 @@
       } catch (e) {}
     }
 
-    function renderScreen() {
-      clearTimeout(autoNextHandle);
-      clearInterval(timerHandle);
-      timerRunning = false;
-      countdown = 5;
-
-      const q = quizData[currentIndex];
-      document.getElementById('qCounter').textContent = `கேள்வி ${String(currentIndex + 1).padStart(2, '0')}/${String(quizData.length).padStart(2, '0')}`;
-      document.getElementById('questionText').textContent = q.question;
-      document.getElementById('quizImage').src = q.image;
-      document.getElementById('timerNum').textContent = '5';
-
-      const btn = document.getElementById('startBtn');
-      btn.disabled = false;
-      btn.textContent = '⏱️ டைமர் தொடங்கு (5 விநாடி)';
+    function render() {
+      const q = questions[current];
+      document.getElementById('qTitle').textContent = q.question;
+      document.getElementById('qImg').src = q.image;
+      document.getElementById('timerVal').textContent = '5';
 
       for (let i = 0; i < 4; i++) {
-        const optRow = document.getElementById(`opt${i}`);
-        const optText = document.getElementById(`optText${i}`);
-        const tick = document.getElementById(`tick${i}`);
-
-        optText.textContent = q.options[i];
-        optRow.className = 'option-row';
-        tick.innerHTML = '';
+        document.getElementById(`optText${i}`).textContent = q.options[i];
+        document.getElementById(`optRow${i}`).className = 'opt-item';
+        document.getElementById(`tick${i}`).innerHTML = '';
       }
-
-      // Pop-up animation trigger
-      const qa = document.getElementById('quizArea');
-      qa.classList.remove('pop-anim');
-      void qa.offsetWidth;
-      qa.classList.add('pop-anim');
     }
 
-    function startQuizTimer() {
+    function startTimer() {
       getCtx();
       if (timerRunning) return;
       timerRunning = true;
-      countdown = 5;
+      count = 5;
 
       const btn = document.getElementById('startBtn');
       btn.disabled = true;
       btn.textContent = 'நேரம் ஓடுகிறது...';
 
-      // முதல் நொடியிலேயே ஒலி
-      playTick(countdown);
-      document.getElementById('timerNum').textContent = countdown;
+      playTick();
+      document.getElementById('timerVal').textContent = count;
 
-      timerHandle = setInterval(() => {
-        countdown--;
-        if (countdown > 0) {
-          playTick(countdown);
-          document.getElementById('timerNum').textContent = countdown;
+      timerId = setInterval(() => {
+        count--;
+        if (count > 0) {
+          playTick();
+          document.getElementById('timerVal').textContent = count;
         } else {
-          clearInterval(timerHandle);
-          document.getElementById('timerNum').textContent = '0';
-          revealAnswer();
+          clearInterval(timerId);
+          document.getElementById('timerVal').textContent = '0';
+          reveal();
         }
       }, 1000);
     }
 
-    function revealAnswer() {
+    function reveal() {
       playDing();
-      const q = quizData[currentIndex];
+      const q = questions[current];
       const correctIdx = q.correct;
-      const targetRow = document.getElementById(`opt${correctIdx}`);
-      const tickBox = document.getElementById(`tick${correctIdx}`);
 
-      targetRow.classList.add('correct');
-      tickBox.innerHTML = '<span class="tick-icon">✔</span>';
+      const row = document.getElementById(`optRow${correctIdx}`);
+      row.classList.add('active-correct');
+      document.getElementById(`tick${correctIdx}`).innerHTML = '<span class="tick-box">✔</span>';
 
       document.getElementById('startBtn').textContent = 'சரியான விடை!';
-
-      // 3 விநாடிகளுக்குப் பிறகு அடுத்த கேள்வி
-      autoNextHandle = setTimeout(() => {
-        if (currentIndex < quizData.length - 1) {
-          currentIndex++;
-          renderScreen();
-        } else {
-          document.getElementById('startBtn').textContent = 'அனைத்து கேள்விகளும் முடிந்தது! 🎉';
-        }
-      }, 3000);
-    }
-
-    function openEditor() {
-      document.getElementById('jsonBox').value = JSON.stringify(quizData, null, 2);
-      document.getElementById('editorModal').style.display = 'flex';
-    }
-    function closeEditor() {
-      document.getElementById('editorModal').style.display = 'none';
-    }
-    function saveQuestions() {
-      try {
-        const parsed = JSON.parse(document.getElementById('jsonBox').value);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          quizData = parsed;
-          currentIndex = 0;
-          closeEditor();
-          renderScreen();
-        }
-      } catch (e) {
-        alert('JSON குறியீட்டைச் சரியாக உள்ளிடவும்!');
-      }
     }
 
     window.onload = () => {
-      renderScreen();
+      render();
       document.body.addEventListener('touchstart', getCtx, { once: true });
       document.body.addEventListener('click', getCtx, { once: true });
     };
