@@ -31,25 +31,25 @@
       line-height: 1;
     }
 
-    /* Pop-Up Zoom Transition */
+    /* Pop-Up Transition Effect */
     .pop-exit {
       opacity: 0;
       transform: scale(0.85);
-      transition: all 0.25s cubic-bezier(0.4, 0, 1, 1);
+      transition: all 0.22s cubic-bezier(0.4, 0, 1, 1);
     }
 
     .pop-enter {
-      animation: popZoomIn 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      animation: popZoomIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
 
     @keyframes popZoomIn {
       0% {
         opacity: 0;
-        transform: scale(0.7);
+        transform: scale(0.72);
       }
       70% {
         opacity: 1;
-        transform: scale(1.03);
+        transform: scale(1.02);
       }
       100% {
         opacity: 1;
@@ -93,7 +93,7 @@
         <span id="totalQNum" class="text-amber-300/80 text-xs sm:text-sm digital-num">50</span>
       </div>
 
-      <!-- 5s Circular Timer with Show/Hide -->
+      <!-- 5s Circular Timer -->
       <div id="timerContainer" class="flex items-center gap-2 bg-[#121833]/90 border border-amber-500/40 rounded-full px-3 py-0.5 shadow-md transition-all duration-300">
         <div class="relative w-7 h-7 flex items-center justify-center">
           <svg class="w-full h-full -rotate-90" viewBox="0 0 36 36">
@@ -121,7 +121,7 @@
       </div>
     </header>
 
-    <!-- Quiz Content Area with Pop-Up Wrapper -->
+    <!-- Quiz Area with Pop-Up Wrapper -->
     <div id="quizContentArea" class="w-full flex-1 flex flex-col justify-between my-1 overflow-hidden pop-enter">
       <!-- Question Container -->
       <main class="w-full shrink-0 my-1">
@@ -174,4 +174,273 @@
 
     <!-- Bottom Trigger Bar -->
     <footer class="shrink-0 flex items-center justify-center pt-1 pb-1">
-      <button id="startTimerBtn" onclick="triggerQuizAction()" class="w-full sm:w-2/3 max-w-md bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:
+      <button id="startTimerBtn" onclick="triggerQuizAction()" class="w-full sm:w-2/3 max-w-md bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-black text-xs sm:text-sm py-1.5 sm:py-2 px-4 rounded-xl shadow-lg transform active:scale-95 transition flex items-center justify-center gap-2 border border-amber-200/60">
+        <span class="text-sm">⏱️</span>
+        <span id="btnLabel">டைமர் தொடங்கு (5 விநாடி)</span>
+      </button>
+    </footer>
+
+  </div>
+
+  <!-- Question Upload Modal -->
+  <div id="editorModal" class="hidden fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-3">
+    <div class="bg-[#0f152d] border border-amber-500/40 rounded-xl p-4 w-full max-w-lg shadow-2xl flex flex-col gap-3 max-h-[90vh]">
+      <div class="flex justify-between items-center pb-2 border-b border-slate-700">
+        <h2 class="text-amber-400 font-bold text-sm sm:text-base">புதிய வினாக்களைப் பதிவேற்று (Bulk Upload)</h2>
+        <button onclick="closeEditor()" class="text-slate-400 hover:text-white text-lg">✕</button>
+      </div>
+      <p class="text-xs text-slate-300">50 வினாக்களின் JSON குறியீட்டை கீழே உள்ள பெட்டியில் ஒட்டவும் (Paste):</p>
+      <textarea id="jsonInput" class="w-full h-44 bg-[#080c1d] border border-slate-700 rounded-lg p-2 text-xs font-mono text-emerald-400 focus:outline-none focus:border-amber-400" placeholder="Paste JSON here..."></textarea>
+      <div class="flex gap-2 justify-end pt-1">
+        <button onclick="closeEditor()" class="bg-slate-800 text-slate-300 text-xs px-3 py-1.5 rounded-lg">ரத்து</button>
+        <button onclick="applyNewQuestions()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs px-4 py-1.5 rounded-lg shadow">புதுப்பி & ஏற்று</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let quizData = [
+      {"question": "இந்திய அரசியலமைப்பின் பெரும்பகுதி எந்தச் சட்டத்திலிருந்து பெறப்பட்டது?", "options": ["1919 ஆம் ஆண்டு சட்டம்", "1935 ஆம் ஆண்டு இந்திய அரசுச் சட்டம்", "1909 ஆம் ஆண்டு மின்டோ-மார்லி சட்டம்", "1947 இந்திய சுதந்திரச் சட்டம்"], "correct": 1},
+      {"question": "நாடாளுமன்ற ஆட்சி முறை (Parliamentary System) எந்த நாட்டின் அரசியலமைப்பிலிருந்து பெறப்பட்டது?", "options": ["அமெரிக்கா", "பிரிட்டன்", "அயர்லாந்து", "கனடா"], "correct": 1},
+      {"question": "அடிப்படை உரிமைகள் (Fundamental Rights) எந்த நாட்டின் அரசியலமைப்பிலிருந்து பெறப்பட்டன?", "options": ["பிரிட்டன்", "சோவியத் யூனியன் (USSR)", "அமெரிக்கா (USA)", "பிரான்ஸ்"], "correct": 2},
+      {"question": "அரசு நெறிமுறையுறுத்தும் கோட்பாடுகள் (DPSP) எந்த நாட்டிலிருந்து பெறப்பட்டது?", "options": ["அயர்லாந்து", "கனடா", "ஆஸ்திரேலியா", "ஜெர்மனி"], "correct": 0},
+      {"question": "நீதித்துறை மறுஆய்வு (Judicial Review) எந்த நாட்டின் அரசியலமைப்பிலிருந்து எடுக்கப்பட்டது?", "options": ["பிரிட்டன்", "அமெரிக்கா", "ஆஸ்திரேலியா", "ஜெர்மனி"], "correct": 1}
+    ];
+
+    let currentIndex = 0;
+    let timerRunning = false;
+    let countdownVal = 5;
+    let timerInterval = null;
+    let autoNextTimeout = null;
+    let isTimerHidden = false;
+
+    // Zero-Latency Audio Context Setup
+    let audioCtx = null;
+    function getAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    // Instant Studio Beep Tick
+    function playTickSound() {
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(1100, now);
+        osc.frequency.exponentialRampToValueAtTime(500, now + 0.07);
+
+        gain.gain.setValueAtTime(0.4, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.07);
+      } catch (e) {}
+    }
+
+    // Victory Chime Bell
+    function playDingSound() {
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+        [587.33, 739.99, 880.00, 1174.66].forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + i * 0.06);
+          gain.gain.setValueAtTime(0.28, now + i * 0.06);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.06 + 0.85);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + i * 0.06);
+          osc.stop(now + i * 0.06 + 0.85);
+        });
+      } catch (e) {}
+    }
+
+    function toggleTimerVisibility() {
+      isTimerHidden = !isTimerHidden;
+      const timerContainer = document.getElementById('timerContainer');
+      const toggleText = document.getElementById('timerToggleText');
+      const toggleIcon = document.getElementById('timerToggleIcon');
+
+      if (isTimerHidden) {
+        timerContainer.classList.add('opacity-0', 'pointer-events-none');
+        toggleIcon.textContent = '👁️‍🗨️';
+        toggleText.textContent = 'டைமர் காட்டு';
+      } else {
+        timerContainer.classList.remove('opacity-0', 'pointer-events-none');
+        toggleIcon.textContent = '👁️';
+        toggleText.textContent = 'டைமர் மறை';
+      }
+    }
+
+    function renderQuestion(withTransition = false) {
+      clearTimeout(autoNextTimeout);
+      clearInterval(timerInterval);
+      timerRunning = false;
+      countdownVal = 5;
+
+      const contentArea = document.getElementById('quizContentArea');
+
+      const applyData = () => {
+        const q = quizData[currentIndex];
+        document.getElementById('currentQNum').textContent = String(currentIndex + 1).padStart(2, '0');
+        document.getElementById('totalQNum').textContent = String(quizData.length).padStart(2, '0');
+        document.getElementById('questionText').textContent = q.question;
+
+        document.getElementById('timerText').textContent = '5';
+        document.getElementById('timerCircle').setAttribute('stroke-dasharray', '100, 100');
+        document.getElementById('timerCircle').className.baseVal = 'text-amber-400';
+
+        const btn = document.getElementById('startTimerBtn');
+        btn.disabled = false;
+        btn.classList.remove('opacity-50');
+        document.getElementById('btnLabel').textContent = 'டைமர் தொடங்கு (5 விநாடி)';
+
+        for (let i = 0; i < 4; i++) {
+          const optBox = document.getElementById(`optContainer${i}`);
+          const optTxt = document.getElementById(`optText${i}`);
+          const badge = document.getElementById(`badge${i}`);
+
+          optTxt.textContent = q.options[i];
+          optBox.className = 'opt-card bg-[#111833]/90 border-2 border-[#263769] rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow transition';
+          badge.innerHTML = '';
+          badge.className = 'hidden shrink-0';
+        }
+
+        if (withTransition) {
+          contentArea.classList.remove('pop-exit');
+          contentArea.classList.add('pop-enter');
+          setTimeout(() => {
+            contentArea.classList.remove('pop-enter');
+          }, 400);
+        }
+      };
+
+      if (withTransition) {
+        contentArea.classList.add('pop-exit');
+        setTimeout(applyData, 220);
+      } else {
+        applyData();
+      }
+    }
+
+    // Direct Action Trigger
+    function triggerQuizAction() {
+      const ctx = getAudioContext();
+      if (ctx.state === 'suspended') {
+        ctx.resume().then(() => {
+          if (!timerRunning) startCountdown();
+        });
+      } else {
+        if (!timerRunning) startCountdown();
+      }
+    }
+
+    function startCountdown() {
+      timerRunning = true;
+      countdownVal = 5;
+      const btn = document.getElementById('startTimerBtn');
+      btn.disabled = true;
+      btn.classList.add('opacity-50');
+      document.getElementById('btnLabel').textContent = 'நேரம் ஓடுகிறது...';
+
+      // 5th second immediate sound & visual update
+      playTickSound();
+      updateTimerDisplay();
+
+      // Subsequent 4, 3, 2, 1 seconds
+      timerInterval = setInterval(() => {
+        countdownVal--;
+        if (countdownVal > 0) {
+          playTickSound();
+          updateTimerDisplay();
+        } else {
+          clearInterval(timerInterval);
+          updateTimerDisplay();
+          revealAnswer();
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      document.getElementById('timerText').textContent = countdownVal;
+      const dashoffset = 100 - (countdownVal / 5) * 100;
+      document.getElementById('timerCircle').setAttribute('stroke-dasharray', `${100 - dashoffset}, 100`);
+      if (countdownVal <= 2) {
+        document.getElementById('timerCircle').className.baseVal = 'text-rose-500';
+      }
+    }
+
+    function revealAnswer() {
+      playDingSound();
+      const q = quizData[currentIndex];
+      const correctIdx = q.correct;
+      const correctCard = document.getElementById(`optContainer${correctIdx}`);
+      const correctBadge = document.getElementById(`badge${correctIdx}`);
+
+      correctCard.className = 'opt-card correct-highlight rounded-lg p-1.5 sm:p-2 flex items-center justify-between gap-1 shadow-lg transition';
+      correctBadge.innerHTML = `<span class="bg-white text-emerald-700 font-black rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-xs sm:text-sm shadow check-badge">✔</span>`;
+      correctBadge.className = 'shrink-0 block';
+
+      document.getElementById('btnLabel').textContent = 'சரியான விடை காட்டப்பட்டது!';
+
+      // 3 Seconds Delay -> Pop-Up Transition to next question
+      autoNextTimeout = setTimeout(() => {
+        if (currentIndex < quizData.length - 1) {
+          currentIndex++;
+          renderQuestion(true);
+        } else {
+          document.getElementById('btnLabel').textContent = 'அனைத்து கேள்விகளும் முடிந்தது! 🎉';
+        }
+      }, 3000);
+    }
+
+    function openEditor() {
+      document.getElementById('editorModal').classList.remove('hidden');
+    }
+    function closeEditor() {
+      document.getElementById('editorModal').classList.add('hidden');
+    }
+
+    function applyNewQuestions() {
+      const raw = document.getElementById('jsonInput').value.trim();
+      if (!raw) return;
+      try {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          quizData = parsed;
+          currentIndex = 0;
+          closeEditor();
+          renderQuestion(true);
+        }
+      } catch (err) {
+        alert('JSON பிழை! சரியான வடிவத்தில் உள்ளதா என சரிபார்க்கவும்.');
+      }
+    }
+
+    window.onload = () => {
+      renderQuestion(false);
+      const warmUp = () => {
+        getAudioContext();
+        document.body.removeEventListener('touchstart', warmUp);
+        document.body.removeEventListener('click', warmUp);
+      };
+      document.body.addEventListener('touchstart', warmUp, { once: true });
+      document.body.addEventListener('click', warmUp, { once: true });
+    };
+  </script>
+</body>
+</html>
