@@ -31,25 +31,29 @@
       line-height: 1;
     }
 
-    /* Transition Animations */
-    .fade-out-left {
+    /* Vibrant Pop-Up Transition Effect */
+    .pop-exit {
       opacity: 0;
-      transform: translateX(-40px);
-      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      transform: scale(0.85);
+      transition: all 0.25s cubic-bezier(0.4, 0, 1, 1);
     }
 
-    .fade-in-right {
-      animation: slideInFromRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    .pop-enter {
+      animation: popZoomIn 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
 
-    @keyframes slideInFromRight {
-      from {
+    @keyframes popZoomIn {
+      0% {
         opacity: 0;
-        transform: translateX(40px);
+        transform: scale(0.7);
       }
-      to {
+      70% {
         opacity: 1;
-        transform: translateX(0);
+        transform: scale(1.03);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
       }
     }
 
@@ -78,10 +82,6 @@
 </head>
 <body class="flex items-center justify-center p-1 sm:p-2">
 
-  <!-- Audio Elements -->
-  <audio id="tickAudio" preload="auto" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
-  <audio id="bellAudio" preload="auto" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"></audio>
-
   <div class="w-full h-full max-w-[1400px] flex flex-col justify-between p-2 sm:p-3 relative overflow-hidden">
 
     <!-- Header Bar -->
@@ -93,7 +93,7 @@
         <span id="totalQNum" class="text-amber-300/80 text-xs sm:text-sm digital-num">50</span>
       </div>
 
-      <!-- 5s Circular Timer with Hide / Show toggle capability -->
+      <!-- 5s Circular Timer with Show/Hide -->
       <div id="timerContainer" class="flex items-center gap-2 bg-[#121833]/90 border border-amber-500/40 rounded-full px-3 py-0.5 shadow-md transition-all duration-300">
         <div class="relative w-7 h-7 flex items-center justify-center">
           <svg class="w-full h-full -rotate-90" viewBox="0 0 36 36">
@@ -106,7 +106,6 @@
       </div>
 
       <div class="flex items-center gap-1.5">
-        <!-- Toggle Timer Visibility Button -->
         <button id="toggleTimerBtn" onclick="toggleTimerVisibility()" title="டைமரை மறை/காட்டு" class="bg-slate-800/80 hover:bg-slate-700 border border-slate-600/40 text-slate-200 text-xs font-semibold px-2 py-1 rounded-md flex items-center gap-1 shadow-sm transition">
           <span id="timerToggleIcon">👁️</span>
           <span id="timerToggleText" class="hidden sm:inline">டைமர்</span>
@@ -122,8 +121,8 @@
       </div>
     </header>
 
-    <!-- Animated Content Wrapper -->
-    <div id="quizContentArea" class="w-full flex-1 flex flex-col justify-between my-1 overflow-hidden">
+    <!-- Quiz Area with Pop-Up Wrapper -->
+    <div id="quizContentArea" class="w-full flex-1 flex flex-col justify-between my-1 overflow-hidden pop-enter">
       <!-- Question Container -->
       <main class="w-full shrink-0 my-1">
         <div class="bg-gradient-to-b from-[#162044] to-[#0d142e] border-2 border-amber-500/80 rounded-xl px-3 py-2 sm:py-2.5 shadow-lg flex items-center justify-center text-center">
@@ -215,35 +214,61 @@
     let autoNextTimeout = null;
     let isTimerHidden = false;
 
-    const tickAudio = document.getElementById('tickAudio');
-    const bellAudio = document.getElementById('bellAudio');
-
-    function unlockAudio() {
-      tickAudio.play().then(() => {
-        tickAudio.pause();
-        tickAudio.currentTime = 0;
-      }).catch(() => {});
-      bellAudio.play().then(() => {
-        bellAudio.pause();
-        bellAudio.currentTime = 0;
-      }).catch(() => {});
+    // Advanced Crisp Studio Web Audio
+    let audioCtx = null;
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
     }
 
+    // Modern TV Quiz Countdown Beep/Tick Sound
     function playTickSound() {
       try {
-        tickAudio.currentTime = 0;
-        tickAudio.play();
+        initAudio();
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        // 1200Hz to 600Hz high-definition digital glass chime tick
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(1050, now);
+        osc.frequency.exponentialRampToValueAtTime(550, now + 0.08);
+
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.08);
       } catch (e) {}
     }
 
+    // Crystal Bell Win Chime
     function playDingSound() {
       try {
-        bellAudio.currentTime = 0;
-        bellAudio.play();
+        initAudio();
+        const now = audioCtx.currentTime;
+        [587.33, 739.99, 880.00, 1174.66].forEach((freq, i) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + i * 0.06);
+          gain.gain.setValueAtTime(0.25, now + i * 0.06);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.06 + 0.85);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now + i * 0.06);
+          osc.stop(now + i * 0.06 + 0.85);
+        });
       } catch (e) {}
     }
 
-    // Toggle Hide/Show Timer Display
     function toggleTimerVisibility() {
       isTimerHidden = !isTimerHidden;
       const timerContainer = document.getElementById('timerContainer');
@@ -261,6 +286,7 @@
       }
     }
 
+    // Question Rendering with Pop-up Zoom Animation
     function renderQuestion(withTransition = false) {
       clearTimeout(autoNextTimeout);
       clearInterval(timerInterval);
@@ -269,7 +295,7 @@
 
       const contentArea = document.getElementById('quizContentArea');
 
-      const updateData = () => {
+      const applyData = () => {
         const q = quizData[currentIndex];
         document.getElementById('currentQNum').textContent = String(currentIndex + 1).padStart(2, '0');
         document.getElementById('totalQNum').textContent = String(quizData.length).padStart(2, '0');
@@ -296,24 +322,24 @@
         }
 
         if (withTransition) {
-          contentArea.classList.remove('fade-out-left');
-          contentArea.classList.add('fade-in-right');
+          contentArea.classList.remove('pop-exit');
+          contentArea.classList.add('pop-enter');
           setTimeout(() => {
-            contentArea.classList.remove('fade-in-right');
-          }, 400);
+            contentArea.classList.remove('pop-enter');
+          }, 450);
         }
       };
 
       if (withTransition) {
-        contentArea.classList.add('fade-out-left');
-        setTimeout(updateData, 300);
+        contentArea.classList.add('pop-exit');
+        setTimeout(applyData, 220);
       } else {
-        updateData();
+        applyData();
       }
     }
 
     function triggerQuizAction() {
-      unlockAudio();
+      initAudio();
       if (timerRunning) return;
       startCountdown();
     }
@@ -364,7 +390,7 @@
 
       document.getElementById('btnLabel').textContent = 'சரியான விடை காட்டப்பட்டது!';
 
-      // 3 Seconds Delay -> Smooth Slide Transition to next question
+      // 3 Seconds Delay -> Pop-Up Transition to next question
       autoNextTimeout = setTimeout(() => {
         if (currentIndex < quizData.length - 1) {
           currentIndex++;
@@ -394,14 +420,14 @@
           renderQuestion(true);
         }
       } catch (err) {
-        alert('JSON error! Formatta check pannunga.');
+        alert('JSON பிழை! சரியான வடிவத்தில் உள்ளதா என சரிபார்க்கவும்.');
       }
     }
 
     window.onload = () => {
       renderQuestion(false);
-      document.body.addEventListener('touchstart', unlockAudio, { once: true });
-      document.body.addEventListener('click', unlockAudio, { once: true });
+      document.body.addEventListener('touchstart', initAudio, { once: true });
+      document.body.addEventListener('click', initAudio, { once: true });
     };
   </script>
 </body>
