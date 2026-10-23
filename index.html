@@ -3,11 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>LOVE TNPSC - Question Paper Quiz</title>
+  <title>LOVE TNPSC - Studio Quiz</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <!-- Image block aagama load aaga intha tag mukkiyam -->
-  <meta name="referrer" content="no-referrer">
   <link href="https://fonts.googleapis.com/css2?family=Mukta+Malar:wght@600;700;800&family=Teko:wght@700&display=swap" rel="stylesheet">
   <style>
     * {
@@ -35,15 +33,16 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 10px 20px;
+      padding: 8px 18px;
       position: relative;
     }
 
+    /* Top Bar */
     .header-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 6px;
+      padding-bottom: 5px;
       border-bottom: 1.5px solid #e2e8f0;
       gap: 10px;
       flex-shrink: 0;
@@ -51,7 +50,7 @@
 
     .brand-tag {
       font-weight: 800;
-      font-size: 14px;
+      font-size: 13px;
       color: #1e3a8a;
       letter-spacing: 0.5px;
       white-space: nowrap;
@@ -70,7 +69,6 @@
       white-space: nowrap;
       transition: all 0.2s ease;
     }
-
     .start-btn-top:disabled {
       opacity: 0.6;
     }
@@ -87,29 +85,32 @@
       white-space: nowrap;
     }
 
+    /* Question Title */
     .question-title {
       font-size: 21px;
       font-weight: 800;
       color: #0b1a78;
       line-height: 1.3;
-      margin: 6px 0;
+      margin: 4px 0;
       flex-shrink: 0;
     }
 
+    /* Middle Area */
     .body-content {
       display: flex;
       flex: 1;
       align-items: center;
       justify-content: space-between;
       gap: 20px;
-      margin: 4px 0;
+      margin: 2px 0;
       overflow: hidden;
     }
 
+    /* Options */
     .options-group {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 7px;
       flex: 1.2;
       justify-content: center;
     }
@@ -118,7 +119,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      font-size: 19px;
+      font-size: 18px;
       font-weight: 800;
       color: #000000;
       padding: 5px 12px;
@@ -145,13 +146,13 @@
       margin-left: auto;
       background: #ffffff;
       color: #059669;
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 900;
       animation: popTick 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
@@ -161,6 +162,7 @@
       100% { transform: scale(1); }
     }
 
+    /* Right Side Black Silhouette Container */
     .right-column {
       flex: 1;
       display: flex;
@@ -171,18 +173,30 @@
       max-height: 220px;
     }
 
-    .right-column img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      filter: drop-shadow(0 3px 8px rgba(0,0,0,0.12));
-      border-radius: 8px;
+    .vector-art-box {
+      width: 100%;
+      max-width: 260px;
+      height: 190px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8fafc;
+      border: 2px dashed #cbd5e1;
+      border-radius: 12px;
+      padding: 10px;
     }
 
+    .vector-art-box svg {
+      width: 100%;
+      height: 100%;
+      fill: #0f172a;
+    }
+
+    /* Golden 5s Timer */
     .gold-timer {
       position: absolute;
-      bottom: 0px;
-      right: 0px;
+      bottom: -4px;
+      right: -4px;
       width: 50px;
       height: 50px;
       border-radius: 50%;
@@ -203,6 +217,7 @@
       text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
 
+    /* Modal */
     .modal-wrap {
       display: none;
       position: fixed;
@@ -248,36 +263,41 @@
     </div>
 
     <h1 id="qText" class="question-title">
-      Q) 1857 புரட்சியின் முதல் தியாகியாகக் கருதப்படும் சிப்பாய் யார்?
+      Q) மீரட்டில் சிப்பாய்கள் வெளிப்படையாகக் கலகத்தில் இறங்கிய நாள் எது?
     </h1>
 
     <div class="body-content">
       
+      <!-- 4 Options -->
       <div class="options-group">
         <div id="optRow0" class="opt-box">
           <span class="opt-char">a)</span>
-          <span id="optText0">மங்கள் பாண்டே</span>
+          <span id="optText0">1857 மார்ச் 29</span>
           <div id="tick0"></div>
         </div>
         <div id="optRow1" class="opt-box">
           <span class="opt-char">b)</span>
-          <span id="optText1">பகத் சிங்</span>
+          <span id="optText1">1857 மே 10</span>
           <div id="tick1"></div>
         </div>
         <div id="optRow2" class="opt-box">
           <span class="opt-char">c)</span>
-          <span id="optText2">தாந்தியா தோபே</span>
+          <span id="optText2">1857 ஜூன் 23</span>
           <div id="tick2"></div>
         </div>
         <div id="optRow3" class="opt-box">
           <span class="opt-char">d)</span>
-          <span id="optText3">கன்வர் சிங்</span>
+          <span id="optText3">1857 ஆகஸ்ட் 15</span>
           <div id="tick3"></div>
         </div>
       </div>
 
+      <!-- Right Side: Black Silhouette Vector Art Frame -->
       <div class="right-column">
-        <img id="qImg" src="https://commons.wikimedia.org/wiki/Special:FilePath/Mangal_Pandey.jpg?width=400" alt="Quiz Visual" referrerpolicy="no-referrer">
+        <div id="vectorArtContainer" class="vector-art-box">
+          <!-- Built-in Dynamic Black Silhouette will be injected here -->
+        </div>
+
         <div class="gold-timer">
           <span id="timerVal" class="timer-num">5</span>
         </div>
@@ -289,81 +309,99 @@
 
   <div id="editorModal" class="modal-wrap">
     <div class="modal-card">
-      <h3 style="font-size: 15px; font-weight: 800; color: #0b1a78;">JSON-ai paste panna:</h3>
+      <h3 style="font-size: 15px; font-weight: 800; color: #0b1a78;">JSON குறியீட்டை ஒட்டவும்:</h3>
       <textarea id="jsonBox"></textarea>
       <div style="display: flex; gap: 8px; justify-content: flex-end;">
-        <button style="padding: 6px 14px; border: none; background: #e2e8f0; border-radius: 6px; font-weight: 700; cursor: pointer;" onclick="closeEditor()">Rathu</button>
-        <button style="padding: 6px 14px; border: none; background: #10b981; color: #fff; border-radius: 6px; font-weight: 700; cursor: pointer;" onclick="saveQuestions()">Save</button>
+        <button style="padding: 6px 14px; border: none; background: #e2e8f0; border-radius: 6px; font-weight: 700; cursor: pointer;" onclick="closeEditor()">ரத்து</button>
+        <button style="padding: 6px 14px; border: none; background: #10b981; color: #fff; border-radius: 6px; font-weight: 700; cursor: pointer;" onclick="saveQuestions()">சேமி & இயக்கு</button>
       </div>
     </div>
   </div>
 
   <script>
-    // Direct load aagum path-gal (FilePath API)
-    const imgMangal = "https://commons.wikimedia.org/wiki/Special:FilePath/Mangal_Pandey.jpg?width=400";
-    const imgEnfield = "https://commons.wikimedia.org/wiki/Special:FilePath/Pattern_1853_Enfield.jpg?width=500";
-    const imgMeerut = "https://commons.wikimedia.org/wiki/Special:FilePath/The_mutiny_at_Meerut.jpg?width=500";
-    const imgZafar = "https://commons.wikimedia.org/wiki/Special:FilePath/Bahadur_Shah_Zafar_II.jpg?width=400";
-    const imgCanning = "https://commons.wikimedia.org/wiki/Special:FilePath/Lord_Canning_1860s.jpg?width=400";
-    const imgDalhousie = "https://commons.wikimedia.org/wiki/Special:FilePath/Lord_Dalhousie_1850s.jpg?width=400";
-    const imgLakshmi = "https://commons.wikimedia.org/wiki/Special:FilePath/Rani_of_jhansi.jpg?width=400";
-    const imgNana = "https://commons.wikimedia.org/wiki/Special:FilePath/Nana_Sahib.jpg?width=400";
-    const imgTantia = "https://commons.wikimedia.org/wiki/Special:FilePath/Tantia_Tope.jpg?width=400";
-    const imgHazrat = "https://commons.wikimedia.org/wiki/Special:FilePath/Begum_Hazrat_Mahal.jpg?width=400";
-    const imgSavarkar = "https://commons.wikimedia.org/wiki/Special:FilePath/Vinayak_Damodar_Savarkar.jpg?width=400";
-    const imgVictoria = "https://commons.wikimedia.org/wiki/Special:FilePath/Queen_Victoria_by_Bassano_photograph_1882.jpg?width=400";
+    // 100% உள்ளமைந்த உயர்தர கருப்பு நிழல் படங்கள் (Black Vector Silhouettes)
+    const VECTOR_ICONS = {
+      // 1. போர் & கலகம் (War Battle Scene)
+      war: `<svg viewBox="0 0 200 160"><path d="M20,135 Q50,110 80,135 L90,135 L85,115 L105,95 L120,110 L115,135 L180,135 L170,120 L160,125 L150,105 L165,85 L145,75 L135,90 L125,80 L140,50 L120,45 L105,70 L95,65 L110,40 L90,35 L75,60 L60,55 L75,30 L55,25 L40,50 L20,135 Z M10,140 L190,140 L190,148 L10,148 Z M45,70 L65,50 M140,70 L120,50 M85,30 L95,15 L105,30 Z M50,110 L25,95 M150,110 L175,95"/></svg>`,
+      
+      // 2. துப்பாக்கி & தோட்டா (Rifle & Weapon)
+      gun: `<svg viewBox="0 0 200 160"><path d="M15,82 L80,78 L95,70 L175,68 L185,74 L145,82 L105,84 L95,98 L80,102 L75,90 L45,92 L20,105 L15,82 Z M100,85 L110,95 L118,92 L112,85 Z M170,62 L185,62 L185,66 L170,66 Z"/></svg>`,
+      
+      // 3. சிப்பாய் & வீரர் (Soldier Hero)
+      soldier: `<svg viewBox="0 0 200 160"><circle cx="100" cy="38" r="18"/><path d="M80,62 C70,65 60,78 60,95 L65,145 L85,145 L85,110 L115,110 L115,145 L135,145 L140,95 C140,78 130,65 120,62 Z M82,24 L118,24 L112,14 L88,14 Z M52,85 L42,125 L54,128 L62,95 Z M148,85 L158,125 L146,128 L138,95 Z"/></svg>`,
+      
+      // 4. வீரமங்கை / ராணி லட்சுமி பாய் (Queen Warrior with Sword)
+      queen: `<svg viewBox="0 0 200 160"><circle cx="100" cy="35" r="16"/><path d="M85,18 L100,5 L115,18 L108,22 L92,22 Z M75,56 C65,65 62,80 62,100 L55,145 L145,145 L138,100 C138,80 135,65 125,56 Z M142,65 L175,25 L182,32 L150,75 Z M58,65 L45,95 L55,98 L65,72 Z"/></svg>`,
+      
+      // 5. அரண்மனை & பேரரசர் (Crown & Fort)
+      king: `<svg viewBox="0 0 200 160"><path d="M40,140 L160,140 L155,90 L165,90 L165,70 L150,70 L150,50 L135,50 L135,70 L115,70 L115,40 L85,40 L85,70 L65,70 L65,50 L50,50 L50,70 L35,70 L35,90 L45,90 Z M90,95 L110,95 L110,125 L90,125 Z M60,95 L75,95 L75,115 L60,115 Z M125,95 L140,95 L140,115 L125,115 Z"/></svg>`,
+      
+      // 6. சட்டம் & ஆவணம் (Treaty & Decree)
+      law: `<svg viewBox="0 0 200 160"><path d="M55,20 L135,20 C145,20 150,25 150,35 L150,130 C150,140 145,145 135,145 L55,145 C45,145 40,140 40,130 L40,35 C40,25 45,20 55,20 Z M60,45 L130,45 L130,52 L60,52 Z M60,65 L130,65 L130,72 L60,72 Z M60,85 L130,85 L130,92 L60,92 Z M60,105 L110,105 L110,112 L60,112 Z M120,115 A12,12 0 1,0 144,115 A12,12 0 1,0 120,115 Z"/></svg>`
+    };
+
+    // வினாவின் சொற்களைப் பொறுத்து நிழற்படத்தை அமைக்கும் ஃபங்ஷன்
+    function getSilhouetteForQuestion(text) {
+      const q = text.toLowerCase();
+      if (q.includes("துப்பாக்கி") || q.includes("தோட்டா") || q.includes("என்பீல்டு")) return VECTOR_ICONS.gun;
+      if (q.includes("லட்சுமி பாய்") || q.includes("ராணி") || q.includes("பேகம்") || q.includes("மங்கை")) return VECTOR_ICONS.queen;
+      if (q.includes("போர்") || q.includes("கலகம்") || q.includes("மீரட்") || q.includes("தாக்கிய") || q.includes("புரட்சி")) return VECTOR_ICONS.war;
+      if (q.includes("பகதூர் ஷா") || q.includes("பேரரசர்") || q.includes("கோட்டை") || q.includes("அரசர்")) return VECTOR_ICONS.king;
+      if (q.includes("சட்டம்") || q.includes("கொள்கை") || q.includes("அறிக்கை") || q.includes("மகாசாசனம்") || q.includes("குழு")) return VECTOR_ICONS.law;
+      return VECTOR_ICONS.soldier; // Default Hero Soldier
+    }
 
     let quizData = [
-      {"question": "Q) 1857 பெரும் புரட்சியின் முதல் வெடிப்பு எங்கு நிகழ்ந்தது?", "image": imgMangal, "options": ["மீரட்", "பரக்பூர்", "தில்லி", "கான்பூர்"], "correct": 1},
-      {"question": "Q) 1857 புரட்சியின் முதல் தியாகியாகக் கருதப்படும் சிப்பாய் யார்?", "image": imgMangal, "options": ["மங்கள் பாண்டே", "பகத் சிங்", "தாந்தியா தோபே", "கன்வர் சிங்"], "correct": 0},
-      {"question": "Q) மங்கள் பாண்டே எந்தப் படைப்பிரிவைச் சேர்ந்த சிப்பாய்?", "image": imgMangal, "options": ["19-வது காலாட்படை", "34-வது வங்காள உள்நாட்டு காலாட்படை", "20-வது குதிரைப்படை", "40-வது படைப்பிரிவு"], "correct": 1},
-      {"question": "Q) புரட்சிக்கு உடனடிக் காரணமாக அமைந்த புதிய துப்பாக்கி எது?", "image": imgEnfield, "options": ["பிரவுன் பெஸ்", "என்பீல்டு துப்பாக்கி (Enfield)", "மேகசின் ரைபிள்", "மவுசர் துப்பாக்கி"], "correct": 1},
-      {"question": "Q) மீரட்டில் சிப்பாய்கள் வெளிப்படையாகக் கலகத்தில் இறங்கிய நாள் எது?", "image": imgMeerut, "options": ["1857 மார்ச் 29", "1857 மே 10", "1857 ஜூன் 23", "1857 ஆகஸ்ட் 15"], "correct": 1},
-      {"question": "Q) புரட்சியாளர்களால் இந்தியாவின் பேரரசராக அறிவிக்கப்பட்டவர் யார்?", "image": imgZafar, "options": ["இரண்டாம் ஆலம் கீர்", "ஷா ஆலம்", "இரண்டாம் பகதூர் ஷா", "அக்பர் II"], "correct": 2},
-      {"question": "Q) 1857 புரட்சியின் போது இந்தியாவின் கவர்னர் ஜெனரலாக இருந்தவர் யார்?", "image": imgCanning, "options": ["டல்ஹவுசி பிரபு", "வில்லியம் பெண்டிங் பிரபு", "ரிப்பன் பிரபு", "கானிங் பிரபு"], "correct": 3},
-      {"question": "Q) நாடு இழக்கும் கொள்கையை (வாரிசு இழப்புக் கொள்கை) அறிமுகப்படுத்தியவர் யார்?", "image": imgDalhousie, "options": ["டல்ஹவுசி பிரபு", "வெல்லெஸ்லி பிரபு", "கானிங் பிரபு", "காரன்வாலிஸ் பிரபு"], "correct": 0},
-      {"question": "Q) வாரிசு இழப்புக் கொள்கையின் மூலம் ஆங்கிலேயரால் இணைக்கப்பட்ட முதல் பகுதி எது?", "image": imgDalhousie, "options": ["ஜாசி", "நாக்பூர்", "சதாரா", "சம்பல்பூர்"], "correct": 2},
-      {"question": "Q) ஜாசியில் 1857 புரட்சிக்குத் தலைமை தாங்கியவர் யார்?", "image": imgLakshmi, "options": ["பேகம் ஹஸ்ரத் மஹால்", "ராணி லட்சுமி பாய்", "ராணி சென்னம்மா", "வேலு நாச்சியார்"], "correct": 1},
-      {"question": "Q) ராணி லட்சுமி பாயின் இயற்பெயர் என்ன?", "image": imgLakshmi, "options": ["மணிகர்ணிகா", "பத்மாவதி", "ஜிஜாபாய்", "தாராஹாபாய்"], "correct": 0},
-      {"question": "Q) 'கிளர்ச்சியாளர்களில் மிகச் சிறந்த தைரியமான தலைவர் லட்சுமி பாய்' எனக் கூறியவர் யார்?", "image": imgLakshmi, "options": ["காலின் கேம்பல்", "ஜான் நிக்கல்சன்", "சர் ஹக் ரோஸ்", "ஹேவ்லாக்"], "correct": 2},
-      {"question": "Q) கான்பூரில் புரட்சிக்குத் தலைமை ஏற்று வழிநடத்தியவர் யார்?", "image": imgNana, "options": ["இரண்டாம் பாஜிராவ்", "நானா சாகிப்", "கன்வர் சிங்", "பக்த் கான்"], "correct": 1},
-      {"question": "Q) நானா சாகிப்பின் விசுவாசமான தளபதியாக விளங்கியவர் யார்?", "image": imgTantia, "options": ["தாந்தியா தோபே", "அசிமுல்லா கான்", "பக்த் கான்", "மவுலவி அகமதுல்லா"], "correct": 0},
-      {"question": "Q) தாந்தியா தோபேயின் உண்மையான பெயர் என்ன?", "image": imgTantia, "options": ["ராம்சந்திர பாண்டுரங்க தோபே", "துந்து பந்த்", "நரேந்திரநாத்", "கோபாலகிருஷ்ணன்"], "correct": 0},
-      {"question": "Q) நானா சாகிப்பின் இயற்பெயர் என்ன?", "image": imgNana, "options": ["துந்து பந்த்", "பாண்டுரங்கன்", "ராம் சிங்", "பாலாஜி ராவ்"], "correct": 0},
-      {"question": "Q) லக்னோவில் புரட்சிக்குத் தலைமை தாங்கியவர் யார்?", "image": imgHazrat, "options": ["ஜீனத் மஹால்", "பேகம் ஹஸ்ரத் மஹால்", "ராணி அவந்திபாய்", "சுல்தானா ரசியா"], "correct": 1},
-      {"question": "Q) பீகாரில் (ஜகதீஷ்பூர்) புரட்சிக்குத் தலைமை வகித்த தலைவர் யார்?", "image": imgMeerut, "options": ["அமர் சிங்", "கன்வர் சிங்", "பக்த் கான்", "அசிமுல்லா"], "correct": 1},
-      {"question": "Q) தில்லியில் உண்மையான இராணுவத் தளபதியாக புரட்சியை வழிநடத்தியவர் யார்?", "image": imgZafar, "options": ["கன்வர் சிங்", "ஜெனரல் பக்த் கான்", "தாந்தியா தோபே", "நானா சாகிப்"], "correct": 1},
-      {"question": "Q) பரேலியில் புரட்சிக்குத் தலைமை ஏற்றவர் யார்?", "image": imgMeerut, "options": ["கான் பகதூர் கான்", "மவுலவி அகமதுல்லா", "அசிமுல்லா கான்", "பக்த் கான்"], "correct": 0},
-      {"question": "Q) பைசாபாத்தில் புரட்சிக்குத் தலைமை ஏற்று வழிநடத்தியவர் யார்?", "image": imgMeerut, "options": ["கான் பகதூர்", "மவுலவி அகமதுல்லா", "ஷா மாமல்", "அமர் சிங்"], "correct": 1},
-      {"question": "Q) தில்லியை மீட்கும்போது கொல்லப்பட்ட ஆங்கிலேய தளபதி யார்?", "image": imgMeerut, "options": ["ஹட்சன்", "ஜான் நிக்கல்சன்", "காலின் கேம்பல்", "ஹக் ரோஸ்"], "correct": 1},
-      {"question": "Q) கான்பூரையும் லக்னோவையும் மீட்ட ஆங்கிலேய தளபதி யார்?", "image": imgMeerut, "options": ["சர் காலின் கேம்பல்", "ஜான் நிக்கல்சன்", "ஹேவ்லாக்", "ஹியூ வீலர்"], "correct": 0},
-      {"question": "Q) ஜாசியைக் கைப்பற்றிய பிரிட்டிஷ் ஜெனரல் யார்?", "image": imgLakshmi, "options": ["சர் ஹக் ரோஸ்", "காலின் கேம்பல்", "வில்லியம் டெய்லர்", "நிக்கல்சன்"], "correct": 0},
-      {"question": "Q) இரண்டாம் பகதூர் ஷா எந்த நாட்டிற்கு நாடுகடத்தப்பட்டார்?", "image": imgZafar, "options": ["இலங்கை", "நேபாளம்", "பர்மா (ரங்கூன்)", "அந்தமான்"], "correct": 2},
-      {"question": "Q) இரண்டாம் பகதூர் ஷா ரங்கூனில் எப்போது மறைந்தார்?", "image": imgZafar, "options": ["1858", "1860", "1862", "1865"], "correct": 2},
-      {"question": "Q) புரட்சிக்குப் பிறகு நேபாளத்திற்குத் தப்பி ஓடியவர்கள் யார்?", "image": imgNana, "options": ["கன்வர் சிங், அமர் சிங்", "நானா சாகிப், பேகம் ஹஸ்ரத் மஹால்", "தாந்தியா தோபே, லட்சுமி பாய்", "பக்த் கான், மங்கள் பாண்டே"], "correct": 1},
-      {"question": "Q) 'முதல் இந்திய சுதந்திரப் போர்' என்று வர்ணித்தவர் யார்?", "image": imgSavarkar, "options": ["வி.டி. சவார்க்கர்", "சுபாஷ் சந்திர போஸ்", "ஜவஹர்லால் நேரு", "ஆர்.சி. மஜும்தார்"], "correct": 0},
-      {"question": "Q) 'முதல் சுதந்திரப் போருமல்ல, தேசியப் போருமல்ல' எனக் கூறியவர் யார்?", "image": imgMeerut, "options": ["வி.டி. சவார்க்கர்", "ஆர்.சி. மஜும்தார்", "எஸ்.என். சென்", "டிஸ்ரேலி"], "correct": 1},
-      {"question": "Q) 'Eighteen Fifty-Seven' என்ற வரலாற்று நூலை எழுதியவர் யார்?", "image": imgMeerut, "options": ["டாக்டர் எஸ்.என். சென்", "ஆர்.சி. மஜும்தார்", "வி.டி. சவார்க்கர்", "தாதாபாய் நௌரோஜி"], "correct": 0},
-      {"question": "Q) 'நாகரிகத்திற்கும் காட்டுமிராண்டித்தனத்திற்கும் இடையிலான போர்' எனக் கூறியவர் யார்?", "image": imgMeerut, "options": ["டி.ஆர். ஹோம்ஸ்", "சர் ஜான் லாரன்ஸ்", "சர் ஜான் சீலே", "காலின் கேம்பல்"], "correct": 0},
-      {"question": "Q) புரட்சியின் ரகசியக் குறியீடுகளாகப் பயன்படுத்தப்பட்டவை யாவை?", "image": imgMeerut, "options": ["ரோஜா மற்றும் அரிசி", "ரொட்டி மற்றும் தாமரை மலர்", "துப்பாக்கி மற்றும் வாள்", "கொடிகள் மற்றும் குங்குமம்"], "correct": 1},
-      {"question": "Q) கிழக்கிந்திய கம்பெனியின் ஆட்சி எப்போது முடிவுக்கு வந்தது?", "image": imgVictoria, "options": ["1857 நவம்பர் 1", "1858 நவம்பர் 1", "1859 ஜனவரி 1", "1860 ஆகஸ்ட் 2"], "correct": 1},
-      {"question": "Q) விக்டோரியா மகாராணியின் பேரறிக்கை எங்கு வாசிக்கப்பட்டது?", "image": imgVictoria, "options": ["தில்லி", "கொல்கத்தா", "அலகாபாத்", "சென்னை"], "correct": 2},
-      {"question": "Q) விக்டோரியா மகாராணியின் அறிக்கையை வாசித்தவர் யார்?", "image": imgCanning, "options": ["கானிங் பிரபு", "டல்ஹவுசி பிரபு", "கர்சன் பிரபு", "ரிப்பன் பிரபு"], "correct": 0},
-      {"question": "Q) இந்தியாவின் முதல் வைஸ்ராய் யார்?", "image": imgCanning, "options": ["வில்லியம் பெண்டிங்", "வாரன் ஹேஸ்டிங்ஸ்", "கானிங் பிரபு", "மவுண்ட்பேட்டன்"], "correct": 2},
-      {"question": "Q) இந்திய மக்களின் 'மகாசாசனம்' (Magna Carta) எது?", "image": imgVictoria, "options": ["பிட் இந்திய சட்டம் 1784", "1858 விக்டோரியா மகாராணி அறிக்கை", "1919 மாண்டேகு அறிக்கை", "1935 சட்டம்"], "correct": 1},
-      {"question": "Q) புரட்சிக்குப் பின் இராணுவத்தை மறுசீரமைக்க அமைக்கப்பட்ட குழு எது?", "image": imgMeerut, "options": ["பீல் குழு (Peel Commission)", "ஹண்டர் குழு", "சைமன் குழு", "சர்க்காரியா குழு"], "correct": 0},
-      {"question": "Q) தோட்டாக்களில் எந்த விலங்குகளின் கொழுப்பு தடவப்பட்டது?", "image": imgEnfield, "options": ["ஆடு மற்றும் மாடு", "பசு மற்றும் பன்றி", "குதிரை மற்றும் மான்", "பன்றி மற்றும் ஒட்டகம்"], "correct": 1},
-      {"question": "Q) மங்கள் பாண்டே அதிகாரிகளைத் தாக்கிய நாள் எது?", "image": imgMangal, "options": ["1857 மார்ச் 29", "1857 மே 10", "1857 ஏப்ரல் 8", "1857 ஜூன் 5"], "correct": 0},
-      {"question": "Q) மங்கள் பாண்டே தூக்கிலிடப்பட்ட நாள் எது?", "image": imgMangal, "options": ["1857 மார்ச் 29", "1857 ஏப்ரல் 8", "1857 மே 10", "1857 ஜூலை 14"], "correct": 1},
-      {"question": "Q) தாந்தியா தோபே தூக்கிலிடப்பட்ட ஆண்டு எது?", "image": imgTantia, "options": ["1858 ஏப்ரல்", "1859 ஏப்ரல் 18", "1860 மே 2", "1857 டிசம்பர்"], "correct": 1},
-      {"question": "Q) தாந்தியா தோபேயைக் காட்டிக்கொடுத்த நிலப்பிரபு யார்?", "image": imgTantia, "options": ["மான் சிங்", "ஜெய் சிங்", "குலாப் சிங்", "சிந்தியா"], "correct": 0},
-      {"question": "Q) 1857 புரட்சியின் முன்னோடியாகக் கருதப்படும் கிளர்ச்சி எது?", "image": imgMeerut, "options": ["பாளையக்காரர் போர்", "வேலூர் புரட்சி (1806)", "தென்னிந்திய புரட்சி", "மருது சகோதரர்கள் போர்"], "correct": 1},
-      {"question": "Q) 1857 புரட்சியின் போது பிரிட்டனின் பிரதமர் யார்?", "image": imgMeerut, "options": ["பால்மர்ஸ்டன் பிரபு", "கிளாட்ஸ்டோன்", "டிஸ்ரேலி", "சர் ராபர்ட் பீல்"], "correct": 0},
-      {"question": "Q) அயோத்தி (அவாத்) எந்தக் காரணத்தால் இணைக்கப்பட்டது?", "image": imgDalhousie, "options": ["வாரிசு இல்லாமை", "தவறான நிர்வாகம்", "போர் தோல்வி", "கடன் பாக்கி"], "correct": 1},
-      {"question": "Q) ஆங்கிலேயருக்கு ஆதரவாக செயல்பட்ட சுதேச சமஸ்தானம் எது?", "image": imgMeerut, "options": ["குவாலியர் சிந்தியா", "ஜாசி", "அயோத்தி", "ஜகதீஷ்பூர்"], "correct": 0},
-      {"question": "Q) ராணி லட்சுமி பாய் வீர மரணம் அடைந்த இடம் எது?", "image": imgLakshmi, "options": ["ஜாசி கோட்டை", "குவாலியர்", "கான்பூர்", "லக்னோ"], "correct": 1},
-      {"question": "Q) புரட்சி தோல்வியடைந்ததற்கு முக்கிய காரணம் என்ன?", "image": imgMeerut, "options": ["மத்திய ஒருங்கிணைப்பு மற்றும் சரியான தலைமையின்மை", "பொருளாதார வலிமை இல்லாமை", "ஆயுதக் பற்றாக்குறை", "மக்கள் ஆர்வம் காட்டாமை"], "correct": 0},
-      {"question": "Q) இந்திய விவகாரங்களைக் கவனிக்க உருவாக்கப்பட்ட புதிய பதவி எது?", "image": imgVictoria, "options": ["இராணுவத் தளபதி", "இந்திய அரசுச் செயலர்", "தலைமை கணக்காயர்", "அரச வழக்கறிஞர்"], "correct": 1}
+      {"question": "Q) 1857 பெரும் புரட்சியின் முதல் வெடிப்பு எங்கு நிகழ்ந்தது?", "options": ["மீரட்", "பரக்பூர்", "தில்லி", "கான்பூர்"], "correct": 1},
+      {"question": "Q) 1857 புரட்சியின் முதல் தியாகியாகக் கருதப்படும் சிப்பாய் யார்?", "options": ["மங்கள் பாண்டே", "பகத் சிங்", "தாந்தியா தோபே", "கன்வர் சிங்"], "correct": 0},
+      {"question": "Q) மங்கள் பாண்டே எந்தப் படைப்பிரிவைச் சேர்ந்த சிப்பாய்?", "options": ["19-வது காலாட்படை", "34-வது வங்காள உள்நாட்டு காலாட்படை", "20-வது குதிரைப்படை", "40-வது படைப்பிரிவு"], "correct": 1},
+      {"question": "Q) புரட்சிக்கு உடனடிக் காரணமாக அமைந்த புதிய துப்பாக்கி எது?", "options": ["பிரவுன் பெஸ்", "என்பீல்டு துப்பாக்கி (Enfield)", "மேகசின் ரைபிள்", "மவுசர் துப்பாக்கி"], "correct": 1},
+      {"question": "Q) மீரட்டில் சிப்பாய்கள் வெளிப்படையாகக் கலகத்தில் இறங்கிய நாள் எது?", "options": ["1857 மார்ச் 29", "1857 மே 10", "1857 ஜூன் 23", "1857 ஆகஸ்ட் 15"], "correct": 1},
+      {"question": "Q) புரட்சியாளர்களால் இந்தியாவின் பேரரசராக அறிவிக்கப்பட்டவர் யார்?", "options": ["இரண்டாம் ஆலம் கீர்", "ஷா ஆலம்", "இரண்டாம் பகதூர் ஷா", "அக்பர் II"], "correct": 2},
+      {"question": "Q) 1857 புரட்சியின் போது இந்தியாவின் கவர்னர் ஜெனரலாக இருந்தவர் யார்?", "options": ["டல்ஹவுசி பிரபு", "வில்லியம் பெண்டிங் பிரபு", "ரிப்பன் பிரபு", "கானிங் பிரபு"], "correct": 3},
+      {"question": "Q) நாடு இழக்கும் கொள்கையை (வாரிசு இழப்புக் கொள்கை) அறிமுகப்படுத்தியவர் யார்?", "options": ["டல்ஹவுசி பிரபு", "வெல்லெஸ்லி பிரபு", "கானிங் பிரபு", "காரன்வாலிஸ் பிரபு"], "correct": 0},
+      {"question": "Q) வாரிசு இழப்புக் கொள்கையின் மூலம் ஆங்கிலேயரால் இணைக்கப்பட்ட முதல் பகுதி எது?", "options": ["ஜாசி", "நாக்பூர்", "சதாரா", "சம்பல்பூர்"], "correct": 2},
+      {"question": "Q) ஜாசியில் 1857 புரட்சிக்குத் தலைமை தாங்கியவர் யார்?", "options": ["பேகம் ஹஸ்ரத் மஹால்", "ராணி லட்சுமி பாய்", "ராணி சென்னம்மா", "வேலு நாச்சியார்"], "correct": 1},
+      {"question": "Q) ராணி லட்சுமி பாயின் இயற்பெயர் என்ன?", "options": ["மணிகர்ணிகா", "பத்மாவதி", "ஜிஜாபாய்", "தாராஹாபாய்"], "correct": 0},
+      {"question": "Q) 'கிளர்ச்சியாளர்களில் மிகச் சிறந்த தைரியமான தலைவர் லட்சுமி பாய்' எனக் கூறியவர் யார்?", "options": ["காலின் கேம்பல்", "ஜான் நிக்கல்சன்", "சர் ஹக் ரோஸ்", "ஹேவ்லாக்"], "correct": 2},
+      {"question": "Q) கான்பூரில் புரட்சிக்குத் தலைமை ஏற்று வழிநடத்தியவர் யார்?", "options": ["இரண்டாம் பாஜிராவ்", "நானா சாகிப்", "கன்வர் சிங்", "பக்த் கான்"], "correct": 1},
+      {"question": "Q) நானா சாகிப்பின் விசுவாசமான தளபதியாக விளங்கியவர் யார்?", "options": ["தாந்தியா தோபே", "அசிமுல்லா கான்", "பக்த் கான்", "மவுலவி அகமதுல்லா"], "correct": 0},
+      {"question": "Q) தாந்தியா தோபேயின் உண்மையான பெயர் என்ன?", "options": ["ராம்சந்திர பாண்டுரங்க தோபே", "துந்து பந்த்", "நரேந்திரநாத்", "கோபாலகிருஷ்ணன்"], "correct": 0},
+      {"question": "Q) நானா சாகிப்பின் இயற்பெயர் என்ன?", "options": ["துந்து பந்த்", "பாண்டுரங்கன்", "ராம் சிங்", "பாலாஜி ராவ்"], "correct": 0},
+      {"question": "Q) லக்னோவில் புரட்சிக்குத் தலைமை தாங்கியவர் யார்?", "options": ["ஜீனத் மஹால்", "பேகம் ஹஸ்ரத் மஹால்", "ராணி அவந்திபாய்", "சுல்தானா ரசியா"], "correct": 1},
+      {"question": "Q) பீகாரில் (ஜகதீஷ்பூர்) புரட்சிக்குத் தலைமை வகித்த தலைவர் யார்?", "options": ["அமர் சிங்", "கன்வர் சிங்", "பக்த் கான்", "அசிமுல்லா"], "correct": 1},
+      {"question": "Q) தில்லியில் உண்மையான இராணுவத் தளபதியாக புரட்சியை வழிநடத்தியவர் யார்?", "options": ["கன்வர் சிங்", "ஜெனரல் பக்த் கான்", "தாந்தியா தோபே", "நானா சாகிப்"], "correct": 1},
+      {"question": "Q) பரேலியில் புரட்சிக்குத் தலைமை ஏற்றவர் யார்?", "options": ["கான் பகதூர் கான்", "மவுலவி அகமதுல்லா", "அசிமுல்லா கான்", "பக்த் கான்"], "correct": 0},
+      {"question": "Q) பைசாபாத்தில் புரட்சிக்குத் தலைமை ஏற்று வழிநடத்தியவர் யார்?", "options": ["கான் பகதூர்", "மவுலவி அகமதுல்லா", "ஷா மாமல்", "அமர் சிங்"], "correct": 1},
+      {"question": "Q) தில்லியை மீட்கும்போது கொல்லப்பட்ட ஆங்கிலேய தளபதி யார்?", "options": ["ஹட்சன்", "ஜான் நிக்கல்சன்", "காலின் கேம்பல்", "ஹக் ரோஸ்"], "correct": 1},
+      {"question": "Q) கான்பூரையும் லக்னோவையும் மீட்ட ஆங்கிலேய தளபதி யார்?", "options": ["சர் காலின் கேம்பல்", "ஜான் நிக்கல்சன்", "ஹேவ்லாக்", "ஹியூ வீலர்"], "correct": 0},
+      {"question": "Q) ஜாசியைக் கைப்பற்றிய பிரிட்டிஷ் ஜெனரல் யார்?", "options": ["சர் ஹக் ரோஸ்", "காலின் கேம்பல்", "வில்லியம் டெய்லர்", "நிக்கல்சன்"], "correct": 0},
+      {"question": "Q) இரண்டாம் பகதூர் ஷா எந்த நாட்டிற்கு நாடுகடத்தப்பட்டார்?", "options": ["இலங்கை", "நேபாளம்", "பர்மா (ரங்கூன்)", "அந்தமான்"], "correct": 2},
+      {"question": "Q) இரண்டாம் பகதூர் ஷா ரங்கூனில் எப்போது மறைந்தார்?", "options": ["1858", "1860", "1862", "1865"], "correct": 2},
+      {"question": "Q) புரட்சிக்குப் பிறகு நேபாளத்திற்குத் தப்பி ஓடியவர்கள் யார்?", "options": ["கன்வர் சிங், அமர் சிங்", "நானா சாகிப், பேகம் ஹஸ்ரத் மஹால்", "தாந்தியா தோபே, லட்சுமி பாய்", "பக்த் கான், மங்கள் பாண்டே"], "correct": 1},
+      {"question": "Q) 'முதல் இந்திய சுதந்திரப் போர்' என்று வர்ணித்தவர் யார்?", "options": ["வி.டி. சவார்க்கர்", "சுபாஷ் சந்திர போஸ்", "ஜவஹர்லால் நேரு", "ஆர்.சி. மஜும்தார்"], "correct": 0},
+      {"question": "Q) 'முதல் சுதந்திரப் போருமல்ல, தேசியப் போருமல்ல' எனக் கூறியவர் யார்?", "options": ["வி.டி. சவார்க்கர்", "ஆர்.சி. மஜும்தார்", "எஸ்.என். சென்", "டிஸ்ரேலி"], "correct": 1},
+      {"question": "Q) 'Eighteen Fifty-Seven' என்ற வரலாற்று நூலை எழுதியவர் யார்?", "options": ["டாக்டர் எஸ்.என். சென்", "ஆர்.சி. மஜும்தார்", "வி.டி. சவார்க்கர்", "தாதாபாய் நௌரோஜி"], "correct": 0},
+      {"question": "Q) 'நாகரிகத்திற்கும் காட்டுமிராண்டித்தனத்திற்கும் இடையிலான போர்' எனக் கூறியவர் யார்?", "options": ["டி.ஆர். ஹோம்ஸ்", "சர் ஜான் லாரன்ஸ்", "சர் ஜான் சீலே", "காலின் கேம்பல்"], "correct": 0},
+      {"question": "Q) புரட்சியின் ரகசியக் குறியீடுகளாகப் பயன்படுத்தப்பட்டவை யாவை?", "options": ["ரோஜா மற்றும் அரிசி", "ரொட்டி மற்றும் தாமரை மலர்", "துப்பாக்கி மற்றும் வாள்", "கொடிகள் மற்றும் குங்குமம்"], "correct": 1},
+      {"question": "Q) கிழக்கிந்திய கம்பெனியின் ஆட்சி எப்போது முடிவுக்கு வந்தது?", "options": ["1857 நவம்பர் 1", "1858 நவம்பர் 1", "1859 ஜனவரி 1", "1860 ஆகஸ்ட் 2"], "correct": 1},
+      {"question": "Q) விக்டோரியா மகாராணியின் பேரறிக்கை எங்கு வாசிக்கப்பட்டது?", "options": ["தில்லி", "கொல்கத்தா", "அலகாபாத்", "சென்னை"], "correct": 2},
+      {"question": "Q) விக்டோரியா மகாராணியின் அறிக்கையை வாசித்தவர் யார்?", "options": ["கானிங் பிரபு", "டல்ஹவுசி பிரபு", "கர்சன் பிரபு", "ரிப்பன் பிரபு"], "correct": 0},
+      {"question": "Q) இந்தியாவின் முதல் வைஸ்ராய் யார்?", "options": ["வில்லியம் பெண்டிங்", "வாரன் ஹேஸ்டிங்ஸ்", "கானிங் பிரபு", "மவுண்ட்பேட்டன்"], "correct": 2},
+      {"question": "Q) இந்திய மக்களின் 'மகாசாசனம்' (Magna Carta) எது?", "options": ["பிட் இந்திய சட்டம் 1784", "1858 விக்டோரியா மகாராணி அறிக்கை", "1919 மாண்டேகு அறிக்கை", "1935 சட்டம்"], "correct": 1},
+      {"question": "Q) புரட்சிக்குப் பின் இராணுவத்தை மறுசீரமைக்க அமைக்கப்பட்ட குழு எது?", "options": ["பீல் குழு (Peel Commission)", "ஹண்டர் குழு", "சைமன் குழு", "சர்க்காரியா குழு"], "correct": 0},
+      {"question": "Q) தோட்டாக்களில் எந்த விலங்குகளின் கொழுப்பு தடவப்பட்டது?", "options": ["ஆடு மற்றும் மாடு", "பசு மற்றும் பன்றி", "குதிரை மற்றும் மான்", "பன்றி மற்றும் ஒட்டகம்"], "correct": 1},
+      {"question": "Q) மங்கள் பாண்டே அதிகாரிகளைத் தாக்கிய நாள் எது?", "options": ["1857 மார்ச் 29", "1857 மே 10", "1857 ஏப்ரல் 8", "1857 ஜூன் 5"], "correct": 0},
+      {"question": "Q) மங்கள் பாண்டே தூக்கிலிடப்பட்ட நாள் எது?", "options": ["1857 மார்ச் 29", "1857 ஏப்ரல் 8", "1857 மே 10", "1857 ஜூலை 14"], "correct": 1},
+      {"question": "Q) தாந்தியா தோபே தூக்கிலிடப்பட்ட ஆண்டு எது?", "options": ["1858 ஏப்ரல்", "1859 ஏப்ரல் 18", "1860 மே 2", "1857 டிசம்பர்"], "correct": 1},
+      {"question": "Q) தாந்தியா தோபேயைக் காட்டிக்கொடுத்த நிலப்பிரபு யார்?", "options": ["மான் சிங்", "ஜெய் சிங்", "குலாப் சிங்", "சிந்தியா"], "correct": 0},
+      {"question": "Q) 1857 புரட்சியின் முன்னோடியாகக் கருதப்படும் கிளர்ச்சி எது?", "options": ["பாளையக்காரர் போர்", "வேலூர் புரட்சி (1806)", "தென்னிந்திய புரட்சி", "மருது சகோதரர்கள் போர்"], "correct": 1},
+      {"question": "Q) 1857 புரட்சியின் போது பிரிட்டனின் பிரதமர் யார்?", "options": ["பால்மர்ஸ்டன் பிரபு", "கிளாட்ஸ்டோன்", "டிஸ்ரேலி", "சர் ராபர்ட் பீல்"], "correct": 0},
+      {"question": "Q) அயோத்தி (அவாத்) எந்தக் காரணத்தால் இணைக்கப்பட்டது?", "options": ["வாரிசு இல்லாமை", "தவறான நிர்வாகம்", "போர் தோல்வி", "கடன் பாக்கி"], "correct": 1},
+      {"question": "Q) ஆங்கிலேயருக்கு ஆதரவாக செயல்பட்ட சுதேச சமஸ்தானம் எது?", "options": ["குவாலியர் சிந்தியா", "ஜாசி", "அயோத்தி", "ஜகதீஷ்பூர்"], "correct": 0},
+      {"question": "Q) ராணி லட்சுமி பாய் வீர மரணம் அடைந்த இடம் எது?", "options": ["ஜாசி கோட்டை", "குவாலியர்", "கான்பூர்", "லக்னோ"], "correct": 1},
+      {"question": "Q) புரட்சி தோல்வியடைந்ததற்கு முக்கிய காரணம் என்ன?", "options": ["மத்திய ஒருங்கிணைப்பு மற்றும் சரியான தலைமையின்மை", "பொருளாதார வலிமை இல்லாமை", "ஆயுதக் பற்றாக்குறை", "மக்கள் ஆர்வம் காட்டாமை"], "correct": 0},
+      {"question": "Q) இந்திய விவகாரங்களைக் கவனிக்க உருவாக்கப்பட்ட புதிய பதவி எது?", "options": ["இராணுவத் தளபதி", "இந்திய அரசுச் செயலர்", "தலைமை கணக்காயர்", "அரச வழக்கறிஞர்"], "correct": 1}
     ];
 
     let currentIndex = 0;
@@ -425,8 +463,9 @@
       document.getElementById('qIndex').textContent = `${String(currentIndex + 1).padStart(2, '0')}/${String(quizData.length).padStart(2, '0')}`;
       document.getElementById('qText').textContent = q.question;
       
-      const imgElem = document.getElementById('qImg');
-      imgElem.src = q.image;
+      // தானாகவே அந்த வினாவிற்குரிய கருப்பு நிழல் படத்தை உள்ளமைக்கும்
+      const artContainer = document.getElementById('vectorArtContainer');
+      artContainer.innerHTML = getSilhouetteForQuestion(q.question);
 
       document.getElementById('timerVal').textContent = '5';
 
