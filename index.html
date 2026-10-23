@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>LOVE TNPSC - Studio Quiz</title>
+  <title>LOVE TNPSC - Studio Quiz Paper</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <link href="https://fonts.googleapis.com/css2?family=Mukta+Malar:wght@600;700;800&family=Teko:wght@700&display=swap" rel="stylesheet">
@@ -56,23 +56,30 @@
       white-space: nowrap;
     }
 
-    /* கேள்வி எண் தேர்வு செய்யும் ட்ராப்டவுன் */
-    .jump-select {
-      background: #f1f5f9;
-      color: #0f172a;
+    /* நேரடி கேள்வி எண் கட்டங்களைத் திறக்கும் பட்டன் */
+    .grid-trigger-btn {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1.5px solid #93c5fd;
+      padding: 4px 10px;
+      border-radius: 8px;
       font-size: 12px;
       font-weight: 800;
-      border: 1.5px solid #cbd5e1;
-      padding: 4px 8px;
-      border-radius: 6px;
-      outline: none;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .grid-trigger-btn:active {
+      transform: scale(0.95);
+      background: #dbeafe;
     }
 
     .nav-btn {
-      background: #f1f5f9;
+      background: #f8fafc;
       color: #0f172a;
-      border: 1px solid #cbd5e1;
+      border: 1.5px solid #cbd5e1;
       padding: 4px 10px;
       border-radius: 6px;
       font-size: 12px;
@@ -103,7 +110,7 @@
 
     .btn-edit {
       background: #f8fafc;
-      color: #334155;
+      color: #475569;
       border: 1px solid #cbd5e1;
       padding: 4px 8px;
       border-radius: 6px;
@@ -112,7 +119,7 @@
       cursor: pointer;
     }
 
-    /* Question Title */
+    /* Question Title - தொட்டாலும் கேள்வி பட்டியல் திறக்கும் */
     .question-title {
       font-size: 21px;
       font-weight: 800;
@@ -120,6 +127,13 @@
       line-height: 1.3;
       margin: 4px 0;
       flex-shrink: 0;
+      cursor: pointer;
+      border-radius: 6px;
+      padding: 2px 4px;
+      transition: background 0.15s ease;
+    }
+    .question-title:hover {
+      background: #f1f5f9;
     }
 
     /* Middle Area */
@@ -244,7 +258,81 @@
       text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
 
-    /* Modal */
+    /* 1 முதல் 50 வரையிலான கேள்விகளைத் தொட்டுத் தேர்ந்தெடுக்கும் கட்டத் திரை (Grid Modal) */
+    .grid-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 12px;
+    }
+
+    .grid-modal-card {
+      background: #ffffff;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 560px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25);
+      overflow: hidden;
+      border: 2px solid #e2e8f0;
+    }
+
+    .grid-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 16px;
+      background: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .grid-tiles-container {
+      padding: 12px;
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 6px;
+      overflow-y: auto;
+    }
+
+    @media (max-width: 600px) {
+      .grid-tiles-container {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 8px;
+      }
+    }
+
+    .q-tile {
+      aspect-ratio: 1;
+      background: #f1f5f9;
+      border: 1.5px solid #cbd5e1;
+      color: #0f172a;
+      font-weight: 800;
+      font-size: 14px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .q-tile:active {
+      transform: scale(0.9);
+    }
+    .q-tile.active-q {
+      background: #2563eb !important;
+      border-color: #1d4ed8 !important;
+      color: #ffffff !important;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+    }
+
+    /* Upload Modal */
     .modal-wrap {
       display: none;
       position: fixed;
@@ -281,13 +369,17 @@
 
     <!-- Top Navigation Bar -->
     <div class="header-bar">
-      <div style="display: flex; align-items: center; gap: 6px;">
+      <div style="display: flex; align-items: center; gap: 8px;">
         <span class="brand-tag">LOVE TNPSC</span>
-        <!-- நேரடியாக கேள்விக்குத் தாவும் Dropdown Menu -->
-        <select id="jumpSelect" class="jump-select" onchange="jumpToQuestion(this.value)"></select>
+        <!-- இந்த பட்டனைத் தொட்டால் 50 கட்டங்களும் உடனே திறக்கும் -->
+        <button id="gridBtn" class="grid-trigger-btn" onclick="openGridModal()">
+          <span>🔢</span>
+          <span id="currentIndicator">வினா 01/50</span>
+          <span>▼</span>
+        </button>
       </div>
 
-      <!-- முன்னாடி / பின்னாடி செல்லும் பட்டன்கள் -->
+      <!-- அடுத்தடுத்த / முந்தைய வினாக்களுக்குச் செல்லும் பட்டன்கள் -->
       <div style="display: flex; align-items: center; gap: 4px;">
         <button class="nav-btn" onclick="prevQuestion()" title="முந்தைய கேள்வி">◀ பின்</button>
         <button class="nav-btn" onclick="nextQuestion()" title="அடுத்த கேள்வி">முன் ▶</button>
@@ -300,8 +392,8 @@
       <button class="btn-edit" onclick="openEditor()">➕ கேள்விகள்</button>
     </div>
 
-    <!-- Question Line -->
-    <h1 id="qText" class="question-title"></h1>
+    <!-- Question Line (இதைத் தொட்டாலும் கட்டங்கள் தோன்றும்) -->
+    <h1 id="qText" class="question-title" onclick="openGridModal()" title="கேள்விகளை மாற்ற தொடவும்"></h1>
 
     <!-- Options and Visuals -->
     <div class="body-content">
@@ -340,7 +432,20 @@
 
   </div>
 
-  <!-- Upload Modal -->
+  <!-- 1 முதல் 50 வரையிலான அனைத்துக் கேள்விகளும் கொண்ட நேரடிக் கட்டத் திரை -->
+  <div id="gridModal" class="grid-modal-overlay" onclick="closeGridModalOnBackdrop(event)">
+    <div class="grid-modal-card">
+      <div class="grid-modal-header">
+        <div style="font-weight: 800; font-size: 15px; color: #0b1a78;">
+          நேரடியாக வினாவைத் தேர்வு செய்க (1 - 50):
+        </div>
+        <button onclick="closeGridModal()" style="border: none; background: #e2e8f0; font-weight: 900; width: 28px; height: 28px; border-radius: 50%; cursor: pointer;">✕</button>
+      </div>
+      <div id="gridTiles" class="grid-tiles-container"></div>
+    </div>
+  </div>
+
+  <!-- JSON Upload Modal -->
   <div id="editorModal" class="modal-wrap">
     <div class="modal-card">
       <h3 style="font-size: 15px; font-weight: 800; color: #0b1a78;">JSON குறியீட்டை ஒட்டவும்:</h3>
@@ -425,10 +530,7 @@
       {"question": "Q) இந்திய விவகாரங்களைக் கவனிக்க உருவாக்கப்பட்ட புதிய பதவி எது?", "options": ["இராணுவத் தளபதி", "இந்திய அரசுச் செயலர்", "தலைமை கணக்காயர்", "அரச வழக்கறிஞர்"], "correct": 1}
     ];
 
-    // Local Storage-லிருந்து சேமிக்கப்பட்ட கேள்விகள் அல்லது தரவுகளை எடுத்தல்
     let quizData = JSON.parse(localStorage.getItem('quizData_saved')) || defaultQuizData;
-    
-    // கடைசியாகப் பார்த்த கேள்வியின் எண்ணை நினைவில் வைத்து எடுத்தல் (Default: 0)
     let currentIndex = parseInt(localStorage.getItem('quiz_last_index')) || 0;
     if (currentIndex >= quizData.length) currentIndex = 0;
 
@@ -480,16 +582,36 @@
       } catch (e) {}
     }
 
-    // ட்ராப்டவுன் மெனுவை நிரப்புதல்
-    function populateDropdown() {
-      const select = document.getElementById('jumpSelect');
-      select.innerHTML = '';
+    // 1 முதல் 50 வரையிலான அனைத்து கட்டங்களையும் உருவாக்குதல்
+    function buildGridTiles() {
+      const container = document.getElementById('gridTiles');
+      container.innerHTML = '';
       quizData.forEach((_, idx) => {
-        const opt = document.createElement('option');
-        opt.value = idx;
-        opt.textContent = `Q ${String(idx + 1).padStart(2, '0')} / ${quizData.length}`;
-        select.appendChild(opt);
+        const tile = document.createElement('div');
+        tile.className = `q-tile ${idx === currentIndex ? 'active-q' : ''}`;
+        tile.textContent = idx + 1;
+        tile.onclick = () => {
+          currentIndex = idx;
+          closeGridModal();
+          renderScreen();
+        };
+        container.appendChild(tile);
       });
+    }
+
+    function openGridModal() {
+      buildGridTiles();
+      document.getElementById('gridModal').style.display = 'flex';
+    }
+
+    function closeGridModal() {
+      document.getElementById('gridModal').style.display = 'none';
+    }
+
+    function closeGridModalOnBackdrop(e) {
+      if (e.target.id === 'gridModal') {
+        closeGridModal();
+      }
     }
 
     function renderScreen() {
@@ -498,11 +620,10 @@
       timerRunning = false;
       countdown = 5;
 
-      // பார்த்த கேள்வியின் எண்ணை Local Storage-ல் சேமித்தல்
       localStorage.setItem('quiz_last_index', currentIndex);
 
       const q = quizData[currentIndex];
-      document.getElementById('jumpSelect').value = currentIndex;
+      document.getElementById('currentIndicator').textContent = `வினா ${String(currentIndex + 1).padStart(2, '0')}/${String(quizData.length).padStart(2, '0')}`;
       document.getElementById('qText').textContent = q.question;
       
       const artContainer = document.getElementById('vectorArtContainer');
@@ -521,7 +642,6 @@
       }
     }
 
-    // டக்கு டக்குனு கேள்விக்கு தாவுவதற்கான ஃபங்ஷன்கள்
     function nextQuestion() {
       if (currentIndex < quizData.length - 1) {
         currentIndex++;
@@ -534,11 +654,6 @@
         currentIndex--;
         renderScreen();
       }
-    }
-
-    function jumpToQuestion(idx) {
-      currentIndex = parseInt(idx);
-      renderScreen();
     }
 
     function startTimer() {
@@ -578,7 +693,6 @@
 
       document.getElementById('startBtn').textContent = 'சரியான விடை!';
 
-      // 3 விநாடிகளுக்குப் பிறகு அடுத்த கேள்விக்கு நகர்தல்
       autoNextHandle = setTimeout(() => {
         if (currentIndex < quizData.length - 1) {
           currentIndex++;
@@ -603,17 +717,15 @@
           quizData = parsed;
           localStorage.setItem('quizData_saved', JSON.stringify(quizData));
           currentIndex = 0;
-          populateDropdown();
           closeEditor();
           renderScreen();
         }
       } catch (e) {
-        alert('JSON error!');
+        alert('JSON-ல் பிழை உள்ளது! சரிபார்க்கவும்.');
       }
     }
 
     window.onload = () => {
-      populateDropdown();
       renderScreen();
       document.body.addEventListener('touchstart', getCtx, { once: true });
       document.body.addEventListener('click', getCtx, { once: true });
