@@ -33,7 +33,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 8px 18px;
+      padding: 8px 16px;
       position: relative;
     }
 
@@ -44,7 +44,7 @@
       align-items: center;
       padding-bottom: 5px;
       border-bottom: 1.5px solid #e2e8f0;
-      gap: 10px;
+      gap: 8px;
       flex-shrink: 0;
     }
 
@@ -56,33 +56,60 @@
       white-space: nowrap;
     }
 
+    /* கேள்வி எண் தேர்வு செய்யும் ட்ராப்டவுன் */
+    .jump-select {
+      background: #f1f5f9;
+      color: #0f172a;
+      font-size: 12px;
+      font-weight: 800;
+      border: 1.5px solid #cbd5e1;
+      padding: 4px 8px;
+      border-radius: 6px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .nav-btn {
+      background: #f1f5f9;
+      color: #0f172a;
+      border: 1px solid #cbd5e1;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .nav-btn:active {
+      transform: scale(0.92);
+      background: #e2e8f0;
+    }
+
     .start-btn-top {
       background: linear-gradient(135deg, #1e3a8a, #0f172a);
       color: #ffffff;
       font-size: 13px;
       font-weight: 800;
       border: none;
-      padding: 6px 16px;
+      padding: 6px 14px;
       border-radius: 8px;
       cursor: pointer;
       box-shadow: 0 2px 6px rgba(0,0,0,0.15);
       white-space: nowrap;
-      transition: all 0.2s ease;
     }
     .start-btn-top:disabled {
       opacity: 0.6;
     }
 
     .btn-edit {
-      background: #f1f5f9;
-      color: #1e293b;
+      background: #f8fafc;
+      color: #334155;
       border: 1px solid #cbd5e1;
-      padding: 5px 10px;
+      padding: 4px 8px;
       border-radius: 6px;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       cursor: pointer;
-      white-space: nowrap;
     }
 
     /* Question Title */
@@ -101,7 +128,7 @@
       flex: 1;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
+      gap: 16px;
       margin: 2px 0;
       overflow: hidden;
     }
@@ -110,7 +137,7 @@
     .options-group {
       display: flex;
       flex-direction: column;
-      gap: 7px;
+      gap: 6px;
       flex: 1.2;
       justify-content: center;
     }
@@ -252,52 +279,58 @@
 
   <div class="main-wrapper">
 
+    <!-- Top Navigation Bar -->
     <div class="header-bar">
-      <span class="brand-tag">LOVE TNPSC | <span id="qIndex" style="color: #64748b;">01/50</span></span>
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <span class="brand-tag">LOVE TNPSC</span>
+        <!-- நேரடியாக கேள்விக்குத் தாவும் Dropdown Menu -->
+        <select id="jumpSelect" class="jump-select" onchange="jumpToQuestion(this.value)"></select>
+      </div>
+
+      <!-- முன்னாடி / பின்னாடி செல்லும் பட்டன்கள் -->
+      <div style="display: flex; align-items: center; gap: 4px;">
+        <button class="nav-btn" onclick="prevQuestion()" title="முந்தைய கேள்வி">◀ பின்</button>
+        <button class="nav-btn" onclick="nextQuestion()" title="அடுத்த கேள்வி">முன் ▶</button>
+      </div>
       
       <button id="startBtn" class="start-btn-top" onclick="startTimer()">
-        ⏱️ டைமர் தொடங்கு (5 விநாடி)
+        ⏱️ தொடங்கு (5s)
       </button>
 
       <button class="btn-edit" onclick="openEditor()">➕ கேள்விகள்</button>
     </div>
 
-    <h1 id="qText" class="question-title">
-      Q) மீரட்டில் சிப்பாய்கள் வெளிப்படையாகக் கலகத்தில் இறங்கிய நாள் எது?
-    </h1>
+    <!-- Question Line -->
+    <h1 id="qText" class="question-title"></h1>
 
+    <!-- Options and Visuals -->
     <div class="body-content">
       
-      <!-- 4 Options -->
       <div class="options-group">
         <div id="optRow0" class="opt-box">
           <span class="opt-char">a)</span>
-          <span id="optText0">1857 மார்ச் 29</span>
+          <span id="optText0"></span>
           <div id="tick0"></div>
         </div>
         <div id="optRow1" class="opt-box">
           <span class="opt-char">b)</span>
-          <span id="optText1">1857 மே 10</span>
+          <span id="optText1"></span>
           <div id="tick1"></div>
         </div>
         <div id="optRow2" class="opt-box">
           <span class="opt-char">c)</span>
-          <span id="optText2">1857 ஜூன் 23</span>
+          <span id="optText2"></span>
           <div id="tick2"></div>
         </div>
         <div id="optRow3" class="opt-box">
           <span class="opt-char">d)</span>
-          <span id="optText3">1857 ஆகஸ்ட் 15</span>
+          <span id="optText3"></span>
           <div id="tick3"></div>
         </div>
       </div>
 
-      <!-- Right Side: Black Silhouette Vector Art Frame -->
       <div class="right-column">
-        <div id="vectorArtContainer" class="vector-art-box">
-          <!-- Built-in Dynamic Black Silhouette will be injected here -->
-        </div>
-
+        <div id="vectorArtContainer" class="vector-art-box"></div>
         <div class="gold-timer">
           <span id="timerVal" class="timer-num">5</span>
         </div>
@@ -307,6 +340,7 @@
 
   </div>
 
+  <!-- Upload Modal -->
   <div id="editorModal" class="modal-wrap">
     <div class="modal-card">
       <h3 style="font-size: 15px; font-weight: 800; color: #0b1a78;">JSON குறியீட்டை ஒட்டவும்:</h3>
@@ -319,28 +353,15 @@
   </div>
 
   <script>
-    // 100% உள்ளமைந்த உயர்தர கருப்பு நிழல் படங்கள் (Black Vector Silhouettes)
     const VECTOR_ICONS = {
-      // 1. போர் & கலகம் (War Battle Scene)
       war: `<svg viewBox="0 0 200 160"><path d="M20,135 Q50,110 80,135 L90,135 L85,115 L105,95 L120,110 L115,135 L180,135 L170,120 L160,125 L150,105 L165,85 L145,75 L135,90 L125,80 L140,50 L120,45 L105,70 L95,65 L110,40 L90,35 L75,60 L60,55 L75,30 L55,25 L40,50 L20,135 Z M10,140 L190,140 L190,148 L10,148 Z M45,70 L65,50 M140,70 L120,50 M85,30 L95,15 L105,30 Z M50,110 L25,95 M150,110 L175,95"/></svg>`,
-      
-      // 2. துப்பாக்கி & தோட்டா (Rifle & Weapon)
       gun: `<svg viewBox="0 0 200 160"><path d="M15,82 L80,78 L95,70 L175,68 L185,74 L145,82 L105,84 L95,98 L80,102 L75,90 L45,92 L20,105 L15,82 Z M100,85 L110,95 L118,92 L112,85 Z M170,62 L185,62 L185,66 L170,66 Z"/></svg>`,
-      
-      // 3. சிப்பாய் & வீரர் (Soldier Hero)
       soldier: `<svg viewBox="0 0 200 160"><circle cx="100" cy="38" r="18"/><path d="M80,62 C70,65 60,78 60,95 L65,145 L85,145 L85,110 L115,110 L115,145 L135,145 L140,95 C140,78 130,65 120,62 Z M82,24 L118,24 L112,14 L88,14 Z M52,85 L42,125 L54,128 L62,95 Z M148,85 L158,125 L146,128 L138,95 Z"/></svg>`,
-      
-      // 4. வீரமங்கை / ராணி லட்சுமி பாய் (Queen Warrior with Sword)
       queen: `<svg viewBox="0 0 200 160"><circle cx="100" cy="35" r="16"/><path d="M85,18 L100,5 L115,18 L108,22 L92,22 Z M75,56 C65,65 62,80 62,100 L55,145 L145,145 L138,100 C138,80 135,65 125,56 Z M142,65 L175,25 L182,32 L150,75 Z M58,65 L45,95 L55,98 L65,72 Z"/></svg>`,
-      
-      // 5. அரண்மனை & பேரரசர் (Crown & Fort)
       king: `<svg viewBox="0 0 200 160"><path d="M40,140 L160,140 L155,90 L165,90 L165,70 L150,70 L150,50 L135,50 L135,70 L115,70 L115,40 L85,40 L85,70 L65,70 L65,50 L50,50 L50,70 L35,70 L35,90 L45,90 Z M90,95 L110,95 L110,125 L90,125 Z M60,95 L75,95 L75,115 L60,115 Z M125,95 L140,95 L140,115 L125,115 Z"/></svg>`,
-      
-      // 6. சட்டம் & ஆவணம் (Treaty & Decree)
       law: `<svg viewBox="0 0 200 160"><path d="M55,20 L135,20 C145,20 150,25 150,35 L150,130 C150,140 145,145 135,145 L55,145 C45,145 40,140 40,130 L40,35 C40,25 45,20 55,20 Z M60,45 L130,45 L130,52 L60,52 Z M60,65 L130,65 L130,72 L60,72 Z M60,85 L130,85 L130,92 L60,92 Z M60,105 L110,105 L110,112 L60,112 Z M120,115 A12,12 0 1,0 144,115 A12,12 0 1,0 120,115 Z"/></svg>`
     };
 
-    // வினாவின் சொற்களைப் பொறுத்து நிழற்படத்தை அமைக்கும் ஃபங்ஷன்
     function getSilhouetteForQuestion(text) {
       const q = text.toLowerCase();
       if (q.includes("துப்பாக்கி") || q.includes("தோட்டா") || q.includes("என்பீல்டு")) return VECTOR_ICONS.gun;
@@ -348,10 +369,10 @@
       if (q.includes("போர்") || q.includes("கலகம்") || q.includes("மீரட்") || q.includes("தாக்கிய") || q.includes("புரட்சி")) return VECTOR_ICONS.war;
       if (q.includes("பகதூர் ஷா") || q.includes("பேரரசர்") || q.includes("கோட்டை") || q.includes("அரசர்")) return VECTOR_ICONS.king;
       if (q.includes("சட்டம்") || q.includes("கொள்கை") || q.includes("அறிக்கை") || q.includes("மகாசாசனம்") || q.includes("குழு")) return VECTOR_ICONS.law;
-      return VECTOR_ICONS.soldier; // Default Hero Soldier
+      return VECTOR_ICONS.soldier;
     }
 
-    let quizData = [
+    let defaultQuizData = [
       {"question": "Q) 1857 பெரும் புரட்சியின் முதல் வெடிப்பு எங்கு நிகழ்ந்தது?", "options": ["மீரட்", "பரக்பூர்", "தில்லி", "கான்பூர்"], "correct": 1},
       {"question": "Q) 1857 புரட்சியின் முதல் தியாகியாகக் கருதப்படும் சிப்பாய் யார்?", "options": ["மங்கள் பாண்டே", "பகத் சிங்", "தாந்தியா தோபே", "கன்வர் சிங்"], "correct": 0},
       {"question": "Q) மங்கள் பாண்டே எந்தப் படைப்பிரிவைச் சேர்ந்த சிப்பாய்?", "options": ["19-வது காலாட்படை", "34-வது வங்காள உள்நாட்டு காலாட்படை", "20-வது குதிரைப்படை", "40-வது படைப்பிரிவு"], "correct": 1},
@@ -404,7 +425,13 @@
       {"question": "Q) இந்திய விவகாரங்களைக் கவனிக்க உருவாக்கப்பட்ட புதிய பதவி எது?", "options": ["இராணுவத் தளபதி", "இந்திய அரசுச் செயலர்", "தலைமை கணக்காயர்", "அரச வழக்கறிஞர்"], "correct": 1}
     ];
 
-    let currentIndex = 0;
+    // Local Storage-லிருந்து சேமிக்கப்பட்ட கேள்விகள் அல்லது தரவுகளை எடுத்தல்
+    let quizData = JSON.parse(localStorage.getItem('quizData_saved')) || defaultQuizData;
+    
+    // கடைசியாகப் பார்த்த கேள்வியின் எண்ணை நினைவில் வைத்து எடுத்தல் (Default: 0)
+    let currentIndex = parseInt(localStorage.getItem('quiz_last_index')) || 0;
+    if (currentIndex >= quizData.length) currentIndex = 0;
+
     let timerRunning = false;
     let countdown = 5;
     let timerHandle = null;
@@ -453,17 +480,31 @@
       } catch (e) {}
     }
 
+    // ட்ராப்டவுன் மெனுவை நிரப்புதல்
+    function populateDropdown() {
+      const select = document.getElementById('jumpSelect');
+      select.innerHTML = '';
+      quizData.forEach((_, idx) => {
+        const opt = document.createElement('option');
+        opt.value = idx;
+        opt.textContent = `Q ${String(idx + 1).padStart(2, '0')} / ${quizData.length}`;
+        select.appendChild(opt);
+      });
+    }
+
     function renderScreen() {
       clearTimeout(autoNextHandle);
       clearInterval(timerHandle);
       timerRunning = false;
       countdown = 5;
 
+      // பார்த்த கேள்வியின் எண்ணை Local Storage-ல் சேமித்தல்
+      localStorage.setItem('quiz_last_index', currentIndex);
+
       const q = quizData[currentIndex];
-      document.getElementById('qIndex').textContent = `${String(currentIndex + 1).padStart(2, '0')}/${String(quizData.length).padStart(2, '0')}`;
+      document.getElementById('jumpSelect').value = currentIndex;
       document.getElementById('qText').textContent = q.question;
       
-      // தானாகவே அந்த வினாவிற்குரிய கருப்பு நிழல் படத்தை உள்ளமைக்கும்
       const artContainer = document.getElementById('vectorArtContainer');
       artContainer.innerHTML = getSilhouetteForQuestion(q.question);
 
@@ -471,13 +512,33 @@
 
       const btn = document.getElementById('startBtn');
       btn.disabled = false;
-      btn.textContent = '⏱️ டைமர் தொடங்கு (5 விநாடி)';
+      btn.textContent = '⏱️ தொடங்கு (5s)';
 
       for (let i = 0; i < 4; i++) {
         document.getElementById(`optText${i}`).textContent = q.options[i];
         document.getElementById(`optRow${i}`).className = 'opt-box';
         document.getElementById(`tick${i}`).innerHTML = '';
       }
+    }
+
+    // டக்கு டக்குனு கேள்விக்கு தாவுவதற்கான ஃபங்ஷன்கள்
+    function nextQuestion() {
+      if (currentIndex < quizData.length - 1) {
+        currentIndex++;
+        renderScreen();
+      }
+    }
+
+    function prevQuestion() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        renderScreen();
+      }
+    }
+
+    function jumpToQuestion(idx) {
+      currentIndex = parseInt(idx);
+      renderScreen();
     }
 
     function startTimer() {
@@ -488,7 +549,7 @@
 
       const btn = document.getElementById('startBtn');
       btn.disabled = true;
-      btn.textContent = 'நேரம் ஓடுகிறது...';
+      btn.textContent = 'ஓடுகிறது...';
 
       playTick();
       document.getElementById('timerVal').textContent = countdown;
@@ -517,6 +578,7 @@
 
       document.getElementById('startBtn').textContent = 'சரியான விடை!';
 
+      // 3 விநாடிகளுக்குப் பிறகு அடுத்த கேள்விக்கு நகர்தல்
       autoNextHandle = setTimeout(() => {
         if (currentIndex < quizData.length - 1) {
           currentIndex++;
@@ -539,7 +601,9 @@
         const parsed = JSON.parse(document.getElementById('jsonBox').value);
         if (Array.isArray(parsed) && parsed.length > 0) {
           quizData = parsed;
+          localStorage.setItem('quizData_saved', JSON.stringify(quizData));
           currentIndex = 0;
+          populateDropdown();
           closeEditor();
           renderScreen();
         }
@@ -549,6 +613,7 @@
     }
 
     window.onload = () => {
+      populateDropdown();
       renderScreen();
       document.body.addEventListener('touchstart', getCtx, { once: true });
       document.body.addEventListener('click', getCtx, { once: true });
